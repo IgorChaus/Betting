@@ -28,4 +28,13 @@ class MainScreen : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.bottomNav.setItemIconTintList(null)
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    companion object{
+        fun getInstance() = MainScreen()
+    }
 }

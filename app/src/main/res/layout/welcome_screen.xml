@@ -47,14 +47,14 @@
         android:text="Dive into a World of Stats and Inf1o with Our Football App. Elevate your football experience and gain a deeper understanding of the game's dynamics. Get ready to explore the stats th7at shape legends!"
         android:textColor="@color/white"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toTopOf="@+id/bt_start"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/button"
+        android:id="@+id/bt_start"
         android:layout_width="match_parent"
         android:layout_height="62dp"
         android:layout_marginStart="16dp"

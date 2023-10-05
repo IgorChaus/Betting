@@ -27,8 +27,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:max="90"
+        android:progressTint="@color/green_100"
+        android:progressBackgroundTint = "@color/blue_600"
         tools:progress="30"
-        tools:progressTint="@color/green_100"
-        tools:progressBackgroundTint = "@color/blue_600"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>
