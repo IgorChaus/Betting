@@ -1,10 +1,31 @@
 package com.example.betting.model
 
-data class LeagueItem (
-    val league: League,
-    val country: Country,
-    val seasons: List<Season>
+import com.google.gson.annotations.SerializedName
+
+data class LeaguesResponse (
+    val request: String,
+    val parameters: Parameters,
+    val errors: List<String>,
+    val results: Int,
+    val paging: Paging,
+    val response: List<LeagueItem>
 ){
+
+    data class Paging(
+        val current: Int,
+        val total: Int
+    )
+
+    data class Parameters(
+        val name: String
+    )
+
+    data class LeagueItem(
+        val league: League,
+        val country: Country,
+        val seasons: List<Season>
+    )
+
     data class League (
         val id: Int,
         val name: String,
@@ -31,13 +52,13 @@ data class LeagueItem (
         val standings: Boolean,
         val players: Boolean,
 
-        //      @Json(name = "top_scorers")
+        @SerializedName("top_scorers")
         val topScorers: Boolean,
 
-        //      @Json(name = "top_assists")
+        @SerializedName("top_assists")
         val topAssists: Boolean,
 
-        //      @Json(name = "top_cards")
+        @SerializedName("top_cards")
         val topCards: Boolean,
 
         val injuries: Boolean,
@@ -49,10 +70,10 @@ data class LeagueItem (
         val events: Boolean,
         val lineups: Boolean,
 
-        //      @Json(name = "statistics_fixtures")
+        @SerializedName("statistics_fixtures")
         val statisticsFixtures: Boolean,
 
-        //      @Json(name = "statistics_players")
+        @SerializedName("statistics_players")
         val statisticsPlayers: Boolean
     )
 }

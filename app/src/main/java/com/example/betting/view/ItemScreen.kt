@@ -1,4 +1,4 @@
-package com.example.betting
+package com.example.betting.view
 
 import android.content.res.ColorStateList
 import android.os.Bundle
@@ -9,6 +9,7 @@ import android.widget.LinearLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
+import com.example.betting.R
 import com.example.betting.databinding.ItemScreenBinding
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.MaterialShapeDrawable
@@ -50,7 +51,7 @@ class ItemScreen : Fragment() {
             .setBottomLeftCorner(CornerFamily.CUT, cunningCornerInFloat)
             .build()
 
-        val colorContainer = ResourcesCompat.getColor(resources,R.color.blue_600,null)
+        val colorContainer = ResourcesCompat.getColor(resources, R.color.blue_600,null)
 
         val cardContainer = view.findViewById<LinearLayout>(R.id.card_container)
         val shapeDrawable = MaterialShapeDrawable(shapeAppearanceModel).apply {

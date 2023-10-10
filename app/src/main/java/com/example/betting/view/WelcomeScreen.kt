@@ -1,10 +1,11 @@
-package com.example.betting
+package com.example.betting.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.betting.R
 import com.example.betting.databinding.WelcomeScreenBinding
 
 class WelcomeScreen : Fragment() {

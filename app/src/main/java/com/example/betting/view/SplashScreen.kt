@@ -1,14 +1,12 @@
-package com.example.betting
+package com.example.betting.view
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.betting.R
 import com.example.betting.databinding.SplashScreenBinding
 import kotlinx.coroutines.*
 
