@@ -69,7 +69,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView8"
+                android:id="@+id/tv_team_in_card"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto"
@@ -79,7 +79,7 @@
                 tools:text="Paris Saint Germain" />
 
             <TextView
-                android:id="@+id/textView9"
+                android:id="@+id/tv_first_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
@@ -90,7 +90,7 @@
                 tools:text="Naymar" />
 
             <TextView
-                android:id="@+id/textView10"
+                android:id="@+id/tv_last_name"
                 android:layout_width="wrap_content"
                 android:layout_height="68dp"
                 android:fontFamily="@font/roboto"
@@ -168,7 +168,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/age"
+                    android:id="@+id/tv_age"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
@@ -207,7 +207,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/birth_day"
+                    android:id="@+id/tv_birth_day"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
@@ -246,7 +246,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/birth_place"
+                    android:id="@+id/tv_birth_place"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
@@ -285,7 +285,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/birth_country"
+                    android:id="@+id/tv_birth_country"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
@@ -324,7 +324,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/height"
+                    android:id="@+id/tv_height"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
@@ -363,7 +363,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/weight"
+                    android:id="@+id/tv_weight"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
@@ -407,7 +407,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:fontFamily="@font/roboto"
-                    android:text="Weight"
+                    android:text="Team"
                     android:textColor="@color/grey_100"
                     android:textSize="22sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -415,7 +415,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/team"
+                    android:id="@+id/tv_team"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
@@ -454,7 +454,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/league"
+                    android:id="@+id/tv_league_item"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
@@ -493,7 +493,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/tv_birthday_country"
+                    android:id="@+id/tv_country"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"

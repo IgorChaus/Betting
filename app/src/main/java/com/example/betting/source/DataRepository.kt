@@ -10,12 +10,12 @@ import com.example.betting.wrappers.Response
 import java.io.IOException
 
 class DataRepository(private val service: RetrofitApi) {
-    suspend fun getLeagues(leagueName: String, season: String): Response {
+    suspend fun getLeagues(leagueName: String, season: String): Response<LeaguesResponse> {
         return withContext(Dispatchers.IO) {
             try {
                 val response = service.getLeagues(leagueName, season)
                 if (response.isSuccessful) {
-                    Response.Success<LeaguesResponse.LeagueItem>(data = response.body()!!.response)
+                    Response.Success(data = response.body()!!)
                 } else {
                     Response.Error(response.code().toString())
                 }
@@ -29,12 +29,12 @@ class DataRepository(private val service: RetrofitApi) {
         }
     }
 
-    suspend fun getPlayers(leagueId: String, season: String, page: String): Response {
+    suspend fun getPlayers(leagueId: String, season: String, page: String): Response<PlayersResponse> {
         return withContext(Dispatchers.IO) {
             try {
                 val response = service.getPlayers(leagueId, season, page)
                 if (response.isSuccessful) {
-                    Response.Success<PlayersResponse.PlayerData>(data = response.body()!!.response)
+                    Response.Success(data = response.body()!!)
                 } else {
                     Response.Error(response.code().toString())
                 }
@@ -48,12 +48,12 @@ class DataRepository(private val service: RetrofitApi) {
         }
     }
 
-    suspend fun getPlayer(playerId: String, season: String): Response {
+    suspend fun getPlayer(playerId: String, season: String): Response<PlayersResponse> {
         return withContext(Dispatchers.IO) {
             try {
                 val response = service.getPlayer(playerId, season)
                 if (response.isSuccessful) {
-                    Response.Success<PlayersResponse.PlayerData>(data = response.body()!!.response)
+                    Response.Success(data = response.body()!!)
                 } else {
                     Response.Error(response.code().toString())
                 }

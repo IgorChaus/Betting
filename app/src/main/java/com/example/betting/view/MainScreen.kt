@@ -55,8 +55,9 @@ class MainScreen : Fragment() {
     }
 
     private fun launchDiscoverScreen(){
-        requireActivity().supportFragmentManager.beginTransaction()
+       requireActivity().supportFragmentManager.beginTransaction()
             .replace(R.id.container_screen, DiscoverScreen.getInstance())
+            .addToBackStack("DiscoverScreen")
             .commit()
     }
 

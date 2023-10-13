@@ -27,7 +27,7 @@
     </LinearLayout>
 
     <ProgressBar
-        android:id="@+id/progressBar2"
+        android:id="@+id/progressBarDiscover"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,8 +35,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
         tools:progress="30"
-        tools:progressTint="@color/green_100"
-        tools:progressBackgroundTint = "@color/blue_600" />
+        android:progressTint="@color/green_100"
+        android:progressBackgroundTint = "@color/blue_600" />
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -50,7 +50,7 @@
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar2">
+        app:layout_constraintTop_toBottomOf="@+id/progressBarDiscover">
 
         <EditText
             android:id="@+id/serach"

@@ -32,7 +32,7 @@ class SplashScreen : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         coroutineScope.launch {
             for (i in 0 .. 90 step 30){
-                binding.progressBar.progress = i
+                binding.progressBarSplash.progress = i
                 delay(1000)
             }
             requireActivity().supportFragmentManager.beginTransaction()
