@@ -55,10 +55,15 @@ class MainScreen : Fragment() {
     }
 
     private fun launchDiscoverScreen(){
-       requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.container_screen, DiscoverScreen.getInstance())
-            .addToBackStack("DiscoverScreen")
-            .commit()
+        if (childFragmentManager.findFragmentByTag(DISCOVER_SCREEN) == null) {
+            childFragmentManager.beginTransaction()
+                .add(R.id.container_screen, DiscoverScreen.getInstance(), DISCOVER_SCREEN)
+                .commit()
+        }else {
+            childFragmentManager.beginTransaction()
+                .show(DiscoverScreen.getInstance())
+                .commit()
+        }
     }
 
     private fun launchFavoritesScreen(){
@@ -80,5 +85,6 @@ class MainScreen : Fragment() {
 
     companion object{
         fun getInstance() = MainScreen()
+        const val DISCOVER_SCREEN = "DiscoverScreen"
     }
 }

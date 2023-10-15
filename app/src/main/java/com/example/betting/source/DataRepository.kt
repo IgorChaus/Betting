@@ -8,8 +8,9 @@ import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import com.example.betting.wrappers.Response
 import java.io.IOException
+import javax.inject.Inject
 
-class DataRepository(private val service: RetrofitApi) {
+class DataRepository @Inject constructor(private val service: RetrofitApi) {
     suspend fun getLeagues(leagueName: String, season: String): Response<LeaguesResponse> {
         return withContext(Dispatchers.IO) {
             try {

@@ -57,16 +57,13 @@ class ListScreen : Fragment() {
                 }
             }
         }
-
-        viewModel.getPlayersFromAllLeagues()
     }
 
     private fun showItem(item: PlayerItem){
         val itemFragment = ItemScreen.getInstance(item)
-
         activity?.supportFragmentManager?.beginTransaction()
             ?.replace(R.id.container_activity, itemFragment)
-            ?.addToBackStack("ListFragment")
+            ?.addToBackStack(null)
             ?.commit()
 
     }

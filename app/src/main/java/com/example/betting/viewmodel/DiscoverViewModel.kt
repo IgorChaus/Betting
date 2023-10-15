@@ -12,10 +12,9 @@ import com.example.betting.source.RetrofitInstance
 import com.example.betting.wrappers.*
 import kotlinx.coroutines.launch
 import java.util.*
+import javax.inject.Inject
 
-class DiscoverViewModel: ViewModel() {
-
-    private val dataRepository = DataRepository(RetrofitInstance.service)
+class DiscoverViewModel @Inject constructor(private val dataRepository: DataRepository): ViewModel() {
 
     private val currentYear = Calendar.getInstance().get(Calendar.YEAR).toString()
 
@@ -32,7 +31,11 @@ class DiscoverViewModel: ViewModel() {
         get() = _progressBarVisible
 
     var leagueList: List<LeaguesResponse.LeagueItem>? = null
-    private val playerList = arrayListOf<AdapterItems>()
+    val playerList = arrayListOf<AdapterItems>()
+
+    init {
+        getPlayersFromAllLeagues()
+    }
 
     fun getPlayersFromAllLeagues() {
         viewModelScope.launch {
@@ -40,7 +43,7 @@ class DiscoverViewModel: ViewModel() {
             if (leagueList != null) {
                 playerList.clear()
                 _progressBarVisible.value = View.VISIBLE
-                for(item in 0..2) {
+                for(item in 0..1) {
                     _progressBar.value = 100 / 3 * (item + 1)
                     getPlayers(leagueList!![item])
                     if (playerList.isNotEmpty()) {

@@ -10,7 +10,6 @@ import android.widget.LinearLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import com.bumptech.glide.Glide
 import com.example.betting.R
 import com.example.betting.databinding.ItemScreenBinding
@@ -33,10 +32,9 @@ class ItemScreen : Fragment() {
         parsArgs()
     }
 
-    private fun parsArgs(){
+    private fun parsArgs() {
         requireArguments().getParcelable<PlayerItem>(KEY_ITEM)?.let {
             item = it
-            Log.i("MyTag","item $item")
         }
     }
 

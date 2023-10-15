@@ -1,15 +1,18 @@
 package com.example.betting.view
 
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.betting.BettingApp
 import com.example.betting.R
 import com.example.betting.databinding.DiscoverScreenBinding
+import com.example.betting.viewmodel.DiscoverViewModelFactory
 import com.example.betting.viewmodel.DiscoverViewModel
+import javax.inject.Inject
 
 class DiscoverScreen : Fragment() {
 
@@ -17,8 +20,20 @@ class DiscoverScreen : Fragment() {
     private val binding: DiscoverScreenBinding
         get() = _binding ?: throw RuntimeException("DiscoverScreenBinding == null")
 
+    val component by lazy{
+        (requireActivity().application as BettingApp).component
+    }
+
+    @Inject
+    lateinit var factory: DiscoverViewModelFactory
+
     private val viewModel by lazy {
-        ViewModelProvider(requireActivity())[DiscoverViewModel::class.java]
+        ViewModelProvider(requireActivity(), factory)[DiscoverViewModel::class.java]
+    }
+
+    override fun onAttach(context: Context) {
+        component.inject(this)
+        super.onAttach(context)
     }
 
     override fun onCreateView(
@@ -26,37 +41,45 @@ class DiscoverScreen : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = DiscoverScreenBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.progressBar.observe(requireActivity()){
-            binding.progressBarDiscover.progress = it
-        }
-        viewModel.progressBarVisible.observe(requireActivity()){
-            binding.progressBarDiscover.visibility = it
-        }
+        setupObserverProgressBar()
         launchListScreen()
     }
 
+    private fun setupObserverProgressBar() {
+        viewModel.progressBar.observe(requireActivity()) {
+            binding.progressBarDiscover.progress = it
+        }
+        viewModel.progressBarVisible.observe(requireActivity()) {
+            binding.progressBarDiscover.visibility = it
+        }
+    }
+
     private fun launchListScreen() {
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.container_list, ListScreen.getInstance())
-            .addToBackStack(null)
-            .commit()
+        if (childFragmentManager.findFragmentByTag(LIST_SCREEN) == null) {
+            childFragmentManager.beginTransaction()
+                .add(R.id.container_list, ListScreen.getInstance(), LIST_SCREEN)
+                .commit()
+        }else {
+            childFragmentManager.beginTransaction()
+                .show(ListScreen.getInstance())
+                .commit()
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        Log.i("MyTag", "Discovery screen onDestroyView")
         _binding = null
     }
 
     companion object{
         fun getInstance() = DiscoverScreen()
+        const val LIST_SCREEN = "ListScreen"
     }
 
 }

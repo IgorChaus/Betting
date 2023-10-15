@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".view.ListScreen">
 
-
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv1"
         android:layout_width="match_parent"
@@ -18,6 +16,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/item_player" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
