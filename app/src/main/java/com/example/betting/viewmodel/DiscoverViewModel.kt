@@ -1,20 +1,20 @@
 package com.example.betting.viewmodel
 
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.betting.model.LeaguesResponse
-import com.example.betting.source.DataRepository
-import com.example.betting.source.RetrofitInstance
+import com.example.betting.source.NetworkRepository
 import com.example.betting.wrappers.*
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
-class DiscoverViewModel @Inject constructor(private val dataRepository: DataRepository): ViewModel() {
+class DiscoverViewModel @Inject constructor(
+    private val networkRepository: NetworkRepository
+) : ViewModel() {
 
     private val currentYear = Calendar.getInstance().get(Calendar.YEAR).toString()
 
@@ -43,7 +43,7 @@ class DiscoverViewModel @Inject constructor(private val dataRepository: DataRepo
             if (leagueList != null) {
                 playerList.clear()
                 _progressBarVisible.value = View.VISIBLE
-                for(item in 0..1) {
+                for (item in 0..1) {
                     _progressBar.value = 100 / 3 * (item + 1)
                     getPlayers(leagueList!![item])
                     if (playerList.isNotEmpty()) {
@@ -56,7 +56,7 @@ class DiscoverViewModel @Inject constructor(private val dataRepository: DataRepo
     }
 
     private suspend fun getLeagues() {
-        val response = dataRepository.getLeagues(LEAGUE_NAME, currentYear)
+        val response = networkRepository.getLeagues(LEAGUE_NAME, currentYear)
         when (response) {
             is Response.Success -> {
                 leagueList = response.data.response
@@ -69,11 +69,11 @@ class DiscoverViewModel @Inject constructor(private val dataRepository: DataRepo
 
     private suspend fun getPlayers(leagueItem: LeaguesResponse.LeagueItem) {
         val leagueId = leagueItem.league.id.toString()
-        val response = dataRepository.getPlayers(leagueId, currentYear, "1")
+        val response = networkRepository.getPlayers(leagueId, currentYear, "1")
         when (response) {
             is Response.Success -> {
                 playerList.add(
-                    LeagueItem(
+                    LeagueItemAdapter(
                         name = leagueItem.league.name,
                         logo = leagueItem.league.logo
                     )
@@ -83,7 +83,7 @@ class DiscoverViewModel @Inject constructor(private val dataRepository: DataRepo
                 val limit = minOf(players.size, LIMIT_LIST)
                 for (item in players.take(limit)) {
                     playerList.add(
-                        PlayerItem(
+                        PlayerItemAdapter(
                             id = item.player.id,
                             firstName = item.player.firstname,
                             lastName = item.player.lastname,
@@ -108,7 +108,7 @@ class DiscoverViewModel @Inject constructor(private val dataRepository: DataRepo
         }
     }
 
-    companion object{
+    companion object {
         const val LEAGUE_NAME = "premier league"
         const val LIMIT_LIST = 10
     }

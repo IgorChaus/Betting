@@ -1,4 +1,4 @@
-package com.example.betting.view.adapter
+package com.example.betting.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -9,17 +9,17 @@ import com.bumptech.glide.Glide
 import com.example.betting.databinding.ItemLeagueBinding
 import com.example.betting.databinding.ItemPlayerBinding
 import com.example.betting.wrappers.AdapterItems
-import com.example.betting.wrappers.LeagueItem
-import com.example.betting.wrappers.PlayerItem
+import com.example.betting.wrappers.LeagueItemAdapter
+import com.example.betting.wrappers.PlayerItemAdapter
 
-class DiscoverAdapter: ListAdapter<AdapterItems, RecyclerView.ViewHolder>(ItemDiffCallBack) {
+class PlayerListAdapter: ListAdapter<AdapterItems, RecyclerView.ViewHolder>(ItemDiffCallBack) {
 
-    var itemClickListener: ((PlayerItem) -> Unit)? = null
+    var itemClickListener: ((PlayerItemAdapter) -> Unit)? = null
 
     override fun getItemViewType(position: Int): Int =
         when (getItem(position)) {
-            is PlayerItem -> PLAYER_ITEM
-            is LeagueItem -> LEAGUE_ITEM
+            is PlayerItemAdapter -> PLAYER_ITEM
+            is LeagueItemAdapter -> LEAGUE_ITEM
             else -> throw RuntimeException("Illegal item type")
         }
 
@@ -43,13 +43,13 @@ class DiscoverAdapter: ListAdapter<AdapterItems, RecyclerView.ViewHolder>(ItemDi
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
         when (holder.itemViewType) {
-            PLAYER_ITEM -> bindPlayerItem(holder, getItem(position) as PlayerItem)
-            LEAGUE_ITEM -> bindLeagueItem(holder, getItem(position) as LeagueItem)
+            PLAYER_ITEM -> bindPlayerItem(holder, getItem(position) as PlayerItemAdapter)
+            LEAGUE_ITEM -> bindLeagueItem(holder, getItem(position) as LeagueItemAdapter)
             else -> throw RuntimeException("Illegal item type")
         }
 
     @SuppressLint("SetTextI18n")
-    private fun bindPlayerItem(holder: RecyclerView.ViewHolder, item: PlayerItem) {
+    private fun bindPlayerItem(holder: RecyclerView.ViewHolder, item: PlayerItemAdapter) {
         val itemViewHolder = holder as PlayerViewHolder
         with(itemViewHolder.binding) {
             tvName.text = item.firstName + " " + item.lastName
@@ -65,7 +65,7 @@ class DiscoverAdapter: ListAdapter<AdapterItems, RecyclerView.ViewHolder>(ItemDi
         }
     }
 
-    private fun bindLeagueItem(holder: RecyclerView.ViewHolder, item: LeagueItem) {
+    private fun bindLeagueItem(holder: RecyclerView.ViewHolder, item: LeagueItemAdapter) {
         val itemViewHolder = holder as LeagueViewHolder
         with(itemViewHolder.binding) {
             tvLeague.text = item.name

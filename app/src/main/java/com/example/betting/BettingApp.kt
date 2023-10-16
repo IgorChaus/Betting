@@ -5,6 +5,6 @@ import com.example.betting.di.DaggerApplicationComponent
 
 class BettingApp: Application() {
     val component by lazy {
-        DaggerApplicationComponent.create()
+        DaggerApplicationComponent.factory().create(this)
     }
 }

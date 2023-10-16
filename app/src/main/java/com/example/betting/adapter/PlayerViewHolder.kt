@@ -1,4 +1,4 @@
-package com.example.betting.view.adapter
+package com.example.betting.adapter
 
 import androidx.recyclerview.widget.RecyclerView
 import com.example.betting.databinding.ItemPlayerBinding

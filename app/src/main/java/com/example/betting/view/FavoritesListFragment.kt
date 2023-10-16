@@ -9,26 +9,26 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.betting.R
 import com.example.betting.databinding.ListScreenBinding
-import com.example.betting.view.adapter.DiscoverAdapter
-import com.example.betting.viewmodel.DiscoverViewModel
-import com.example.betting.wrappers.PlayerItem
+import com.example.betting.adapter.PlayerListAdapter
+import com.example.betting.viewmodel.FavoriteViewModel
+import com.example.betting.wrappers.PlayerItemAdapter
 import com.example.betting.wrappers.State
 
-class ListScreen : Fragment() {
+class FavoritesListFragment : Fragment() {
 
     private var _binding: ListScreenBinding? = null
     private val binding: ListScreenBinding
         get() = _binding ?: throw RuntimeException("ListScreenBinding == null")
 
     private val viewModel by lazy {
-        ViewModelProvider(requireActivity())[DiscoverViewModel::class.java]
+        ViewModelProvider(requireActivity())[FavoriteViewModel::class.java]
     }
 
-    private lateinit var adapter: DiscoverAdapter
+    private lateinit var adapter: PlayerListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        adapter = DiscoverAdapter()
+        adapter = PlayerListAdapter()
         adapter.itemClickListener = {
             showItem(it)
         }
@@ -47,19 +47,12 @@ class ListScreen : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.rv1.adapter = adapter
-        viewModel.state.observe(viewLifecycleOwner){
-            when(it){
-                is State.Content -> {
-                    adapter.submitList(it.data)
-                }
-                is State.Error -> {
-                    Log.i("MyTag", "Error")
-                }
-            }
-        }
+//        viewModel.playerList.observe(viewLifecycleOwner) {
+//            adapter.submitList(it)
+//        }
     }
 
-    private fun showItem(item: PlayerItem){
+    private fun showItem(item: PlayerItemAdapter){
         val itemFragment = ItemScreen.getInstance(item)
         activity?.supportFragmentManager?.beginTransaction()
             ?.replace(R.id.container_activity, itemFragment)
@@ -74,7 +67,7 @@ class ListScreen : Fragment() {
     }
 
     companion object{
-        fun getInstance() = ListScreen()
+        fun getInstance() = FavoritesListFragment()
     }
 
 }

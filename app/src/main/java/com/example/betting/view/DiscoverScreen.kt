@@ -61,13 +61,13 @@ class DiscoverScreen : Fragment() {
     }
 
     private fun launchListScreen() {
-        if (childFragmentManager.findFragmentByTag(LIST_SCREEN) == null) {
+        if (childFragmentManager.findFragmentByTag(DISLOVER_LIST_SCREEN) == null) {
             childFragmentManager.beginTransaction()
-                .add(R.id.container_list, ListScreen.getInstance(), LIST_SCREEN)
+                .add(R.id.container_list, DiscoverListFragment.getInstance(), DISLOVER_LIST_SCREEN)
                 .commit()
         }else {
             childFragmentManager.beginTransaction()
-                .show(ListScreen.getInstance())
+                .show(DiscoverListFragment.getInstance())
                 .commit()
         }
     }
@@ -79,7 +79,7 @@ class DiscoverScreen : Fragment() {
 
     companion object{
         fun getInstance() = DiscoverScreen()
-        const val LIST_SCREEN = "ListScreen"
+        const val DISLOVER_LIST_SCREEN = "DiscoverListScreen"
     }
 
 }

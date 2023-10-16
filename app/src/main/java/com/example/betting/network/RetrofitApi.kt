@@ -1,4 +1,4 @@
-package com.example.betting.api
+package com.example.betting.network
 
 import com.example.betting.model.LeaguesResponse
 import com.example.betting.model.PlayersResponse

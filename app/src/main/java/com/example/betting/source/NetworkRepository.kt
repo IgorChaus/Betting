@@ -1,6 +1,6 @@
 package com.example.betting.source
 
-import com.example.betting.api.RetrofitApi
+import com.example.betting.network.RetrofitApi
 import com.example.betting.model.LeaguesResponse
 import com.example.betting.model.PlayersResponse
 import kotlinx.coroutines.Dispatchers
@@ -10,7 +10,7 @@ import com.example.betting.wrappers.Response
 import java.io.IOException
 import javax.inject.Inject
 
-class DataRepository @Inject constructor(private val service: RetrofitApi) {
+class NetworkRepository @Inject constructor(private val service: RetrofitApi) {
     suspend fun getLeagues(leagueName: String, season: String): Response<LeaguesResponse> {
         return withContext(Dispatchers.IO) {
             try {

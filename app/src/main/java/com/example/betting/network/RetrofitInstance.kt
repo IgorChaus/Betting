@@ -1,6 +1,5 @@
-package com.example.betting.source
+package com.example.betting.network
 
-import com.example.betting.api.RetrofitApi
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

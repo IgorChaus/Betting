@@ -1,12 +1,11 @@
-package com.example.betting.wrappers
+package com.example.betting.model
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-interface AdapterItems
-
-@Parcelize
-data class PlayerItemAdapter(
+@Entity(tableName = "favoritePlayers")
+data class PlayerItemDbModel(
+    @PrimaryKey
     val id: Int,
     val firstName: String?,
     val lastName: String?,
@@ -21,10 +20,4 @@ data class PlayerItemAdapter(
     val team: String?,
     val leagueName: String?,
     val leagueLogo: String?
-): AdapterItems, Parcelable
-
-data class LeagueItemAdapter(
-    val name: String,
-    val logo: String
-): AdapterItems
-
+)
