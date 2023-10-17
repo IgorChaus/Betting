@@ -26,6 +26,10 @@ class MainScreen : Fragment() {
         return binding.root
     }
 
+    val discoverScreen = DiscoverScreen.getInstance()
+    val favoritesScreen = FavoritesScreen.getInstance()
+    val settingsScreen = SettingsScreen.getInstance()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.bottomNav.setItemIconTintList(null)
@@ -55,27 +59,51 @@ class MainScreen : Fragment() {
     }
 
     private fun launchDiscoverScreen(){
-        if (childFragmentManager.findFragmentByTag(DISCOVER_SCREEN) == null) {
-            childFragmentManager.beginTransaction()
-                .add(R.id.container_screen, DiscoverScreen.getInstance(), DISCOVER_SCREEN)
-                .commit()
-        }else {
-            childFragmentManager.beginTransaction()
-                .show(DiscoverScreen.getInstance())
-                .commit()
+        val fragmentTransaction  = childFragmentManager.beginTransaction()
+        if(discoverScreen.isAdded) {
+            fragmentTransaction.show(discoverScreen)
+        }else{
+            fragmentTransaction.add(R.id.container_screen, discoverScreen)
         }
+        if (favoritesScreen.isAdded) {
+            fragmentTransaction.hide(favoritesScreen)
+        }
+        if (settingsScreen.isAdded) {
+            fragmentTransaction.hide(settingsScreen)
+        }
+        fragmentTransaction.commit()
     }
 
     private fun launchFavoritesScreen(){
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.container_screen, FavoritesScreen.getInstance())
-            .commit()
+        val fragmentTransaction  = childFragmentManager.beginTransaction()
+        if(favoritesScreen.isAdded) {
+            fragmentTransaction.show(favoritesScreen)
+        }else{
+            fragmentTransaction.add(R.id.container_screen, favoritesScreen)
+        }
+        if (discoverScreen.isAdded) {
+            fragmentTransaction.hide(discoverScreen)
+        }
+        if (settingsScreen.isAdded) {
+            fragmentTransaction.hide(settingsScreen)
+        }
+        fragmentTransaction.commit()
     }
 
     private fun launchSettingsScreen(){
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.container_screen, SettingsScreen.getInstance())
-            .commit()
+        val fragmentTransaction  = childFragmentManager.beginTransaction()
+        if(settingsScreen.isAdded) {
+            fragmentTransaction.show(settingsScreen)
+        }else{
+            fragmentTransaction.add(R.id.container_screen, settingsScreen)
+        }
+        if (discoverScreen.isAdded) {
+            fragmentTransaction.hide(discoverScreen)
+        }
+        if (favoritesScreen.isAdded) {
+            fragmentTransaction.hide(favoritesScreen)
+        }
+        fragmentTransaction.commit()
     }
 
     override fun onDestroyView() {
@@ -85,6 +113,5 @@ class MainScreen : Fragment() {
 
     companion object{
         fun getInstance() = MainScreen()
-        const val DISCOVER_SCREEN = "DiscoverScreen"
     }
 }

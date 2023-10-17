@@ -1,5 +1,6 @@
 package com.example.betting.view
 
+import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,13 +10,20 @@ import android.widget.LinearLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.example.betting.BettingApp
 import com.example.betting.R
 import com.example.betting.databinding.ItemScreenBinding
+import com.example.betting.viewmodel.FavoriteViewModel
+import com.example.betting.viewmodel.FavoriteViewModelFactory
+import com.example.betting.viewmodel.PlayerViewModel
+import com.example.betting.viewmodel.PlayerViewModelFactory
 import com.example.betting.wrappers.PlayerItemAdapter
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
+import javax.inject.Inject
 
 
 class ItemScreen : Fragment() {
@@ -25,6 +33,22 @@ class ItemScreen : Fragment() {
     private var _binding: ItemScreenBinding? = null
     private val binding: ItemScreenBinding
         get() = _binding ?: throw RuntimeException("ItemScreenBinding == null")
+
+    val component by lazy{
+        (requireActivity().application as BettingApp).component
+    }
+
+    @Inject
+    lateinit var factory: PlayerViewModelFactory
+
+    private val viewModel by lazy {
+        ViewModelProvider(this, factory)[PlayerViewModel::class.java]
+    }
+
+    override fun onAttach(context: Context) {
+        component.inject(this)
+        super.onAttach(context)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -131,6 +155,10 @@ class ItemScreen : Fragment() {
 
             tvBack.setOnClickListener {
                 requireActivity().supportFragmentManager.popBackStack()
+            }
+
+            iconFavorites.setOnClickListener {
+                viewModel.addPlayer(item)
             }
         }
     }

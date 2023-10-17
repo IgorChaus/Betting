@@ -2,6 +2,7 @@ package com.example.betting.view
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,12 +32,9 @@ class FavoritesScreen : Fragment() {
     @Inject
     lateinit var factory: FavoriteViewModelFactory
 
-    private val viewModel by lazy {
-        ViewModelProvider(requireActivity(), factory)[FavoriteViewModel::class.java]
-    }
-
     override fun onAttach(context: Context) {
         component.inject(this)
+        Log.i("MyTag", "FavoriteScreen onAttach $this")
         super.onAttach(context)
     }
 
@@ -52,6 +50,7 @@ class FavoritesScreen : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val viewModel = ViewModelProvider(requireActivity(), factory)[FavoriteViewModel::class.java]
         launchListScreen()
     }
 
@@ -69,7 +68,13 @@ class FavoritesScreen : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        Log.i("MyTag", "FavoriteScreen onDestroyView $this")
         _binding = null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i("MyTag", "FavoriteScreen onDestroy $this")
     }
 
     companion object{

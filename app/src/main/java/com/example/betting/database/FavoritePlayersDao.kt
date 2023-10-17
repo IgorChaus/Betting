@@ -17,6 +17,6 @@ interface FavoritePlayersDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addPlayer(playerItemDbModel: PlayerItemDbModel)
 
-    @Delete
-    suspend fun deletePlayer(playerItemDbModel: PlayerItemDbModel)
+    @Query("DELETE FROM favoritePlayers WHERE id = :id")
+    suspend fun deletePlayer(id: Int)
 }

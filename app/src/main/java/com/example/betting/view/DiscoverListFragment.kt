@@ -39,7 +39,7 @@ class DiscoverListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
+        Log.i("MyTag","DiscoverListFragment onCreateView")
         _binding = ListScreenBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -59,6 +59,16 @@ class DiscoverListFragment : Fragment() {
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        Log.i("MyTag","DiscoverListFragment onStop")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.i("MyTag","DiscoverListFragment onPause")
+    }
+
     private fun showItem(item: PlayerItemAdapter){
         val itemFragment = ItemScreen.getInstance(item)
         activity?.supportFragmentManager?.beginTransaction()
@@ -71,6 +81,7 @@ class DiscoverListFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        Log.i("MyTag","DiscoverListFragment onDestroyView")
     }
 
     companion object{

@@ -2,6 +2,7 @@ package com.example.betting.view
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,6 +52,25 @@ class DiscoverScreen : Fragment() {
         launchListScreen()
     }
 
+    override fun onStop() {
+        super.onStop()
+        Log.i("MyTag", "DiscoverScreen onStop")
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.i("MyTag", "DiscoverScreen onStart")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.i("MyTag", "DiscoverScreen onResume")
+    }
+    override fun onPause() {
+        super.onPause()
+        Log.i("MyTag", "DiscoverScreen onPause")
+    }
+
     private fun setupObserverProgressBar() {
         viewModel.progressBar.observe(requireActivity()) {
             binding.progressBarDiscover.progress = it
@@ -74,6 +94,7 @@ class DiscoverScreen : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        Log.i("MyTag", "DiscoverScreen onDestroyView")
         _binding = null
     }
 

@@ -1,5 +1,6 @@
 package com.example.betting.view
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -47,9 +48,9 @@ class FavoritesListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.rv1.adapter = adapter
-//        viewModel.playerList.observe(viewLifecycleOwner) {
-//            adapter.submitList(it)
-//        }
+        viewModel.playerList.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
+        }
     }
 
     private fun showItem(item: PlayerItemAdapter){
