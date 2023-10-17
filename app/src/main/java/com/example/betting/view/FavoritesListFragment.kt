@@ -1,19 +1,16 @@
 package com.example.betting.view
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.betting.R
-import com.example.betting.databinding.ListScreenBinding
 import com.example.betting.adapter.PlayerListAdapter
+import com.example.betting.databinding.ListScreenBinding
 import com.example.betting.viewmodel.FavoriteViewModel
 import com.example.betting.wrappers.PlayerItemAdapter
-import com.example.betting.wrappers.State
 
 class FavoritesListFragment : Fragment() {
 
@@ -54,11 +51,18 @@ class FavoritesListFragment : Fragment() {
     }
 
     private fun showItem(item: PlayerItemAdapter){
-        val itemFragment = ItemScreen.getInstance(item)
-        activity?.supportFragmentManager?.beginTransaction()
-            ?.replace(R.id.container_activity, itemFragment)
-            ?.addToBackStack(null)
-            ?.commit()
+        val mainScreen = requireActivity()
+            .supportFragmentManager
+            .findFragmentByTag(MainScreen.MAIN_SCREEN)
+        requireActivity().supportFragmentManager.beginTransaction()
+            .add(R.id.container_activity, ItemScreen.getInstance(item))
+            .apply {
+                mainScreen?.let {
+                    hide(it)
+                }
+            }
+            .addToBackStack(null)
+            .commit()
 
     }
 

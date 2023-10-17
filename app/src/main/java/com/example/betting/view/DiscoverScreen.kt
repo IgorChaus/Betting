@@ -2,7 +2,6 @@ package com.example.betting.view
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,8 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.betting.BettingApp
 import com.example.betting.R
 import com.example.betting.databinding.DiscoverScreenBinding
-import com.example.betting.viewmodel.DiscoverViewModelFactory
 import com.example.betting.viewmodel.DiscoverViewModel
+import com.example.betting.viewmodel.DiscoverViewModelFactory
 import javax.inject.Inject
 
 class DiscoverScreen : Fragment() {
@@ -52,25 +51,6 @@ class DiscoverScreen : Fragment() {
         launchListScreen()
     }
 
-    override fun onStop() {
-        super.onStop()
-        Log.i("MyTag", "DiscoverScreen onStop")
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Log.i("MyTag", "DiscoverScreen onStart")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.i("MyTag", "DiscoverScreen onResume")
-    }
-    override fun onPause() {
-        super.onPause()
-        Log.i("MyTag", "DiscoverScreen onPause")
-    }
-
     private fun setupObserverProgressBar() {
         viewModel.progressBar.observe(requireActivity()) {
             binding.progressBarDiscover.progress = it
@@ -81,26 +61,18 @@ class DiscoverScreen : Fragment() {
     }
 
     private fun launchListScreen() {
-        if (childFragmentManager.findFragmentByTag(DISLOVER_LIST_SCREEN) == null) {
-            childFragmentManager.beginTransaction()
-                .add(R.id.container_list, DiscoverListFragment.getInstance(), DISLOVER_LIST_SCREEN)
-                .commit()
-        }else {
-            childFragmentManager.beginTransaction()
-                .show(DiscoverListFragment.getInstance())
-                .commit()
-        }
+        childFragmentManager.beginTransaction()
+            .replace(R.id.container_list, DiscoverListFragment.getInstance())
+            .commit()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        Log.i("MyTag", "DiscoverScreen onDestroyView")
         _binding = null
     }
 
     companion object{
         fun getInstance() = DiscoverScreen()
-        const val DISLOVER_LIST_SCREEN = "DiscoverListScreen"
     }
 
 }

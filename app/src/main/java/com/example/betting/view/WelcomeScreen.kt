@@ -28,8 +28,8 @@ class WelcomeScreen : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.btStart.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.container_activity, MainScreen.getInstance())
-                .addToBackStack("MainScreen")
+                .replace(R.id.container_activity, MainScreen.getInstance(),MainScreen.MAIN_SCREEN)
+                .addToBackStack(null)
                 .commit()
         }
     }

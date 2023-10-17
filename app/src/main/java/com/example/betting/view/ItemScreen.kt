@@ -15,8 +15,6 @@ import com.bumptech.glide.Glide
 import com.example.betting.BettingApp
 import com.example.betting.R
 import com.example.betting.databinding.ItemScreenBinding
-import com.example.betting.viewmodel.FavoriteViewModel
-import com.example.betting.viewmodel.FavoriteViewModelFactory
 import com.example.betting.viewmodel.PlayerViewModel
 import com.example.betting.viewmodel.PlayerViewModelFactory
 import com.example.betting.wrappers.PlayerItemAdapter
