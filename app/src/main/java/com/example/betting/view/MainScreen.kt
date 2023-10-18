@@ -11,7 +11,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class MainScreen : Fragment() {
-    lateinit var  bottomNav: BottomNavigationView
 
     private var _binding: MainScreenBinding? = null
     private val binding: MainScreenBinding
@@ -27,40 +26,29 @@ class MainScreen : Fragment() {
         return binding.root
     }
 
-    val discoverScreen = DiscoverScreen.getInstance()
-    val favoritesScreen = FavoritesScreen.getInstance()
-    val settingsScreen = SettingsScreen.getInstance()
+    lateinit var  bottomNav: BottomNavigationView
+
+    lateinit var discoverScreen: Fragment
+    lateinit var favoritesScreen: Fragment
+    lateinit var settingsScreen: Fragment
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        getFragmentsInstans()
         binding.bottomNav.setItemIconTintList(null)
         setupBottomNavigation(view)
-
         if (savedInstanceState == null){
             launchDiscoverScreen()
-        } else {
-            restoreMainScreen(savedInstanceState)
         }
     }
 
-    private fun restoreMainScreen(savedInstanceState: Bundle) {
-        when (savedInstanceState.getInt(KEY_ITEM)) {
-            R.id.discover -> {
-                launchDiscoverScreen()
-            }
-            R.id.favorites -> {
-                launchFavoritesScreen()
-            }
-            R.id.settings -> {
-                launchSettingsScreen()
-            }
-            else -> throw RuntimeException("Illegal choose")
-        }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putInt(KEY_ITEM, bottomNav.selectedItemId)
+    private fun getFragmentsInstans() {
+        discoverScreen = childFragmentManager.findFragmentByTag(DISCOVER_SCREEN)
+            ?: DiscoverScreen.getInstance()
+        favoritesScreen = childFragmentManager.findFragmentByTag(FAVORITES_SCREEN)
+            ?: FavoritesScreen.getInstance()
+        settingsScreen = childFragmentManager.findFragmentByTag(SETTINGS_SCREEN)
+            ?: SettingsScreen.getInstance()
     }
 
     private fun setupBottomNavigation(view: View) {
@@ -86,49 +74,61 @@ class MainScreen : Fragment() {
 
     private fun launchDiscoverScreen() {
         val fragmentTransaction = childFragmentManager.beginTransaction()
+
         if (discoverScreen.isAdded) {
             fragmentTransaction.show(discoverScreen)
         } else {
-            fragmentTransaction.add(R.id.container_screen, discoverScreen)
+            fragmentTransaction.add(R.id.container_screen, discoverScreen, DISCOVER_SCREEN)
         }
+
         if (favoritesScreen.isAdded) {
             fragmentTransaction.hide(favoritesScreen)
         }
+
         if (settingsScreen.isAdded) {
             fragmentTransaction.hide(settingsScreen)
         }
+
         fragmentTransaction.commit()
     }
 
     private fun launchFavoritesScreen() {
         val fragmentTransaction = childFragmentManager.beginTransaction()
+
         if (favoritesScreen.isAdded) {
             fragmentTransaction.show(favoritesScreen)
         } else {
-            fragmentTransaction.add(R.id.container_screen, favoritesScreen)
+            fragmentTransaction.add(R.id.container_screen, favoritesScreen, FAVORITES_SCREEN)
         }
+
         if (discoverScreen.isAdded) {
             fragmentTransaction.hide(discoverScreen)
         }
+
         if (settingsScreen.isAdded) {
             fragmentTransaction.hide(settingsScreen)
         }
+
         fragmentTransaction.commit()
     }
 
     private fun launchSettingsScreen() {
         val fragmentTransaction = childFragmentManager.beginTransaction()
+
         if (settingsScreen.isAdded) {
             fragmentTransaction.show(settingsScreen)
         } else {
-            fragmentTransaction.add(R.id.container_screen, settingsScreen)
+            fragmentTransaction.add(R.id.container_screen, settingsScreen, SETTINGS_SCREEN)
         }
+
         if (discoverScreen.isAdded) {
             fragmentTransaction.hide(discoverScreen)
         }
+
         if (favoritesScreen.isAdded) {
             fragmentTransaction.hide(favoritesScreen)
         }
+
         fragmentTransaction.commit()
     }
 
@@ -140,6 +140,9 @@ class MainScreen : Fragment() {
     companion object {
         fun getInstance() = MainScreen()
         const val MAIN_SCREEN = "MainScreen"
-        const val KEY_ITEM = "KeyItem"
+
+        const val DISCOVER_SCREEN = "DiscoverScreen"
+        const val FAVORITES_SCREEN = "FavoritesScreen"
+        const val SETTINGS_SCREEN = "SettingsScreen"
     }
 }

@@ -48,7 +48,9 @@ class DiscoverScreen : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupObserverProgressBar()
-        launchListScreen()
+        if(savedInstanceState == null){
+            launchListScreen()
+        }
     }
 
     private fun setupObserverProgressBar() {

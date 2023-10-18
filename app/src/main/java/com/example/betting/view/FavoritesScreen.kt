@@ -45,7 +45,9 @@ class FavoritesScreen : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val viewModel = ViewModelProvider(requireActivity(), factory)[FavoriteViewModel::class.java]
-        launchListScreen()
+        if(savedInstanceState == null){
+            launchListScreen()
+        }
     }
 
     private fun launchListScreen() {
