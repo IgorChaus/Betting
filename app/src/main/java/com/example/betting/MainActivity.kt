@@ -12,6 +12,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         if (savedInstanceState == null) {
+            //Выполняем транзакции связанные с отображением фрагмента add, replace
             val prefs = getSharedPreferences("com.example.betting", MODE_PRIVATE)
             if (prefs.getBoolean(FIRST_LAUNCH, true)) {
                 supportFragmentManager.beginTransaction()

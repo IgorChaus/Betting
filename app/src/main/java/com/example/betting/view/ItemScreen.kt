@@ -73,6 +73,13 @@ class ItemScreen : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         roundCorners(view)
         bindViews()
+        viewModel.checkPlayer(item)
+        viewModel.isPlayerFavorite.observe(viewLifecycleOwner){
+            if(it){
+                binding.iconFavorites.setImageResource(R.drawable.icon_favorite_selected)
+            } else
+                binding.iconFavorites.setImageResource(R.drawable.icon_favorite_not_selected)
+        }
     }
 
     private fun roundCorners(view: View){
@@ -156,7 +163,7 @@ class ItemScreen : Fragment() {
             }
 
             iconFavorites.setOnClickListener {
-                viewModel.addPlayer(item)
+                viewModel.pressButton(item)
             }
         }
     }
