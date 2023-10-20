@@ -1,15 +1,14 @@
 package com.example.betting.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.betting.R
-import com.example.betting.databinding.ListScreenBinding
 import com.example.betting.adapter.PlayerListAdapter
+import com.example.betting.databinding.ListScreenBinding
 import com.example.betting.viewmodel.DiscoverViewModel
 import com.example.betting.wrappers.PlayerItemAdapter
 import com.example.betting.wrappers.State
@@ -46,14 +45,9 @@ class DiscoverListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.rv1.adapter = adapter
-        viewModel.state.observe(viewLifecycleOwner){
-            when(it){
-                is State.Content -> {
-                    adapter.submitList(it.data)
-                }
-                is State.Error -> {
-                    Log.i("MyTag", "Error")
-                }
+        viewModel.state.observe(viewLifecycleOwner) {
+            if (it is State.Content) {
+                adapter.submitList(it.data)
             }
         }
     }

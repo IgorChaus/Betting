@@ -5,14 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.betting.databinding.NoInternetConnectionScreenBinding
+import com.example.betting.databinding.NoFoundPlayersScreenBinding
 
 
-class NoInternetConnectionScreen : Fragment() {
+class NoFoundPlayersScreen : Fragment() {
 
-    private var _binding: NoInternetConnectionScreenBinding? = null
-    private val binding: NoInternetConnectionScreenBinding
-        get() = _binding ?: throw RuntimeException("NoInternetConnectionScreenBinding == null")
+    private var _binding: NoFoundPlayersScreenBinding? = null
+    private val binding: NoFoundPlayersScreenBinding
+        get() = _binding ?: throw RuntimeException("NoFoundPlayersScreenBinding == null")
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -20,7 +20,7 @@ class NoInternetConnectionScreen : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = NoInternetConnectionScreenBinding.inflate(inflater, container, false)
+        _binding = NoFoundPlayersScreenBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -30,7 +30,7 @@ class NoInternetConnectionScreen : Fragment() {
     }
 
     companion object{
-        fun getInstance() = NoInternetConnectionScreen()
+        fun getInstance() = NoFoundPlayersScreen()
     }
 
 }

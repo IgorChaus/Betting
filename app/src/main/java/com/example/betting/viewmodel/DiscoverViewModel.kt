@@ -57,7 +57,11 @@ class DiscoverViewModel @Inject constructor(
                 it.firstName?.contains(strSearch, ignoreCase = true) ?: false ||
                         it.lastName?.contains(strSearch, ignoreCase = true) ?: false
             }
+        if (searchList.isNotEmpty()) {
             _state.value = State.Content(searchList)
+        } else {
+            _state.value = State.NothingFound
+        }
 
     }
 

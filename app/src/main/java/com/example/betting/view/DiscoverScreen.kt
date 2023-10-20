@@ -17,6 +17,7 @@ import com.example.betting.R
 import com.example.betting.databinding.DiscoverScreenBinding
 import com.example.betting.viewmodel.DiscoverViewModel
 import com.example.betting.viewmodel.DiscoverViewModelFactory
+import com.example.betting.wrappers.State
 import javax.inject.Inject
 
 class DiscoverScreen : Fragment() {
@@ -59,6 +60,19 @@ class DiscoverScreen : Fragment() {
         if(savedInstanceState == null){
             launchListScreen()
         }
+        viewModel.state.observe(viewLifecycleOwner){
+            when(it){
+                is State.Content -> {
+                    launchListScreen()
+                }
+                is State.NothingFound -> {
+                    launchNothingFoundScreen()
+                }
+                is State.Error -> {
+                    launchNoInternetConnectionScreen()
+                }
+            }
+        }
     }
 
     private fun setupListenersOnSearch() {
@@ -98,15 +112,17 @@ class DiscoverScreen : Fragment() {
         viewModel.cancelSearch.observe(viewLifecycleOwner) {
             if (it) {
                 binding.ivCancelSearch.setImageResource(R.drawable.icon_cancel_24px)
-            } else {
                 binding.ivCancelSearch.setOnClickListener {
-                    viewModel.showSearchIcon()
                     binding.tvSearchResult.visibility = View.GONE
                     val editableText = Editable.Factory.getInstance().newEditable("")
                     binding.search.text = editableText
                     deacivateSearch()
+                    viewModel.showSearchIcon()
                     viewModel.updatePlayersList()
                 }
+            } else {
+                binding.ivCancelSearch.setImageResource(R.drawable.icon_search_24px)
+                binding.ivCancelSearch.setOnClickListener(null)
             }
         }
     }
@@ -133,6 +149,18 @@ class DiscoverScreen : Fragment() {
     private fun launchListScreen() {
         childFragmentManager.beginTransaction()
             .replace(R.id.container_list, DiscoverListFragment.getInstance())
+            .commit()
+    }
+
+    private fun launchNothingFoundScreen() {
+        childFragmentManager.beginTransaction()
+            .replace(R.id.container_list, NoFoundPlayersScreen.getInstance())
+            .commit()
+    }
+
+    private fun launchNoInternetConnectionScreen() {
+        childFragmentManager.beginTransaction()
+            .replace(R.id.container_list, NoInternetConnectionScreen.getInstance())
             .commit()
     }
 

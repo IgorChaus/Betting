@@ -6,7 +6,5 @@ sealed class State {
 
     class Error(val errorMessage: String) : State()
 
-    // object Loading: State()
-
-    // object NothingFound: State()
+    object NothingFound: State()
 }
