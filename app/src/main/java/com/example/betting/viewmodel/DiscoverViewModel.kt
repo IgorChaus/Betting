@@ -22,6 +22,10 @@ class DiscoverViewModel @Inject constructor(
     val state: LiveData<State>
         get() = _state
 
+    private val _cancelSearch: MutableLiveData<Boolean> = MutableLiveData()
+    val cancelSearch: LiveData<Boolean>
+        get() = _cancelSearch
+
     private val _progressBar: MutableLiveData<Int> = MutableLiveData()
     val progressBar: LiveData<Int>
         get() = _progressBar
@@ -34,7 +38,27 @@ class DiscoverViewModel @Inject constructor(
     val playerList = arrayListOf<AdapterItems>()
 
     init {
+        _cancelSearch.value = SEARCH
         getPlayersFromAllLeagues()
+    }
+
+
+    fun showCancelIcon() {
+        _cancelSearch.value = CANCEL
+    }
+
+    fun showSearchIcon(){
+        _cancelSearch.value = SEARCH
+    }
+
+    fun searchPlayers(strSearch: String){
+        val searchList = playerList.filterIsInstance<PlayerItemAdapter>()
+            .filter {
+                it.firstName?.contains(strSearch, ignoreCase = true) ?: false ||
+                        it.lastName?.contains(strSearch, ignoreCase = true) ?: false
+            }
+            _state.value = State.Content(searchList)
+
     }
 
     fun getPlayersFromAllLeagues() {
@@ -50,9 +74,13 @@ class DiscoverViewModel @Inject constructor(
                         _state.value = State.Content(playerList)
                     }
                 }
-                _progressBarVisible.value = View.INVISIBLE
+                _progressBarVisible.value = View.GONE
             }
         }
+    }
+
+    fun updatePlayersList(){
+        _state.value = State.Content(playerList)
     }
 
     private suspend fun getLeagues() {
@@ -111,6 +139,8 @@ class DiscoverViewModel @Inject constructor(
     companion object {
         const val LEAGUE_NAME = "premier league"
         const val LIMIT_LIST = 10
+        const val SEARCH = false
+        const val CANCEL = true
     }
 
 }

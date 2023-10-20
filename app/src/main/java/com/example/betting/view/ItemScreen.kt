@@ -107,7 +107,7 @@ class ItemScreen : Fragment() {
     }
 
     fun bindViews(){
-        Glide.with(this).load(item.photo).circleCrop().into(binding.playerImage)
+        Glide.with(this).load(item.photo).into(binding.playerImage)
         with(binding){
             tvTeamInCard.text = item.team
             tvFirstName.text = item.firstName

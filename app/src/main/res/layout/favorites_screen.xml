@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tv_back"
+            android:id="@+id/tv_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Favorites"
@@ -44,7 +44,7 @@
             android:id="@+id/serach"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableEnd="@drawable/search_24px"
+            android:drawableEnd="@drawable/icon_search_24px"
             android:ems="10"
             android:hint="Search for a player..."
             android:inputType="text"
