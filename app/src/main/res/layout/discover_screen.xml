@@ -67,7 +67,7 @@
             android:textColor="@color/blue_500" />
 
         <ImageView
-            android:id="@+id/iv_cancelSearch"
+            android:id="@+id/iv_closeSearch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingRight="12dp"

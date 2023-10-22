@@ -46,7 +46,13 @@ class DiscoverListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.rv1.adapter = adapter
         viewModel.state.observe(viewLifecycleOwner) {
-            if (it is State.Content) {
+            if (it is State.ResultSearch) {
+                adapter.submitList(it.data)
+            }
+            if (it is State.FilteredList){
+                adapter.submitList(it.data)
+            }
+            if (it is State.ContentList){
                 adapter.submitList(it.data)
             }
         }

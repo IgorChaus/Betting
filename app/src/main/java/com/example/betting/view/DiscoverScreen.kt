@@ -3,6 +3,7 @@ package com.example.betting.view
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,17 +56,38 @@ class DiscoverScreen : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.tvSearchResult.visibility = View.GONE
         setupObserverProgressBar()
-        setupObserverCancelImage()
         setupListenersOnSearch()
         if(savedInstanceState == null){
             launchListScreen()
         }
         viewModel.state.observe(viewLifecycleOwner){
+            Log.i("MyTag", "State $it")
             when(it){
-                is State.Content -> {
+                is State.ContentList -> {
+                    binding.tvSearchResult.visibility = View.GONE
+                    binding.ivCloseSearch.setImageResource(R.drawable.icon_search_24px)
+                    hideKeyboard()
+                    deactivateSearch()
+                    launchListScreen()
+                }
+                is State.FilteredList -> {
+                    binding.layoutSearch.background = ResourcesCompat
+                        .getDrawable(resources, R.drawable.round_corners_border, null)
+                    binding.tvSearchResult.visibility = View.GONE
+                    binding.ivCloseSearch.setImageResource(R.drawable.icon_cancel_24px)
+                    launchListScreen()
+                }
+                is State.ResultSearch -> {
+                    binding.tvSearchResult.visibility = View.VISIBLE
+                    binding.ivCloseSearch.setImageResource(R.drawable.icon_cancel_24px)
+                    hideKeyboard()
+                    deactivateSearch()
                     launchListScreen()
                 }
                 is State.NothingFound -> {
+                    binding.tvSearchResult.visibility = View.VISIBLE
+                    binding.ivCloseSearch.setImageResource(R.drawable.icon_cancel_24px)
+                    hideKeyboard()
                     launchNothingFoundScreen()
                 }
                 is State.Error -> {
@@ -75,20 +97,27 @@ class DiscoverScreen : Fragment() {
         }
     }
 
+    private fun deactivateSearch() {
+        binding.layoutSearch.background = ResourcesCompat
+            .getDrawable(resources, R.drawable.round_corners, null)
+        binding.search.setFocusable(false)
+        binding.search.setFocusableInTouchMode(true)
+    }
+
+    private fun hideKeyboard(){
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE)
+                as InputMethodManager
+        imm.hideSoftInputFromWindow(binding.search.windowToken, 0)
+    }
+
     private fun setupListenersOnSearch() {
         binding.search.addTextChangedListener { s ->
-            viewModel.searchPlayers(s.toString())
+            viewModel.setFilteredListState(s.toString())
         }
 
         binding.search.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_NEXT) {
-                if (binding.search.text.toString().isEmpty()) {
-                    binding.tvSearchResult.visibility = View.GONE
-                    viewModel.updatePlayersList()
-                } else {
-                    binding.tvSearchResult.visibility = View.VISIBLE
-                }
-                deacivateSearch()
+                viewModel.setSearchResultState(binding.search.text.toString())
                 return@setOnEditorActionListener true
             }
             false
@@ -96,45 +125,15 @@ class DiscoverScreen : Fragment() {
 
         binding.search.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
-                viewModel.showCancelIcon()
-                binding.layoutSearch.background = ResourcesCompat
-                    .getDrawable(resources, R.drawable.round_corners_border, null)
-                binding.tvSearchResult.visibility = View.GONE
-            } else {
-                binding.layoutSearch.background = ResourcesCompat
-                    .getDrawable(resources, R.drawable.round_corners, null)
-            }
-
-        }
-    }
-
-    private fun setupObserverCancelImage() {
-        viewModel.cancelSearch.observe(viewLifecycleOwner) {
-            if (it) {
-                binding.ivCancelSearch.setImageResource(R.drawable.icon_cancel_24px)
-                binding.ivCancelSearch.setOnClickListener {
-                    binding.tvSearchResult.visibility = View.GONE
-                    val editableText = Editable.Factory.getInstance().newEditable("")
-                    binding.search.text = editableText
-                    deacivateSearch()
-                    viewModel.showSearchIcon()
-                    viewModel.updatePlayersList()
-                }
-            } else {
-                binding.ivCancelSearch.setImageResource(R.drawable.icon_search_24px)
-                binding.ivCancelSearch.setOnClickListener(null)
+                viewModel.setFilteredListState("")
             }
         }
-    }
 
-    private fun deacivateSearch(){
-        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE)
-                as InputMethodManager
-        imm.hideSoftInputFromWindow(binding.search.windowToken, 0)
-        binding.layoutSearch.background = ResourcesCompat
-            .getDrawable(resources, R.drawable.round_corners, null)
-        binding.search.setFocusable(false)
-        binding.search.setFocusableInTouchMode(true)
+        binding.ivCloseSearch.setOnClickListener {
+            val editableText = Editable.Factory.getInstance().newEditable("")
+            binding.search.text = editableText
+            viewModel.setContentListState()
+        }
     }
 
     private fun setupObserverProgressBar() {

@@ -1,5 +1,6 @@
 package com.example.betting.viewmodel
 
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -22,10 +23,6 @@ class DiscoverViewModel @Inject constructor(
     val state: LiveData<State>
         get() = _state
 
-    private val _cancelSearch: MutableLiveData<Boolean> = MutableLiveData()
-    val cancelSearch: LiveData<Boolean>
-        get() = _cancelSearch
-
     private val _progressBar: MutableLiveData<Int> = MutableLiveData()
     val progressBar: LiveData<Int>
         get() = _progressBar
@@ -34,118 +31,116 @@ class DiscoverViewModel @Inject constructor(
     val progressBarVisible: LiveData<Int>
         get() = _progressBarVisible
 
-    var leagueList: List<LeaguesResponse.LeagueItem>? = null
-    val playerList = arrayListOf<AdapterItems>()
+    private var leagueList: List<LeaguesResponse.LeagueItem>? = null
+    private val playerList = arrayListOf<AdapterItems>()
 
     init {
-        _cancelSearch.value = SEARCH
         getPlayersFromAllLeagues()
     }
 
-
-    fun showCancelIcon() {
-        _cancelSearch.value = CANCEL
+    fun setContentListState(){
+        _state.value = State.ContentList(playerList)
     }
 
-    fun showSearchIcon(){
-        _cancelSearch.value = SEARCH
+    fun setFilteredListState(strSearch: String){
+        val searchList = searchPlayer(strSearch)
+        _state.value = State.FilteredList(searchList)
     }
 
-    fun searchPlayers(strSearch: String){
-        val searchList = playerList.filterIsInstance<PlayerItemAdapter>()
-            .filter {
-                it.firstName?.contains(strSearch, ignoreCase = true) ?: false ||
-                        it.lastName?.contains(strSearch, ignoreCase = true) ?: false
-            }
-        if (searchList.isNotEmpty()) {
-            _state.value = State.Content(searchList)
+    fun setSearchResultState(strSearch: String) {
+        if (strSearch == "") {
+            _state.value = State.ContentList(playerList)
         } else {
-            _state.value = State.NothingFound
+            val searchList = searchPlayer(strSearch)
+            if (searchList.isNotEmpty()) {
+                _state.value = State.ResultSearch(searchList)
+            } else {
+                _state.value = State.NothingFound
+            }
+        }
+    }
+
+    private fun searchPlayer(strSearch: String) = playerList.filterIsInstance<PlayerItemAdapter>()
+        .filter {
+            it.firstName?.contains(strSearch, ignoreCase = true) ?: false ||
+                    it.lastName?.contains(strSearch, ignoreCase = true) ?: false
         }
 
-    }
-
-    fun getPlayersFromAllLeagues() {
-        viewModelScope.launch {
-            getLeagues()
-            if (leagueList != null) {
-                playerList.clear()
-                _progressBarVisible.value = View.VISIBLE
-                for (item in 0..1) {
-                    _progressBar.value = 100 / 3 * (item + 1)
-                    getPlayers(leagueList!![item])
-                    if (playerList.isNotEmpty()) {
-                        _state.value = State.Content(playerList)
+            fun getPlayersFromAllLeagues() {
+                viewModelScope.launch {
+                    getLeagues()
+                    if (leagueList != null) {
+                        playerList.clear()
+                        _progressBarVisible.value = View.VISIBLE
+                        for (item in 0..1) {
+                            _progressBar.value = 100 / 3 * (item + 1)
+                            getPlayers(leagueList!![item])
+                            if (playerList.isNotEmpty()) {
+                                _state.value = State.ContentList(playerList)
+                            }
+                        }
+                        _progressBarVisible.value = View.GONE
                     }
                 }
-                _progressBarVisible.value = View.GONE
             }
-        }
-    }
 
-    fun updatePlayersList(){
-        _state.value = State.Content(playerList)
-    }
-
-    private suspend fun getLeagues() {
-        val response = networkRepository.getLeagues(LEAGUE_NAME, currentYear)
-        when (response) {
-            is Response.Success -> {
-                leagueList = response.data.response
-            }
-            is Response.Error -> {
-                _state.value = State.Error(response.errorMessage)
-            }
-        }
-    }
-
-    private suspend fun getPlayers(leagueItem: LeaguesResponse.LeagueItem) {
-        val leagueId = leagueItem.league.id.toString()
-        val response = networkRepository.getPlayers(leagueId, currentYear, "1")
-        when (response) {
-            is Response.Success -> {
-                playerList.add(
-                    LeagueItemAdapter(
-                        name = leagueItem.league.name,
-                        logo = leagueItem.league.logo
-                    )
-                )
-
-                val players = response.data.response
-                val limit = minOf(players.size, LIMIT_LIST)
-                for (item in players.take(limit)) {
-                    playerList.add(
-                        PlayerItemAdapter(
-                            id = item.player.id,
-                            firstName = item.player.firstname,
-                            lastName = item.player.lastname,
-                            age = item.player.age,
-                            birthPlace = item.player.birth.place,
-                            birthCountry = item.player.birth.country,
-                            birthDate = item.player.birth.date,
-                            nationality = item.player.nationality,
-                            height = item.player.height,
-                            weight = item.player.weight,
-                            photo = item.player.photo,
-                            team = item.statistics[0].team.name,
-                            leagueName = leagueItem.league.name,
-                            leagueLogo = leagueItem.league.logo
-                        )
-                    )
+            private suspend fun getLeagues() {
+                val response = networkRepository.getLeagues(LEAGUE_NAME, currentYear)
+                when (response) {
+                    is Response.Success -> {
+                        leagueList = response.data.response
+                    }
+                    is Response.Error -> {
+                        _state.value = State.Error
+                    }
                 }
             }
-            is Response.Error -> {
-                _state.value = State.Error(response.errorMessage)
-            }
-        }
-    }
 
-    companion object {
-        const val LEAGUE_NAME = "premier league"
-        const val LIMIT_LIST = 10
-        const val SEARCH = false
-        const val CANCEL = true
-    }
+            private suspend fun getPlayers(leagueItem: LeaguesResponse.LeagueItem) {
+                val leagueId = leagueItem.league.id.toString()
+                val response = networkRepository.getPlayers(leagueId, currentYear, "1")
+                when (response) {
+                    is Response.Success -> {
+                        playerList.add(
+                            LeagueItemAdapter(
+                                name = leagueItem.league.name,
+                                logo = leagueItem.league.logo
+                            )
+                        )
+
+                        val players = response.data.response
+                        val limit = minOf(players.size, LIMIT_LIST)
+                        for (item in players.take(limit)) {
+                            playerList.add(
+                                PlayerItemAdapter(
+                                    id = item.player.id,
+                                    firstName = item.player.firstname,
+                                    lastName = item.player.lastname,
+                                    age = item.player.age,
+                                    birthPlace = item.player.birth.place,
+                                    birthCountry = item.player.birth.country,
+                                    birthDate = item.player.birth.date,
+                                    nationality = item.player.nationality,
+                                    height = item.player.height,
+                                    weight = item.player.weight,
+                                    photo = item.player.photo,
+                                    team = item.statistics[0].team.name,
+                                    leagueName = leagueItem.league.name,
+                                    leagueLogo = leagueItem.league.logo
+                                )
+                            )
+                        }
+                    }
+                    is Response.Error -> {
+                        _state.value = State.Error
+                    }
+                }
+            }
+
+            companion object {
+            const val LEAGUE_NAME = "premier league"
+            const val LIMIT_LIST = 10
+        }
 
 }
 
