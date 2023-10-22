@@ -55,7 +55,7 @@ class DiscoverScreen : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.tvSearchResult.visibility = View.GONE
-        setupObserverProgressBar()
+        binding.progressBarDiscover.visibility = View.GONE
         setupListenersOnSearch()
         if(savedInstanceState == null){
             launchListScreen()
@@ -63,6 +63,11 @@ class DiscoverScreen : Fragment() {
         viewModel.state.observe(viewLifecycleOwner){
             Log.i("MyTag", "State $it")
             when(it){
+                is State.Loading -> {
+                    binding.progressBarDiscover.progress = it.progress
+                    binding.progressBarDiscover.visibility = it.progressVisible
+                    Log.i("MyTag", "progress = ${it.progress} visibality = ${it.progressVisible}")
+                }
                 is State.ContentList -> {
                     binding.tvSearchResult.visibility = View.GONE
                     binding.ivCloseSearch.setImageResource(R.drawable.icon_search_24px)
@@ -70,13 +75,16 @@ class DiscoverScreen : Fragment() {
                     deactivateSearch()
                     launchListScreen()
                 }
-                is State.FilteredList -> {
+                is State.ActivateSearch -> {
                     binding.layoutSearch.background = ResourcesCompat
                         .getDrawable(resources, R.drawable.round_corners_border, null)
                     binding.tvSearchResult.visibility = View.GONE
                     binding.ivCloseSearch.setImageResource(R.drawable.icon_cancel_24px)
                     launchListScreen()
                 }
+
+                is State.FilteredList -> Unit
+
                 is State.ResultSearch -> {
                     binding.tvSearchResult.visibility = View.VISIBLE
                     binding.ivCloseSearch.setImageResource(R.drawable.icon_cancel_24px)
@@ -112,6 +120,7 @@ class DiscoverScreen : Fragment() {
 
     private fun setupListenersOnSearch() {
         binding.search.addTextChangedListener { s ->
+            Log.i("MyTag", "addTextChangedListener")
             viewModel.setFilteredListState(s.toString())
         }
 
@@ -125,6 +134,7 @@ class DiscoverScreen : Fragment() {
 
         binding.search.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
+                Log.i("MyTag", "setOnFocusChanfeListener")
                 viewModel.setFilteredListState("")
             }
         }
@@ -133,15 +143,6 @@ class DiscoverScreen : Fragment() {
             val editableText = Editable.Factory.getInstance().newEditable("")
             binding.search.text = editableText
             viewModel.setContentListState()
-        }
-    }
-
-    private fun setupObserverProgressBar() {
-        viewModel.progressBar.observe(requireActivity()) {
-            binding.progressBarDiscover.progress = it
-        }
-        viewModel.progressBarVisible.observe(requireActivity()) {
-            binding.progressBarDiscover.visibility = it
         }
     }
 
