@@ -68,6 +68,7 @@ class DiscoverScreen : Fragment() {
                 is State.Loading -> {
                     binding.progressBarDiscover.progress = it.progress
                     binding.progressBarDiscover.visibility = it.progressVisible
+                    launchListScreen()
                 }
                 is State.ContentList -> {
                     binding.tvSearchResult.visibility = View.GONE

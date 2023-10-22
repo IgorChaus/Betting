@@ -63,7 +63,7 @@ class DiscoverViewModel @Inject constructor(
                     it.lastName?.contains(strSearch, ignoreCase = true) ?: false
         }
 
-    private fun getPlayersFromAllLeagues() {
+    fun getPlayersFromAllLeagues() {
         viewModelScope.launch {
             getLeagues()
             if (leagueList != null) {

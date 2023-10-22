@@ -45,6 +45,10 @@ class DiscoverListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.rv1.adapter = adapter
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            binding.swipeRefreshLayout.isRefreshing = false
+            viewModel.getPlayersFromAllLeagues()
+        }
         viewModel.state.observe(viewLifecycleOwner) {
             if (it is State.Loading) {
                 adapter.submitList(it.data)
