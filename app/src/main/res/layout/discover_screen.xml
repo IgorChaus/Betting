@@ -31,12 +31,14 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:progressBackgroundTint="@color/blue_600"
+        android:progressTint="@color/green_100"
+        android:visibility="gone"
+        tools:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        tools:progress="30"
-        android:progressTint="@color/green_100"
-        android:progressBackgroundTint = "@color/blue_600" />
+        tools:progress="30" />
 
     <LinearLayout
         android:id="@+id/layout_search"
@@ -86,6 +88,8 @@
         android:textColor="@color/grey_100"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:visibility="gone"
+        tools:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout_search" />
 

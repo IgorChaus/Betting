@@ -54,19 +54,20 @@ class DiscoverScreen : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.tvSearchResult.visibility = View.GONE
-        binding.progressBarDiscover.visibility = View.GONE
         setupListenersOnSearch()
+        setupStateObserver()
         if(savedInstanceState == null){
             launchListScreen()
         }
-        viewModel.state.observe(viewLifecycleOwner){
+    }
+
+    private fun setupStateObserver() {
+        viewModel.state.observe(viewLifecycleOwner) {
             Log.i("MyTag", "State $it")
-            when(it){
+            when (it) {
                 is State.Loading -> {
                     binding.progressBarDiscover.progress = it.progress
                     binding.progressBarDiscover.visibility = it.progressVisible
-                    Log.i("MyTag", "progress = ${it.progress} visibality = ${it.progressVisible}")
                 }
                 is State.ContentList -> {
                     binding.tvSearchResult.visibility = View.GONE
