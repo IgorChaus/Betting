@@ -11,6 +11,7 @@ import com.example.betting.adapter.PlayerListAdapter
 import com.example.betting.databinding.ListScreenBinding
 import com.example.betting.viewmodel.FavoriteViewModel
 import com.example.betting.wrappers.PlayerItemAdapter
+import com.example.betting.wrappers.State
 
 class FavoritesListFragment : Fragment() {
 
@@ -45,8 +46,13 @@ class FavoritesListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.rv1.adapter = adapter
-        viewModel.playerList.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
+        viewModel.state.observe(viewLifecycleOwner) {
+            when (it) {
+                is State.ResultSearch -> adapter.submitList(it.data)
+                is State.FilteredList -> adapter.submitList(it.data)
+                is State.ContentList -> adapter.submitList(it.data)
+                else -> Unit
+            }
         }
     }
 

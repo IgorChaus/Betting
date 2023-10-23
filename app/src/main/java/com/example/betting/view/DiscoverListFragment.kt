@@ -50,17 +50,12 @@ class DiscoverListFragment : Fragment() {
             viewModel.getPlayersFromAllLeagues()
         }
         viewModel.state.observe(viewLifecycleOwner) {
-            if (it is State.Loading) {
-                adapter.submitList(it.data)
-            }
-            if (it is State.ResultSearch) {
-                adapter.submitList(it.data)
-            }
-            if (it is State.FilteredList){
-                adapter.submitList(it.data)
-            }
-            if (it is State.ContentList){
-                adapter.submitList(it.data)
+            when(it){
+                is State.ResultSearch -> adapter.submitList(it.data)
+                is State.FilteredList -> adapter.submitList(it.data)
+                is State.ContentList -> adapter.submitList(it.data)
+                is State.Loading -> adapter.submitList(it.data)
+                else -> Unit
             }
         }
     }

@@ -5,14 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.betting.databinding.NoFoundFavoriteScreenBinding
+import com.example.betting.databinding.NoFavoritePlayersScreenBinding
 
 
-class NoFoundFavoriteScreen : Fragment() {
+class NoFavoritePlayersScreen : Fragment() {
 
-    private var _binding: NoFoundFavoriteScreenBinding? = null
-    private val binding: NoFoundFavoriteScreenBinding
-        get() = _binding ?: throw RuntimeException("NoFoundFavoriteScreenBinding == null")
+    private var _binding: NoFavoritePlayersScreenBinding? = null
+    private val binding: NoFavoritePlayersScreenBinding
+        get() = _binding ?: throw RuntimeException("NoFavoritePlayersScreenBinding == null")
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -20,7 +20,7 @@ class NoFoundFavoriteScreen : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = NoFoundFavoriteScreenBinding.inflate(inflater, container, false)
+        _binding = NoFavoritePlayersScreenBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -30,7 +30,7 @@ class NoFoundFavoriteScreen : Fragment() {
     }
 
     companion object{
-        fun getInstance() = NoFoundFavoriteScreen()
+        fun getInstance() = NoFavoritePlayersScreen()
     }
 
 }

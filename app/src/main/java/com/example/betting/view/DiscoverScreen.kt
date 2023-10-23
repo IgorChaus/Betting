@@ -85,8 +85,6 @@ class DiscoverScreen : Fragment() {
                     launchListScreen()
                 }
 
-                is State.FilteredList -> Unit
-
                 is State.ResultSearch -> {
                     binding.tvSearchResult.visibility = View.VISIBLE
                     binding.ivCloseSearch.setImageResource(R.drawable.icon_cancel_24px)
@@ -103,6 +101,7 @@ class DiscoverScreen : Fragment() {
                 is State.Error -> {
                     launchNoInternetConnectionScreen()
                 }
+                else -> Unit
             }
         }
     }

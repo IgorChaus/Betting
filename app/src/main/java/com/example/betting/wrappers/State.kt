@@ -18,4 +18,6 @@ sealed class State {
     object Error : State()
 
     object NothingFound : State()
+
+    object NoFavoritePlayers : State()
 }

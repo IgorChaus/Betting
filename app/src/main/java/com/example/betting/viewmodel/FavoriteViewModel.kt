@@ -2,9 +2,9 @@ package com.example.betting.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.example.betting.source.DataBaseRepository
-import com.example.betting.wrappers.AdapterItems
 import com.example.betting.wrappers.PlayerItemAdapter
 import com.example.betting.wrappers.State
 import javax.inject.Inject
@@ -17,31 +17,52 @@ class FavoriteViewModel @Inject constructor(
     val state: LiveData<State>
         get() = _state
 
-    val playerList = dataBaseRepository.getPlayersList()
+    private var playerList = listOf<PlayerItemAdapter>()
+    private var strSearch: String = ""
+    private val playersObserver: Observer<List<PlayerItemAdapter>> = Observer {
+        playerList = it
+        when( state.value){
+            is State.ContentList -> setContentListState()
+            is State.FilteredList -> setFilteredListState(strSearch)
+            is State.ResultSearch -> setSearchResultState(strSearch)
+            is State.NothingFound -> setSearchResultState(strSearch)
+            is State.NoFavoritePlayers -> setContentListState()
+           else -> Unit
+        }
+    }
+
+    init{
+        dataBaseRepository.getPlayersList().observeForever(playersObserver)
+        setContentListState()
+    }
 
     fun setContentListState() {
-        _state.value = playerList.value?.let { State.ContentList(it) }
-        _state.value = State.ContentList(playerList.value ?:listOf<PlayerItemAdapter>())
+        if (playerList.isNotEmpty()) {
+            _state.value = State.ContentList(playerList)
+        } else {
+            _state.value = State.NoFavoritePlayers
+        }
     }
 
     fun setFilteredListState(strSearch: String) {
+        this.strSearch = strSearch
         _state.value = State.ActivateSearch
-        val searchList: List<AdapterItems>
-        if (strSearch.isNotEmpty()) {
-            searchList = searchPlayer(strSearch)
+        val filteredList = if (strSearch.isNotEmpty()){
+            searchPlayer(strSearch)
         } else {
-            searchList = playerList.value ?: listOf<PlayerItemAdapter>()
+            playerList
         }
-        _state.value = State.FilteredList(searchList)
+        _state.value = State.FilteredList(filteredList)
     }
 
     fun setSearchResultState(strSearch: String) {
+        this.strSearch = strSearch
         if (strSearch.isEmpty()) {
-            _state.value = State.ContentList(playerList.value ?:listOf<PlayerItemAdapter>())
+            _state.value = State.ContentList(playerList )
         } else {
-            val searchList = searchPlayer(strSearch)
-            if (searchList.isNotEmpty()) {
-                _state.value = State.ResultSearch(searchList)
+            val filteredList = searchPlayer(strSearch)
+            if (filteredList.isNotEmpty()) {
+                _state.value = State.ResultSearch(filteredList)
             } else {
                 _state.value = State.NothingFound
             }
@@ -49,15 +70,16 @@ class FavoriteViewModel @Inject constructor(
     }
 
     private fun searchPlayer(strSearch: String): List<PlayerItemAdapter>{
-        val itemList = if (playerList.value != null){
-            playerList.value as List<PlayerItemAdapter>
-        } else {
-            listOf()
+        val filteredList = playerList.filter {
+            it.firstName?.contains(strSearch, ignoreCase = true) ?: false ||
+                    it.lastName?.contains(strSearch, ignoreCase = true) ?: false
         }
-        return itemList.filter {
-                it.firstName?.contains(strSearch, ignoreCase = true) ?: false ||
-                        it.lastName?.contains(strSearch, ignoreCase = true) ?: false
-            }
+        return filteredList
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        dataBaseRepository.getPlayersList().removeObserver(playersObserver)
     }
 
 }
