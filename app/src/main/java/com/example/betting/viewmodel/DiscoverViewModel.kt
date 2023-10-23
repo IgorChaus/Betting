@@ -24,6 +24,7 @@ class DiscoverViewModel @Inject constructor(
 
     private var leagueList: List<LeaguesResponse.LeagueItem>? = null
     private val playerList = arrayListOf<AdapterItems>()
+    private var strSearch: String = ""
 
     init {
         getPlayersFromAllLeagues()
@@ -33,10 +34,20 @@ class DiscoverViewModel @Inject constructor(
         _state.value = State.ContentList(playerList)
     }
 
-    fun setFilteredListState(strSearch: String) {
-        if (strSearch.isEmpty())
-            return
+    fun setActivateSearch() {
         _state.value = State.ActivateSearch
+        if (this.strSearch.isNotEmpty()){
+            val strSearch = this.strSearch
+            this.strSearch = ""
+            setFilteredListState(strSearch)
+        }
+    }
+
+    fun setFilteredListState(strSearch: String) {
+        if (this.strSearch == strSearch){
+            return
+        }
+        this.strSearch = strSearch
         val searchList: List<AdapterItems>
         if (strSearch.isNotEmpty()) {
             searchList = searchPlayer(strSearch)

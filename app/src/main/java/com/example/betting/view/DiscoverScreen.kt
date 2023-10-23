@@ -63,7 +63,7 @@ class DiscoverScreen : Fragment() {
 
     private fun setupStateObserver() {
         viewModel.state.observe(viewLifecycleOwner) {
-            Log.i("MyTag", "State on DiscoverScreen $it")
+            Log.i("MyTag", "State $it")
             when (it) {
                 is State.Loading -> {
                     binding.progressBarDiscover.progress = it.progress
@@ -96,6 +96,7 @@ class DiscoverScreen : Fragment() {
                     binding.tvSearchResult.visibility = View.VISIBLE
                     binding.ivCloseSearch.setImageResource(R.drawable.icon_cancel_24px)
                     hideKeyboard()
+                    deactivateSearch()
                     launchNothingFoundMessage()
                 }
                 is State.Error -> {
@@ -109,8 +110,8 @@ class DiscoverScreen : Fragment() {
     private fun deactivateSearch() {
         binding.layoutSearch.background = ResourcesCompat
             .getDrawable(resources, R.drawable.round_corners, null)
-        binding.search.setFocusable(false)
-        binding.search.setFocusableInTouchMode(true)
+        binding.search.isFocusable = false
+        binding.search.isFocusableInTouchMode = true
     }
 
     private fun hideKeyboard(){
@@ -136,7 +137,7 @@ class DiscoverScreen : Fragment() {
         binding.search.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 Log.i("MyTag", "setOnFocusChanfeListener")
-                viewModel.setFilteredListState("")
+                viewModel.setActivateSearch()
             }
         }
 
@@ -167,7 +168,7 @@ class DiscoverScreen : Fragment() {
         childFragmentManager.beginTransaction()
             .replace(
                 R.id.container_list, MessageScreen.getInstance(
-                    "No internet connection is found.\\nPull to refresh."
+                    "No internet connection is found.\nPull to refresh."
                 )
             )
             .commit()
