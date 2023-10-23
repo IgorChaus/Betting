@@ -63,7 +63,7 @@ class DiscoverScreen : Fragment() {
 
     private fun setupStateObserver() {
         viewModel.state.observe(viewLifecycleOwner) {
-            Log.i("MyTag", "State $it")
+            Log.i("MyTag", "State on DiscoverScreen $it")
             when (it) {
                 is State.Loading -> {
                     binding.progressBarDiscover.progress = it.progress
@@ -96,10 +96,10 @@ class DiscoverScreen : Fragment() {
                     binding.tvSearchResult.visibility = View.VISIBLE
                     binding.ivCloseSearch.setImageResource(R.drawable.icon_cancel_24px)
                     hideKeyboard()
-                    launchNothingFoundScreen()
+                    launchNothingFoundMessage()
                 }
                 is State.Error -> {
-                    launchNoInternetConnectionScreen()
+                    launchNoInternetConnectionMessage()
                 }
                 else -> Unit
             }
@@ -121,7 +121,7 @@ class DiscoverScreen : Fragment() {
 
     private fun setupListenersOnSearch() {
         binding.search.addTextChangedListener { s ->
-            Log.i("MyTag", "addTextChangedListener")
+            Log.i("MyTag", "addTextChangedListener s = $s")
             viewModel.setFilteredListState(s.toString())
         }
 
@@ -153,15 +153,23 @@ class DiscoverScreen : Fragment() {
             .commit()
     }
 
-    private fun launchNothingFoundScreen() {
+    private fun launchNothingFoundMessage() {
         childFragmentManager.beginTransaction()
-            .replace(R.id.container_list, NoFoundPlayersScreen.getInstance())
+            .replace(
+                R.id.container_list, MessageScreen.getInstance(
+                    "We can't find this player. Check the spelling or try another name"
+                )
+            )
             .commit()
     }
 
-    private fun launchNoInternetConnectionScreen() {
+    private fun launchNoInternetConnectionMessage() {
         childFragmentManager.beginTransaction()
-            .replace(R.id.container_list, NoInternetConnectionScreen.getInstance())
+            .replace(
+                R.id.container_list, MessageScreen.getInstance(
+                    "No internet connection is found.\\nPull to refresh."
+                )
+            )
             .commit()
     }
 

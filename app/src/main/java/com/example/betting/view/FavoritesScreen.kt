@@ -16,7 +16,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.betting.BettingApp
 import com.example.betting.R
 import com.example.betting.databinding.FavoritesScreenBinding
-import com.example.betting.viewmodel.DiscoverViewModel
 import com.example.betting.viewmodel.FavoriteViewModel
 import com.example.betting.viewmodel.FavoriteViewModelFactory
 import com.example.betting.wrappers.State
@@ -93,14 +92,14 @@ class FavoritesScreen : Fragment() {
                     binding.tvSearchResult.visibility = View.VISIBLE
                     binding.ivCloseSearch.setImageResource(R.drawable.icon_cancel_24px)
                     hideKeyboard()
-                    launchNothingFoundScreen()
+                    launchNothingFoundMessage()
                 }
                 is State.NoFavoritePlayers -> {
                     binding.tvSearchResult.visibility = View.GONE
                     binding.ivCloseSearch.setImageResource(R.drawable.icon_search_24px)
                     hideKeyboard()
                     deactivateSearch()
-                    launchNoFavoritePlayers()
+                    launchNoFavoritePlayersMessage()
                 }
                 else -> Unit
             }
@@ -153,15 +152,23 @@ class FavoritesScreen : Fragment() {
             .commit()
     }
 
-    private fun launchNothingFoundScreen() {
+    private fun launchNothingFoundMessage() {
         childFragmentManager.beginTransaction()
-            .replace(R.id.container_list, NoFoundPlayersScreen.getInstance())
+            .replace(
+                R.id.container_list, MessageScreen.getInstance(
+                    "We can't find this player. Check the spelling or try another name"
+                )
+            )
             .commit()
     }
 
-    private fun launchNoFavoritePlayers() {
+    private fun launchNoFavoritePlayersMessage() {
         childFragmentManager.beginTransaction()
-            .replace(R.id.container_list, NoFavoritePlayersScreen.getInstance())
+            .replace(
+                R.id.container_list, MessageScreen.getInstance(
+                    "You don’t have favorite players yet. You Discover section to find players you like."
+                )
+            )
             .commit()
     }
 

@@ -34,6 +34,8 @@ class DiscoverViewModel @Inject constructor(
     }
 
     fun setFilteredListState(strSearch: String) {
+        if (strSearch.isEmpty())
+            return
         _state.value = State.ActivateSearch
         val searchList: List<AdapterItems>
         if (strSearch.isNotEmpty()) {
@@ -93,6 +95,7 @@ class DiscoverViewModel @Inject constructor(
                     progress = 0,
                     progressVisible = View.GONE
                 )
+                _state.value = State.ContentList(playerList)
             }
         }
     }
