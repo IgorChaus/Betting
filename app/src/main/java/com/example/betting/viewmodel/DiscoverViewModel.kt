@@ -48,13 +48,12 @@ class DiscoverViewModel @Inject constructor(
             return
         }
         this.strSearch = strSearch
-        val searchList: List<AdapterItems>
-        if (strSearch.isNotEmpty()) {
-            searchList = searchPlayer(strSearch)
+        val filteredList = if (strSearch.isNotEmpty()){
+            searchPlayer(strSearch)
         } else {
-            searchList = playerList
+            playerList
         }
-        _state.value = State.FilteredList(searchList)
+        _state.value = State.FilteredList(filteredList)
     }
 
     fun setSearchResultState(strSearch: String) {

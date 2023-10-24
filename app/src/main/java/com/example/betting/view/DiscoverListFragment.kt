@@ -1,6 +1,8 @@
 package com.example.betting.view
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,8 +27,14 @@ class DiscoverListFragment : Fragment() {
 
     private lateinit var adapter: PlayerListAdapter
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        Log.i("MyTag", "onAttach")
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.i("MyTag", "onCreate")
         adapter = PlayerListAdapter()
         adapter.itemClickListener = {
             showItem(it)
@@ -38,23 +46,25 @@ class DiscoverListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        Log.i("MyTag", "onCreateView")
         _binding = ListScreenBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.i("MyTag", "onViewCreated")
         binding.rv1.adapter = adapter
-        binding.swipeRefreshLayout.setOnRefreshListener {
-            binding.swipeRefreshLayout.isRefreshing = false
-            viewModel.getPlayersFromAllLeagues()
-        }
+//        binding.swipeRefreshLayout.setOnRefreshListener {
+//            binding.swipeRefreshLayout.isRefreshing = false
+//            viewModel.getPlayersFromAllLeagues()
+//        }
         viewModel.state.observe(viewLifecycleOwner) {
             when(it){
+                is State.Loading -> adapter.submitList(it.data)
                 is State.ResultSearch -> adapter.submitList(it.data)
                 is State.FilteredList -> adapter.submitList(it.data)
                 is State.ContentList -> adapter.submitList(it.data)
-                is State.Loading -> adapter.submitList(it.data)
                 else -> Unit
             }
         }

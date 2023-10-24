@@ -44,9 +44,20 @@ class FavoriteViewModel @Inject constructor(
         }
     }
 
-    fun setFilteredListState(strSearch: String) {
-        this.strSearch = strSearch
+    fun setActivateSearch() {
         _state.value = State.ActivateSearch
+        if (this.strSearch.isNotEmpty()){
+            val strSearch = this.strSearch
+            this.strSearch = ""
+            setFilteredListState(strSearch)
+        }
+    }
+
+    fun setFilteredListState(strSearch: String) {
+        if (this.strSearch == strSearch){
+            return
+        }
+        this.strSearch = strSearch
         val filteredList = if (strSearch.isNotEmpty()){
             searchPlayer(strSearch)
         } else {

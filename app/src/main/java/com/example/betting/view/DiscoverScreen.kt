@@ -63,34 +63,40 @@ class DiscoverScreen : Fragment() {
 
     private fun setupStateObserver() {
         viewModel.state.observe(viewLifecycleOwner) {
+            val isListScreenNotInContainer = childFragmentManager
+                .findFragmentByTag(LIST_SCREEN_FRAGMENT) == null
             Log.i("MyTag", "State $it")
             when (it) {
                 is State.Loading -> {
                     binding.progressBarDiscover.progress = it.progress
                     binding.progressBarDiscover.visibility = it.progressVisible
-                    launchListScreen()
+                    if (isListScreenNotInContainer){
+                        launchListScreen()
+                    }
                 }
                 is State.ContentList -> {
                     binding.tvSearchResult.visibility = View.GONE
                     binding.ivCloseSearch.setImageResource(R.drawable.icon_search_24px)
                     hideKeyboard()
                     deactivateSearch()
-                    launchListScreen()
+                    if (isListScreenNotInContainer) {
+                        launchListScreen()
+                    }
                 }
                 is State.ActivateSearch -> {
                     binding.layoutSearch.background = ResourcesCompat
                         .getDrawable(resources, R.drawable.round_corners_border, null)
                     binding.tvSearchResult.visibility = View.GONE
                     binding.ivCloseSearch.setImageResource(R.drawable.icon_cancel_24px)
-                    launchListScreen()
                 }
-
                 is State.ResultSearch -> {
                     binding.tvSearchResult.visibility = View.VISIBLE
                     binding.ivCloseSearch.setImageResource(R.drawable.icon_cancel_24px)
                     hideKeyboard()
                     deactivateSearch()
-                    launchListScreen()
+                    if (isListScreenNotInContainer) {
+                        launchListScreen()
+                    }
                 }
                 is State.NothingFound -> {
                     binding.tvSearchResult.visibility = View.VISIBLE
@@ -122,7 +128,6 @@ class DiscoverScreen : Fragment() {
 
     private fun setupListenersOnSearch() {
         binding.search.addTextChangedListener { s ->
-            Log.i("MyTag", "addTextChangedListener s = $s")
             viewModel.setFilteredListState(s.toString())
         }
 
@@ -136,7 +141,6 @@ class DiscoverScreen : Fragment() {
 
         binding.search.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
-                Log.i("MyTag", "setOnFocusChanfeListener")
                 viewModel.setActivateSearch()
             }
         }
@@ -150,7 +154,7 @@ class DiscoverScreen : Fragment() {
 
     private fun launchListScreen() {
         childFragmentManager.beginTransaction()
-            .replace(R.id.container_list, DiscoverListFragment.getInstance())
+            .replace(R.id.container_list, DiscoverListFragment.getInstance(), LIST_SCREEN_FRAGMENT)
             .commit()
     }
 
@@ -181,6 +185,7 @@ class DiscoverScreen : Fragment() {
 
     companion object{
         fun getInstance() = DiscoverScreen()
+        const val LIST_SCREEN_FRAGMENT = "List Screen Fragment"
     }
 
 }
