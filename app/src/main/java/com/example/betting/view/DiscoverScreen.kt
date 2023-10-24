@@ -56,6 +56,10 @@ class DiscoverScreen : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupListenersOnSearch()
         setupStateObserver()
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            binding.swipeRefreshLayout.isRefreshing = false
+            viewModel.getPlayersFromAllLeagues()
+        }
         if(savedInstanceState == null){
             launchListScreen()
         }

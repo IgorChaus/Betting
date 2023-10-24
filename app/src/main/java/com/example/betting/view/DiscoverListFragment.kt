@@ -55,10 +55,6 @@ class DiscoverListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Log.i("MyTag", "onViewCreated")
         binding.rv1.adapter = adapter
-//        binding.swipeRefreshLayout.setOnRefreshListener {
-//            binding.swipeRefreshLayout.isRefreshing = false
-//            viewModel.getPlayersFromAllLeagues()
-//        }
         viewModel.state.observe(viewLifecycleOwner) {
             when(it){
                 is State.Loading -> adapter.submitList(it.data)
