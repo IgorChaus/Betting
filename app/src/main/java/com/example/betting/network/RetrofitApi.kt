@@ -19,7 +19,7 @@ interface RetrofitApi {
     ) : Response<LeaguesResponse>
 
     @Headers(
-        "x-rapidapi-key: XXXXXXXXXXXXXXXXXXXXXXXXXXX",
+        "x-rapidapi-key: XXXXXXXXXXXXXXXXXXXXXXXXXX1",
         "x-rapidapi-host: v3.football.api-sports.io"
     )
     @GET("players")
