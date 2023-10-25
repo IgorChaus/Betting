@@ -13,6 +13,7 @@ object RetrofitInstance {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
+
     val service = builder.create(RetrofitApi::class.java)
 
 }
