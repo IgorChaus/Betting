@@ -26,6 +26,16 @@
             android:textSize="22sp" />
     </LinearLayout>
 
+    <View
+        android:id="@+id/separator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/blue_600"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+    </View>
+
     <LinearLayout
         android:id="@+id/layout_search"
         android:layout_width="match_parent"
@@ -38,7 +48,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        app:layout_constraintTop_toBottomOf="@+id/separator">
 
         <EditText
             android:id="@+id/search"
