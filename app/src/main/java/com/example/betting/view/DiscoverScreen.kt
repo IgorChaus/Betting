@@ -92,6 +92,9 @@ class DiscoverScreen : Fragment() {
                         .getDrawable(resources, R.drawable.round_corners_border, null)
                     binding.tvSearchResult.visibility = View.GONE
                     binding.ivCloseSearch.setImageResource(R.drawable.icon_cancel_24px)
+                    if (isListScreenNotInContainer) {
+                        launchListScreen()
+                    }
                 }
                 is State.ResultSearch -> {
                     binding.tvSearchResult.visibility = View.VISIBLE

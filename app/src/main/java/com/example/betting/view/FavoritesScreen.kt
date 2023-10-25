@@ -35,7 +35,7 @@ class FavoritesScreen : Fragment() {
     lateinit var factory: FavoriteViewModelFactory
 
     private val viewModel by lazy {
-        ViewModelProvider(requireActivity())[FavoriteViewModel::class.java]
+        ViewModelProvider(requireActivity(), factory)[FavoriteViewModel::class.java]
     }
 
     override fun onAttach(context: Context) {
@@ -55,7 +55,6 @@ class FavoritesScreen : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ViewModelProvider(requireActivity(), factory)[FavoriteViewModel::class.java]
         setupListenersOnSearch()
         setupStateObserver()
         if(savedInstanceState == null){
@@ -83,6 +82,9 @@ class FavoritesScreen : Fragment() {
                         .getDrawable(resources, R.drawable.round_corners_border, null)
                     binding.tvSearchResult.visibility = View.GONE
                     binding.ivCloseSearch.setImageResource(R.drawable.icon_cancel_24px)
+                    if (isListScreenNotInContainer) {
+                        launchListScreen()
+                    }
                 }
 
                 is State.ResultSearch -> {
@@ -128,7 +130,6 @@ class FavoritesScreen : Fragment() {
 
     private fun setupListenersOnSearch() {
         binding.search.addTextChangedListener { s ->
-            Log.i("MyTag", "addTextChangedListener s = $s")
             viewModel.setFilteredListState(s.toString())
         }
 
