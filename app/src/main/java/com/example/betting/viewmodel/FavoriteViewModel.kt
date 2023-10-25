@@ -18,7 +18,7 @@ class FavoriteViewModel @Inject constructor(
         get() = _state
 
     private var playerList = listOf<PlayerItemAdapter>()
-    private var strSearch: String = ""
+    private var strSearch: String = EMPTY
     private val playersObserver: Observer<List<PlayerItemAdapter>> = Observer {
         playerList = it
         when( state.value){
@@ -48,7 +48,7 @@ class FavoriteViewModel @Inject constructor(
         _state.value = State.ActivateSearch
         if (this.strSearch.isNotEmpty()){
             val strSearch = this.strSearch
-            this.strSearch = ""
+            this.strSearch = EMPTY
             setFilteredListState(strSearch)
         }
     }
@@ -91,6 +91,10 @@ class FavoriteViewModel @Inject constructor(
     override fun onCleared() {
         super.onCleared()
         dataBaseRepository.getPlayersList().removeObserver(playersObserver)
+    }
+
+    companion object{
+        const val EMPTY = ""
     }
 
 }

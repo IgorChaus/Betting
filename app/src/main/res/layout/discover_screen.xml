@@ -27,7 +27,7 @@
                 android:id="@+id/tv_heading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Discover"
+                android:text="@string/discover"
                 android:textColor="@color/grey_100"
                 android:textSize="22sp" />
         </LinearLayout>
@@ -72,23 +72,23 @@
 
             <EditText
                 android:id="@+id/search"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@null"
                 android:ems="10"
-                android:hint="Search for a player..."
+                android:hint="@string/search_for_player"
                 android:imeOptions="actionDone"
                 android:inputType="text"
-                android:paddingLeft="16dp"
-                android:paddingRight="12dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="12dp"
                 android:textColor="@color/blue_500" />
 
             <ImageView
                 android:id="@+id/iv_closeSearch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingRight="12dp"
+                android:paddingEnd="12dp"
                 app:srcCompat="@drawable/icon_search_24px" />
 
         </LinearLayout>
@@ -100,7 +100,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/roboto"
-            android:text="Search result"
+            android:text="@string/search_result"
             android:textColor="@color/grey_100"
             android:textSize="18sp"
             android:textStyle="bold"

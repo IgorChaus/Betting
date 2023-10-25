@@ -3,7 +3,6 @@ package com.example.betting.view
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -66,7 +65,6 @@ class FavoritesScreen : Fragment() {
         viewModel.state.observe(viewLifecycleOwner) {
             val isListScreenNotInContainer = childFragmentManager
                 .findFragmentByTag(DiscoverScreen.LIST_SCREEN_FRAGMENT) == null
-            Log.i("MyTag", "State $it")
             when (it) {
                 is State.ContentList -> {
                     binding.tvSearchResult.visibility = View.GONE
@@ -164,7 +162,7 @@ class FavoritesScreen : Fragment() {
         childFragmentManager.beginTransaction()
             .replace(
                 R.id.container_list, MessageScreen.getInstance(
-                    "We can't find this player. Check the spelling or try another name"
+                    getString(R.string.cant_find_player)
                 )
             )
             .commit()
@@ -174,7 +172,7 @@ class FavoritesScreen : Fragment() {
         childFragmentManager.beginTransaction()
             .replace(
                 R.id.container_list, MessageScreen.getInstance(
-                    "You don’t have favorite players yet. You Discover section to find players you like."
+                    getString(R.string.no_favorite_player)
                 )
             )
             .commit()

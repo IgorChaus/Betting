@@ -49,22 +49,4 @@ class NetworkRepository @Inject constructor(private val service: RetrofitApi) {
         }
     }
 
-    suspend fun getPlayer(playerId: String, season: String): Response<PlayersResponse> {
-        return withContext(Dispatchers.IO) {
-            try {
-                val response = service.getPlayer(playerId, season)
-                if (response.isSuccessful) {
-                    Response.Success(data = response.body()!!)
-                } else {
-                    Response.Error(response.code().toString())
-                }
-            } catch (e: HttpException) {
-                Response.Error(e.message ?: "HttpException")
-            } catch (e: IOException) {
-                Response.Error("IOException")
-            } catch (e: Exception) {
-                Response.Error(e.message ?: "Exception")
-            }
-        }
-    }
 }

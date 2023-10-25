@@ -28,15 +28,4 @@ interface RetrofitApi {
         @Query("season") season: String,
         @Query("page") page: String
     ) : Response<PlayersResponse>
-
-    @Headers(
-        "x-rapidapi-key: f16208e0c2af6076fac34572f3125944",
-        "x-rapidapi-host: v3.football.api-sports.io"
-    )
-    @GET("players")
-    suspend fun getPlayer(
-        @Query("id") id: String,
-        @Query("season") season: String,
-    ) : Response<PlayersResponse>
-
 }

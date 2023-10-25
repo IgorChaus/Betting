@@ -184,7 +184,6 @@ class ItemScreen : Fragment() {
 
         private const val CUTTING_SIZE_IN_DPI = 25
         private const val RADIUS_IN_DPI = 10
-
         private const val KEY_ITEM = "item"
     }
 

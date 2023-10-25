@@ -3,7 +3,6 @@ package com.example.betting.view
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -69,7 +68,6 @@ class DiscoverScreen : Fragment() {
         viewModel.state.observe(viewLifecycleOwner) {
             val isListScreenNotInContainer = childFragmentManager
                 .findFragmentByTag(LIST_SCREEN_FRAGMENT) == null
-            Log.i("MyTag", "State $it")
             when (it) {
                 is State.Loading -> {
                     binding.progressBarDiscover.progress = it.progress
@@ -169,7 +167,7 @@ class DiscoverScreen : Fragment() {
         childFragmentManager.beginTransaction()
             .replace(
                 R.id.container_list, MessageScreen.getInstance(
-                    "We can't find this player. Check the spelling or try another name"
+                    getString(R.string.cant_find_player)
                 )
             )
             .commit()
@@ -179,7 +177,7 @@ class DiscoverScreen : Fragment() {
         childFragmentManager.beginTransaction()
             .replace(
                 R.id.container_list, MessageScreen.getInstance(
-                    "No internet connection is found.\nPull to refresh."
+                    getString(R.string.no_internet_connection)
                 )
             )
             .commit()
