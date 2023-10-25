@@ -2,6 +2,7 @@ package com.example.betting.view
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -54,8 +55,16 @@ class ItemScreen : Fragment() {
     }
 
     private fun parsArgs() {
-        requireArguments().getParcelable<PlayerItemAdapter>(KEY_ITEM)?.let {
-            item = it
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requireArguments().getParcelable(KEY_ITEM,PlayerItemAdapter::class.java)?.let {
+                item = it
+            }
+        } else {
+            requireArguments().getParcelable<PlayerItemAdapter>(KEY_ITEM)?.let {
+                item = it
+            }
         }
     }
 
