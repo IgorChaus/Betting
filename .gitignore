@@ -4,6 +4,7 @@
 /.idea
 .DS_Store
 /build
+/app/src/main/java/com/example/betting/network/RetrofitApi.kt
 /captures
 .externalNativeBuild
 .cxx
