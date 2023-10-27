@@ -85,7 +85,7 @@ class DiscoverViewModel @Inject constructor(
                     progress = 0,
                     progressVisible = View.VISIBLE
                 )
-                for (item in 0..1) {
+                for (item in 0..5) {
                     _state.value = State.Loading(
                         data = playerList,
                         progress = 100 / 3 * (item + 1),

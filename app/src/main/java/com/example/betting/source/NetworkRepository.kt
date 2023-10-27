@@ -49,4 +49,21 @@ class NetworkRepository @Inject constructor(private val service: RetrofitApi) {
         }
     }
 
+//    suspend fun <T> handleApiCall(call: () -> Response<out T>): Response<out T> {
+//        return try {
+//            val response = call()
+//            if (response.isSuccessful) {
+//                Response.Success(data = response.body()!!)
+//            } else {
+//                Response.Error(response.code().toString())
+//            }
+//        } catch (e: HttpException) {
+//            Response.Error(e.message ?: "HttpException")
+//        } catch (e: IOException) {
+//            Response.Error("IOException")
+//        } catch (e: Exception) {
+//            Response.Error(e.message ?: "Exception")
+//        }
+//    }
+
 }

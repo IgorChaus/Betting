@@ -18,6 +18,7 @@ import com.example.betting.databinding.DiscoverScreenBinding
 import com.example.betting.viewmodel.DiscoverViewModel
 import com.example.betting.viewmodel.DiscoverViewModelFactory
 import com.example.betting.wrappers.State
+import com.example.betting.wrappers.hideKeyboard
 import javax.inject.Inject
 
 class DiscoverScreen : Fragment() {
@@ -79,7 +80,7 @@ class DiscoverScreen : Fragment() {
                 is State.ContentList -> {
                     binding.tvSearchResult.visibility = View.GONE
                     binding.ivCloseSearch.setImageResource(R.drawable.icon_search_24px)
-                    hideKeyboard()
+                    requireContext().hideKeyboard(binding.search)
                     deactivateSearch()
                     if (isListScreenNotInContainer) {
                         launchListScreen()
@@ -97,7 +98,7 @@ class DiscoverScreen : Fragment() {
                 is State.ResultSearch -> {
                     binding.tvSearchResult.visibility = View.VISIBLE
                     binding.ivCloseSearch.setImageResource(R.drawable.icon_cancel_24px)
-                    hideKeyboard()
+                    requireContext().hideKeyboard(binding.search)
                     deactivateSearch()
                     if (isListScreenNotInContainer) {
                         launchListScreen()
@@ -106,7 +107,7 @@ class DiscoverScreen : Fragment() {
                 is State.NothingFound -> {
                     binding.tvSearchResult.visibility = View.VISIBLE
                     binding.ivCloseSearch.setImageResource(R.drawable.icon_cancel_24px)
-                    hideKeyboard()
+                    requireContext().hideKeyboard(binding.search)
                     deactivateSearch()
                     launchNothingFoundMessage()
                 }
@@ -123,12 +124,6 @@ class DiscoverScreen : Fragment() {
             .getDrawable(resources, R.drawable.round_corners, null)
         binding.search.isFocusable = false
         binding.search.isFocusableInTouchMode = true
-    }
-
-    private fun hideKeyboard(){
-        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE)
-                as InputMethodManager
-        imm.hideSoftInputFromWindow(binding.search.windowToken, 0)
     }
 
     private fun setupListenersOnSearch() {

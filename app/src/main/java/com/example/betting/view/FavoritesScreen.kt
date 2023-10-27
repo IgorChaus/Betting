@@ -18,6 +18,7 @@ import com.example.betting.databinding.FavoritesScreenBinding
 import com.example.betting.viewmodel.FavoriteViewModel
 import com.example.betting.viewmodel.FavoriteViewModelFactory
 import com.example.betting.wrappers.State
+import com.example.betting.wrappers.hideKeyboard
 import javax.inject.Inject
 
 class FavoritesScreen : Fragment() {
@@ -69,7 +70,7 @@ class FavoritesScreen : Fragment() {
                 is State.ContentList -> {
                     binding.tvSearchResult.visibility = View.GONE
                     binding.ivCloseSearch.setImageResource(R.drawable.icon_search_24px)
-                    hideKeyboard()
+                    requireContext().hideKeyboard(binding.search)
                     deactivateSearch()
                     if (isListScreenNotInContainer) {
                         launchListScreen()
@@ -88,7 +89,7 @@ class FavoritesScreen : Fragment() {
                 is State.ResultSearch -> {
                     binding.tvSearchResult.visibility = View.VISIBLE
                     binding.ivCloseSearch.setImageResource(R.drawable.icon_cancel_24px)
-                    hideKeyboard()
+                    requireContext().hideKeyboard(binding.search)
                     deactivateSearch()
                     if (isListScreenNotInContainer) {
                         launchListScreen()
@@ -97,14 +98,14 @@ class FavoritesScreen : Fragment() {
                 is State.NothingFound -> {
                     binding.tvSearchResult.visibility = View.VISIBLE
                     binding.ivCloseSearch.setImageResource(R.drawable.icon_cancel_24px)
-                    hideKeyboard()
+                    requireContext().hideKeyboard(binding.search)
                     deactivateSearch()
                     launchNothingFoundMessage()
                 }
                 is State.NoFavoritePlayers -> {
                     binding.tvSearchResult.visibility = View.GONE
                     binding.ivCloseSearch.setImageResource(R.drawable.icon_search_24px)
-                    hideKeyboard()
+                    requireContext().hideKeyboard(binding.search)
                     deactivateSearch()
                     launchNoFavoritePlayersMessage()
                 }
@@ -118,12 +119,6 @@ class FavoritesScreen : Fragment() {
             .getDrawable(resources, R.drawable.round_corners, null)
         binding.search.isFocusable = false
         binding.search.isFocusableInTouchMode = true
-    }
-
-    private fun hideKeyboard(){
-        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE)
-                as InputMethodManager
-        imm.hideSoftInputFromWindow(binding.search.windowToken, 0)
     }
 
     private fun setupListenersOnSearch() {
