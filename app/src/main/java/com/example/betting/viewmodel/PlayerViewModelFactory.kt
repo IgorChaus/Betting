@@ -3,7 +3,6 @@ package com.example.betting.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.betting.source.DataBaseRepository
-import com.example.betting.wrappers.PlayerItemAdapter
 import javax.inject.Inject
 
 class PlayerViewModelFactory @Inject constructor(

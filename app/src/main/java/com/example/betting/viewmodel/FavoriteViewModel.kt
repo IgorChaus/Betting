@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.example.betting.source.DataBaseRepository
-import com.example.betting.wrappers.PlayerItemAdapter
+import com.example.betting.wrappers.PlayerAdapterItem
 import com.example.betting.wrappers.State
 import javax.inject.Inject
 
@@ -17,9 +17,9 @@ class FavoriteViewModel @Inject constructor(
     val state: LiveData<State>
         get() = _state
 
-    private var playerList = listOf<PlayerItemAdapter>()
+    private var playerList = listOf<PlayerAdapterItem>()
     private var strSearch: String = EMPTY
-    private val playersObserver: Observer<List<PlayerItemAdapter>> = Observer {
+    private val playersObserver: Observer<List<PlayerAdapterItem>> = Observer {
         playerList = it
         when( state.value){
             is State.ContentList -> setContentListState()
@@ -80,7 +80,7 @@ class FavoriteViewModel @Inject constructor(
         }
     }
 
-    private fun searchPlayer(strSearch: String): List<PlayerItemAdapter>{
+    private fun searchPlayer(strSearch: String): List<PlayerAdapterItem>{
         val filteredList = playerList.filter {
             it.firstName?.contains(strSearch, ignoreCase = true) ?: false ||
                     it.lastName?.contains(strSearch, ignoreCase = true) ?: false

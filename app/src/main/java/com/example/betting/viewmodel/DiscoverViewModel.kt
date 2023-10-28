@@ -69,7 +69,7 @@ class DiscoverViewModel @Inject constructor(
         }
     }
 
-    private fun searchPlayer(strSearch: String) = playerList.filterIsInstance<PlayerItemAdapter>()
+    private fun searchPlayer(strSearch: String) = playerList.filterIsInstance<PlayerAdapterItem>()
         .filter {
             it.firstName?.contains(strSearch, ignoreCase = true) ?: false ||
                     it.lastName?.contains(strSearch, ignoreCase = true) ?: false
@@ -128,7 +128,7 @@ class DiscoverViewModel @Inject constructor(
         when (response) {
             is Response.Success -> {
                 playerList.add(
-                    LeagueItemAdapter(
+                    LeagueAdapterItem(
                         name = leagueItem.league.name,
                         logo = leagueItem.league.logo
                     )
@@ -138,7 +138,7 @@ class DiscoverViewModel @Inject constructor(
                 val limit = minOf(players.size, LIMIT_LIST)
                 for (item in players.take(limit)) {
                     playerList.add(
-                        PlayerItemAdapter(
+                        PlayerAdapterItem(
                             id = item.player.id,
                             firstName = item.player.firstname,
                             lastName = item.player.lastname,

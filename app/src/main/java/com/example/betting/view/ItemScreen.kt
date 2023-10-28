@@ -18,7 +18,7 @@ import com.example.betting.R
 import com.example.betting.databinding.ItemScreenBinding
 import com.example.betting.viewmodel.PlayerViewModel
 import com.example.betting.viewmodel.PlayerViewModelFactory
-import com.example.betting.wrappers.PlayerItemAdapter
+import com.example.betting.wrappers.PlayerAdapterItem
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
@@ -27,7 +27,7 @@ import javax.inject.Inject
 
 class ItemScreen : Fragment() {
 
-    private lateinit var item: PlayerItemAdapter
+    private lateinit var item: PlayerAdapterItem
 
     private var _binding: ItemScreenBinding? = null
     private val binding: ItemScreenBinding
@@ -58,11 +58,11 @@ class ItemScreen : Fragment() {
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            requireArguments().getParcelable(KEY_ITEM,PlayerItemAdapter::class.java)?.let {
+            requireArguments().getParcelable(KEY_ITEM,PlayerAdapterItem::class.java)?.let {
                 item = it
             }
         } else {
-            requireArguments().getParcelable<PlayerItemAdapter>(KEY_ITEM)?.let {
+            requireArguments().getParcelable<PlayerAdapterItem>(KEY_ITEM)?.let {
                 item = it
             }
         }
@@ -183,7 +183,7 @@ class ItemScreen : Fragment() {
     }
 
     companion object{
-        fun getInstance(item: PlayerItemAdapter): Fragment{
+        fun getInstance(item: PlayerAdapterItem): Fragment{
             return ItemScreen().apply {
                 arguments = Bundle().apply {
                     putParcelable(KEY_ITEM,item)

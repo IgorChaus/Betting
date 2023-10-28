@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.example.betting.database.FavoritePlayersDao
 import com.example.betting.mapper.PlayerMapper
-import com.example.betting.wrappers.PlayerItemAdapter
+import com.example.betting.wrappers.PlayerAdapterItem
 import javax.inject.Inject
 
 class DataBaseRepository @Inject constructor(
@@ -12,7 +12,7 @@ class DataBaseRepository @Inject constructor(
     private val mapper: PlayerMapper
 ) {
 
-    fun getPlayersList(): LiveData<List<PlayerItemAdapter>> {
+    fun getPlayersList(): LiveData<List<PlayerAdapterItem>> {
         return favoritePlayersDao.getPlayersList().map {
             mapper.mapListDbModelToListAdapterItem(it)
         }
@@ -23,8 +23,8 @@ class DataBaseRepository @Inject constructor(
         return favorite != null
     }
 
-    suspend fun addPlayer(playerItemAdapter: PlayerItemAdapter) {
-        val playerItemDbModel = mapper.mapAdapterItemToDbModel(playerItemAdapter)
+    suspend fun addPlayer(playerAdapterItem: PlayerAdapterItem) {
+        val playerItemDbModel = mapper.mapAdapterItemToDbModel(playerAdapterItem)
         favoritePlayersDao.addPlayer(playerItemDbModel)
     }
 

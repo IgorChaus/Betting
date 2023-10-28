@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 interface AdapterItems
 
 @Parcelize
-data class PlayerItemAdapter(
+data class PlayerAdapterItem(
     val id: Int,
     val firstName: String?,
     val lastName: String?,
@@ -23,7 +23,7 @@ data class PlayerItemAdapter(
     val leagueLogo: String?
 ): AdapterItems, Parcelable
 
-data class LeagueItemAdapter(
+data class LeagueAdapterItem(
     val name: String,
     val logo: String
 ): AdapterItems

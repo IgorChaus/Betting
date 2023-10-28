@@ -10,7 +10,7 @@ import com.example.betting.R
 import com.example.betting.adapter.PlayerListAdapter
 import com.example.betting.databinding.ListScreenBinding
 import com.example.betting.viewmodel.FavoriteViewModel
-import com.example.betting.wrappers.PlayerItemAdapter
+import com.example.betting.wrappers.PlayerAdapterItem
 import com.example.betting.wrappers.State
 
 class FavoritesListFragment : Fragment() {
@@ -56,7 +56,7 @@ class FavoritesListFragment : Fragment() {
         }
     }
 
-    private fun showItem(item: PlayerItemAdapter){
+    private fun showItem(item: PlayerAdapterItem){
         val mainScreen = requireActivity()
             .supportFragmentManager
             .findFragmentByTag(MainScreen.MAIN_SCREEN)

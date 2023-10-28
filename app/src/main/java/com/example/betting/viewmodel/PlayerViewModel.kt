@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.betting.source.DataBaseRepository
-import com.example.betting.wrappers.PlayerItemAdapter
+import com.example.betting.wrappers.PlayerAdapterItem
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,31 +18,31 @@ class PlayerViewModel @Inject constructor(
         get() = _isPlayerFavorite
 
 
-    fun checkPlayer(playerItemAdapter: PlayerItemAdapter) {
+    fun checkPlayer(playerAdapterItem: PlayerAdapterItem) {
         viewModelScope.launch {
-            _isPlayerFavorite.value = dataBaseRepository.isPlayerFavorite(playerItemAdapter.id)
+            _isPlayerFavorite.value = dataBaseRepository.isPlayerFavorite(playerAdapterItem.id)
         }
     }
 
-    fun pressButton(playerItemAdapter: PlayerItemAdapter){
+    fun pressButton(playerAdapterItem: PlayerAdapterItem){
         val isFavorite: Boolean = isPlayerFavorite.value ?: false
         if(isFavorite){
-            deletePlayer(playerItemAdapter)
+            deletePlayer(playerAdapterItem)
         }else{
-            addPlayer(playerItemAdapter)
+            addPlayer(playerAdapterItem)
         }
     }
 
-    private fun addPlayer(playerItemAdapter: PlayerItemAdapter){
+    private fun addPlayer(playerAdapterItem: PlayerAdapterItem){
         viewModelScope.launch {
-            dataBaseRepository.addPlayer(playerItemAdapter)
+            dataBaseRepository.addPlayer(playerAdapterItem)
             _isPlayerFavorite.value = true
         }
     }
 
-    private fun deletePlayer(playerItemAdapter: PlayerItemAdapter){
+    private fun deletePlayer(playerAdapterItem: PlayerAdapterItem){
         viewModelScope.launch {
-            dataBaseRepository.deletePlayer(playerItemAdapter.id)
+            dataBaseRepository.deletePlayer(playerAdapterItem.id)
             _isPlayerFavorite.value = false
         }
     }

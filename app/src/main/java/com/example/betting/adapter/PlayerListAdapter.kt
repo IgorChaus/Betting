@@ -9,17 +9,17 @@ import com.bumptech.glide.Glide
 import com.example.betting.databinding.ItemLeagueBinding
 import com.example.betting.databinding.ItemPlayerBinding
 import com.example.betting.wrappers.AdapterItems
-import com.example.betting.wrappers.LeagueItemAdapter
-import com.example.betting.wrappers.PlayerItemAdapter
+import com.example.betting.wrappers.LeagueAdapterItem
+import com.example.betting.wrappers.PlayerAdapterItem
 
 class PlayerListAdapter: ListAdapter<AdapterItems, RecyclerView.ViewHolder>(ItemDiffCallBack) {
 
-    var itemClickListener: ((PlayerItemAdapter) -> Unit)? = null
+    var itemClickListener: ((PlayerAdapterItem) -> Unit)? = null
 
     override fun getItemViewType(position: Int): Int =
         when (getItem(position)) {
-            is PlayerItemAdapter -> PLAYER_ITEM
-            is LeagueItemAdapter -> LEAGUE_ITEM
+            is PlayerAdapterItem -> PLAYER_ITEM
+            is LeagueAdapterItem -> LEAGUE_ITEM
             else -> throw RuntimeException("Illegal item type")
         }
 
@@ -43,13 +43,13 @@ class PlayerListAdapter: ListAdapter<AdapterItems, RecyclerView.ViewHolder>(Item
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
         when (holder.itemViewType) {
-            PLAYER_ITEM -> bindPlayerItem(holder, getItem(position) as PlayerItemAdapter)
-            LEAGUE_ITEM -> bindLeagueItem(holder, getItem(position) as LeagueItemAdapter)
+            PLAYER_ITEM -> bindPlayerItem(holder, getItem(position) as PlayerAdapterItem)
+            LEAGUE_ITEM -> bindLeagueItem(holder, getItem(position) as LeagueAdapterItem)
             else -> throw RuntimeException("Illegal item type")
         }
 
     @SuppressLint("SetTextI18n")
-    private fun bindPlayerItem(holder: RecyclerView.ViewHolder, item: PlayerItemAdapter) {
+    private fun bindPlayerItem(holder: RecyclerView.ViewHolder, item: PlayerAdapterItem) {
         val itemViewHolder = holder as PlayerViewHolder
         with(itemViewHolder.binding) {
             tvName.text = item.firstName + " " + item.lastName
@@ -65,7 +65,7 @@ class PlayerListAdapter: ListAdapter<AdapterItems, RecyclerView.ViewHolder>(Item
         }
     }
 
-    private fun bindLeagueItem(holder: RecyclerView.ViewHolder, item: LeagueItemAdapter) {
+    private fun bindLeagueItem(holder: RecyclerView.ViewHolder, item: LeagueAdapterItem) {
         val itemViewHolder = holder as LeagueViewHolder
         with(itemViewHolder.binding) {
             tvLeague.text = item.name
