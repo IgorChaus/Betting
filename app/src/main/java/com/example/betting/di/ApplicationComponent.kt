@@ -4,7 +4,7 @@ package com.example.betting.di
 import android.app.Application
 import com.example.betting.view.DiscoverScreen
 import com.example.betting.view.FavoritesScreen
-import com.example.betting.view.ItemScreen
+import com.example.betting.view.PlayerScreen
 import dagger.BindsInstance
 import dagger.Component
 
@@ -13,7 +13,7 @@ interface ApplicationComponent {
 
     fun inject(fragment: DiscoverScreen)
     fun inject(fragment: FavoritesScreen)
-    fun inject(fragment: ItemScreen)
+    fun inject(fragment: PlayerScreen)
 
     @Component.Factory
     interface ApplicationComponentFactory{

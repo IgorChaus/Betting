@@ -61,7 +61,7 @@ class DiscoverListFragment : Fragment() {
             .supportFragmentManager
             .findFragmentByTag(MainScreen.MAIN_SCREEN)
         requireActivity().supportFragmentManager.beginTransaction()
-            .add(R.id.container_activity, ItemScreen.getInstance(item))
+            .add(R.id.container_activity, PlayerScreen.getInstance(item))
             .apply {
                 mainScreen?.let {
                     hide(it)

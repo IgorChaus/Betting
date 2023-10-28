@@ -15,9 +15,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.betting.BettingApp
 import com.example.betting.R
-import com.example.betting.databinding.ItemScreenBinding
-import com.example.betting.viewmodel.PlayerViewModel
-import com.example.betting.viewmodel.PlayerViewModelFactory
+import com.example.betting.databinding.PlayerScreenBinding
+import com.example.betting.viewmodel.PlayerScreenViewModel
+import com.example.betting.viewmodel.PlayerScreenViewModelFactory
 import com.example.betting.wrappers.PlayerAdapterItem
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.MaterialShapeDrawable
@@ -25,23 +25,23 @@ import com.google.android.material.shape.ShapeAppearanceModel
 import javax.inject.Inject
 
 
-class ItemScreen : Fragment() {
+class PlayerScreen : Fragment() {
 
     private lateinit var item: PlayerAdapterItem
 
-    private var _binding: ItemScreenBinding? = null
-    private val binding: ItemScreenBinding
-        get() = _binding ?: throw RuntimeException("ItemScreenBinding == null")
+    private var _binding: PlayerScreenBinding? = null
+    private val binding: PlayerScreenBinding
+        get() = _binding ?: throw RuntimeException("PlayerScreenBinding == null")
 
     val component by lazy{
         (requireActivity().application as BettingApp).component
     }
 
     @Inject
-    lateinit var factory: PlayerViewModelFactory
+    lateinit var factory: PlayerScreenViewModelFactory
 
     private val viewModel by lazy {
-        ViewModelProvider(this, factory)[PlayerViewModel::class.java]
+        ViewModelProvider(this, factory)[PlayerScreenViewModel::class.java]
     }
 
     override fun onAttach(context: Context) {
@@ -74,7 +74,7 @@ class ItemScreen : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = ItemScreenBinding.inflate(inflater, container, false)
+        _binding = PlayerScreenBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -184,7 +184,7 @@ class ItemScreen : Fragment() {
 
     companion object{
         fun getInstance(item: PlayerAdapterItem): Fragment{
-            return ItemScreen().apply {
+            return PlayerScreen().apply {
                 arguments = Bundle().apply {
                     putParcelable(KEY_ITEM,item)
                 }
