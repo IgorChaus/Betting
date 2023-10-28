@@ -11,59 +11,37 @@ import java.io.IOException
 import javax.inject.Inject
 
 class NetworkRepository @Inject constructor(private val service: RetrofitApi) {
+
     suspend fun getLeagues(leagueName: String, season: String): Response<LeaguesResponse> {
         return withContext(Dispatchers.IO) {
-            try {
-                val response = service.getLeagues(leagueName, season)
-                if (response.isSuccessful) {
-                    Response.Success(data = response.body()!!)
-                } else {
-                    Response.Error(response.code().toString())
-                }
-            } catch (e: HttpException) {
-                Response.Error(e.message ?: "HttpException")
-            } catch (e: IOException) {
-                Response.Error("IOException")
-            } catch (e: Exception) {
-                Response.Error(e.message ?: "Exception")
+            handleApiCall {
+                service.getLeagues(leagueName, season)
             }
         }
     }
 
     suspend fun getPlayers(leagueId: String, season: String, page: String): Response<PlayersResponse> {
         return withContext(Dispatchers.IO) {
-            try {
-                val response = service.getPlayers(leagueId, season, page)
-                if (response.isSuccessful) {
-                    Response.Success(data = response.body()!!)
-                } else {
-                    Response.Error(response.code().toString())
-                }
-            } catch (e: HttpException) {
-                Response.Error(e.message ?: "HttpException")
-            } catch (e: IOException) {
-                Response.Error("IOException")
-            } catch (e: Exception) {
-                Response.Error(e.message ?: "Exception")
+            handleApiCall {
+                service.getPlayers(leagueId, season, page)
             }
         }
     }
 
-//    suspend fun <T> handleApiCall(call: () -> Response<out T>): Response<out T> {
-//        return try {
-//            val response = call()
-//            if (response.isSuccessful) {
-//                Response.Success(data = response.body()!!)
-//            } else {
-//                Response.Error(response.code().toString())
-//            }
-//        } catch (e: HttpException) {
-//            Response.Error(e.message ?: "HttpException")
-//        } catch (e: IOException) {
-//            Response.Error("IOException")
-//        } catch (e: Exception) {
-//            Response.Error(e.message ?: "Exception")
-//        }
-//    }
-
+    private suspend fun <T> handleApiCall(call: suspend () -> retrofit2.Response<T>): Response<T> {
+        return try {
+            val response = call.invoke()
+            if (response.isSuccessful) {
+                Response.Success(data = response.body()!!)
+            } else {
+                Response.Error(response.code().toString())
+            }
+        } catch (e: HttpException) {
+            Response.Error(e.message ?: "HttpException")
+        } catch (e: IOException) {
+            Response.Error("IOException")
+        } catch (e: Exception) {
+            Response.Error(e.message ?: "Exception")
+        }
+    }
 }
