@@ -9,7 +9,7 @@ import retrofit2.http.Query
 
 interface RetrofitApi {
     @Headers(
-        "x-rapidapi-key: XXXXXXXXXXXXXXXXXXXXXXXX",
+        "x-rapidapi-key: XXXXXXXXXXXXXXXXXXXXXXXXXXXX",
         "x-rapidapi-host: v3.football.api-sports.io"
     )
     @GET("leagues")
@@ -19,7 +19,7 @@ interface RetrofitApi {
     ) : Response<LeaguesResponse>
 
     @Headers(
-        "x-rapidapi-key: XXXXXXXXXXXXXXXXXXXXXXXXX",
+        "x-rapidapi-key: XXXXXXXXXXXXXXXXXXXXXXXXXXXX",
         "x-rapidapi-host: v3.football.api-sports.io"
     )
     @GET("players")

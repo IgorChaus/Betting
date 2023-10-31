@@ -9,7 +9,7 @@ import com.example.betting.wrappers.PlayerAdapterItem
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class PlayerScreenViewModel @Inject constructor(
+class PlayerViewModel @Inject constructor(
     private val dataBaseRepository: DataBaseRepository
 ): ViewModel() {
 

@@ -16,8 +16,8 @@ import com.bumptech.glide.Glide
 import com.example.betting.BettingApp
 import com.example.betting.R
 import com.example.betting.databinding.PlayerScreenBinding
-import com.example.betting.viewmodel.PlayerScreenViewModel
-import com.example.betting.viewmodel.PlayerScreenViewModelFactory
+import com.example.betting.viewmodel.PlayerViewModel
+import com.example.betting.viewmodel.PlayerViewModelFactory
 import com.example.betting.wrappers.PlayerAdapterItem
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.MaterialShapeDrawable
@@ -38,10 +38,10 @@ class PlayerScreen : Fragment() {
     }
 
     @Inject
-    lateinit var factory: PlayerScreenViewModelFactory
+    lateinit var factory: PlayerViewModelFactory
 
     private val viewModel by lazy {
-        ViewModelProvider(this, factory)[PlayerScreenViewModel::class.java]
+        ViewModelProvider(this, factory)[PlayerViewModel::class.java]
     }
 
     override fun onAttach(context: Context) {

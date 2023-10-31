@@ -9,6 +9,7 @@ import com.example.betting.model.LeaguesResponse
 import com.example.betting.source.NetworkRepository
 import com.example.betting.wrappers.*
 import kotlinx.coroutines.launch
+import java.lang.Integer.min
 import java.util.*
 import javax.inject.Inject
 
@@ -85,17 +86,13 @@ class DiscoverViewModel @Inject constructor(
                     progress = 0,
                     progressVisible = View.VISIBLE
                 )
-                for (item in 0..5) {
-                    _state.value = State.Loading(
-                        data = playerList,
-                        progress = 100 / 3 * (item + 1),
-                        progressVisible = View.VISIBLE
-                    )
+                val leagueListSize = leagueList?.size ?:0
+                for (item in 0..min(NUMBER_LEAGUES, leagueListSize)) {
                     getPlayers(leagueList!![item])
                     if (playerList.isNotEmpty()) {
                         _state.value = State.Loading(
                             data = playerList,
-                            progress = 100 / 3 * (item + 1),
+                            progress = 100 / min(NUMBER_LEAGUES, leagueListSize) * (item + 1),
                             progressVisible = View.VISIBLE
                         )
                     }
@@ -167,6 +164,7 @@ class DiscoverViewModel @Inject constructor(
         const val LEAGUE_NAME = "premier league"
         const val LIMIT_LIST = 10
         const val EMPTY = ""
+        const val NUMBER_LEAGUES = 5
     }
 
 }
