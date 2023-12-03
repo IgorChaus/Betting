@@ -7,10 +7,17 @@
     android:layout_margin="6dp"
     android:background="@drawable/round_corners">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="160dp"
+        android:orientation="vertical" />
+
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="66dp"
-        android:layout_height="85dp"
+        android:layout_height="66dp"
         android:layout_marginStart="12dp"
         app:cardCornerRadius="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -26,7 +33,7 @@
 
     <TextView
         android:id="@+id/tv_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:fontFamily="@font/roboto"
@@ -34,6 +41,7 @@
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/tv_birthday_country"
+        app:layout_constraintEnd_toStartOf="@+id/iv_league_logo"
         app:layout_constraintStart_toEndOf="@+id/cardView"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Erling Haaland" />
