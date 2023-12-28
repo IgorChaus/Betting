@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.betting.R
 import com.example.betting.databinding.WelcomeScreenBinding
 
@@ -27,10 +28,7 @@ class WelcomeScreen : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.btStart.setOnClickListener {
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.container_activity, MainScreen.getInstance(),MainScreen.MAIN_SCREEN)
-                .addToBackStack(null)
-                .commit()
+            findNavController().navigate(R.id.mainScreen)
         }
     }
 

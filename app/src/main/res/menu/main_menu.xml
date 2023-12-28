@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/discover"
+        android:id="@+id/discoverScreen"
         android:icon="@drawable/item_descover_selector"
         android:title="@string/discover" />
     <item
-        android:id="@+id/favorites"
+        android:id="@+id/favoritesScreen"
         android:icon="@drawable/item_favorites_selector"
         android:title="@string/favorites" />
     <item
-        android:id="@+id/settings"
+        android:id="@+id/settingsScreen"
         android:icon="@drawable/item_settings_selector"
         android:title="@string/settings" />
 
