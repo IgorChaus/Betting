@@ -36,11 +36,15 @@ class MainScreen : Fragment() {
             navHostFragment = NavHostFragment.create(R.navigation.bottom_navigation)
             childFragmentManager.beginTransaction()
                 .add(R.id.container_screen, navHostFragment, NAV_HOST_MAIN_SCREEN)
+                .setPrimaryNavigationFragment(navHostFragment)
                 .commitNow()
         } else {
             navHostFragment as NavHostFragment
         }
-        binding.bottomNav.setupWithNavController(navHostFragment.navController)
+
+        val currentNavController = navHostFragment.navController
+        binding.bottomNav.setupWithNavController(currentNavController)
+
     }
 
     override fun onDestroyView() {
