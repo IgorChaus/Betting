@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_navigation"
+    app:startDestination="@id/discoverScreen">
+
+    <fragment
+        android:id="@+id/discoverScreen"
+        android:name="com.example.betting.view.DiscoverScreen"
+        android:label="discover_screen"
+        tools:layout="@layout/discover_screen" >
+        <action
+            android:id="@+id/action_discoverScreen_to_discover_list_screen_navigation"
+            app:destination="@id/discover_list_screen_navigation" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoritesScreen"
+        android:name="com.example.betting.view.FavoritesScreen"
+        android:label="favorites_screen"
+        tools:layout="@layout/favorites_screen">
+        <action
+            android:id="@+id/action_favoriteScreen_to_favorite_list_screen_navigation"
+            app:destination="@id/favorite_list_screen_navigation" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsScreen"
+        android:name="com.example.betting.view.SettingsScreen"
+        android:label="settings_screen"
+        tools:layout="@layout/settings_screen" />
+
+    <include app:graph="@navigation/discover_list_screen_navigation"/>
+
+    <include app:graph="@navigation/favorite_list_screen_navigation"/>
+</navigation>

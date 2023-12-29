@@ -32,16 +32,7 @@ class MessageScreen: Fragment() {
         _binding = null
     }
 
-
     companion object {
-        fun getInstance(message: String): Fragment {
-            return MessageScreen().apply {
-                arguments = Bundle().apply {
-                    putString(KEY_MESSAGE, message)
-                }
-            }
-        }
-
-        private const val KEY_MESSAGE = "item"
+        const val KEY_MESSAGE = "item"
     }
 }

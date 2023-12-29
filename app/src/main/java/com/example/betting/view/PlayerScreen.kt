@@ -55,13 +55,12 @@ class PlayerScreen : Fragment() {
     }
 
     private fun parsArgs() {
-
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requireArguments().getParcelable(KEY_ITEM,PlayerAdapterItem::class.java)?.let {
                 item = it
             }
         } else {
+            @Suppress("DEPRECATION")
             requireArguments().getParcelable<PlayerAdapterItem>(KEY_ITEM)?.let {
                 item = it
             }
@@ -183,17 +182,9 @@ class PlayerScreen : Fragment() {
     }
 
     companion object{
-        fun getInstance(item: PlayerAdapterItem): Fragment{
-            return PlayerScreen().apply {
-                arguments = Bundle().apply {
-                    putParcelable(KEY_ITEM,item)
-                }
-            }
-        }
-
         private const val CUTTING_SIZE_IN_DPI = 25
         private const val RADIUS_IN_DPI = 10
-        private const val KEY_ITEM = "item"
+        const val KEY_ITEM = "item"
     }
 
 }

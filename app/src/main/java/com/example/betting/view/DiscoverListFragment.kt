@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.NavHostFragment
 import com.example.betting.R
 import com.example.betting.adapter.PlayerListAdapter
 import com.example.betting.databinding.ListScreenBinding
@@ -57,27 +58,19 @@ class DiscoverListFragment : Fragment() {
     }
 
     private fun showItem(item: PlayerAdapterItem){
-        val mainScreen = requireActivity()
-            .supportFragmentManager
-            .findFragmentByTag(MainScreen.MAIN_SCREEN)
-        requireActivity().supportFragmentManager.beginTransaction()
-            .add(R.id.container_activity, PlayerScreen.getInstance(item))
-            .apply {
-                mainScreen?.let {
-                    hide(it)
-                }
-            }
-            .addToBackStack(null)
-            .commit()
+
+        val args = Bundle().apply {
+            putParcelable(PlayerScreen.KEY_ITEM, item)
+        }
+        val navHostFragment = requireActivity().supportFragmentManager
+            .findFragmentById(R.id.container_activity) as NavHostFragment
+        val navController = navHostFragment.navController
+        navController.navigate(R.id.playerScreen, args)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object{
-        fun getInstance() = DiscoverListFragment()
     }
 
 }
