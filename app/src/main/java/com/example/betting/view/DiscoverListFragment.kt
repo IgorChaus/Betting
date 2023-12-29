@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
 import com.example.betting.R
 import com.example.betting.adapter.PlayerListAdapter
 import com.example.betting.databinding.ListScreenBinding

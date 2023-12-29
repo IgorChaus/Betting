@@ -28,4 +28,5 @@
         android:name="com.example.betting.view.MainScreen"
         android:label="main_screen"
         tools:layout="@layout/main_screen" />
+
 </navigation>

@@ -55,13 +55,12 @@ class PlayerScreen : Fragment() {
     }
 
     private fun parsArgs() {
-
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requireArguments().getParcelable(KEY_ITEM,PlayerAdapterItem::class.java)?.let {
                 item = it
             }
         } else {
+            @Suppress("DEPRECATION")
             requireArguments().getParcelable<PlayerAdapterItem>(KEY_ITEM)?.let {
                 item = it
             }

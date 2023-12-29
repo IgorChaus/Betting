@@ -7,11 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import com.example.betting.BettingApp
 import com.example.betting.R
 import com.example.betting.databinding.FavoritesScreenBinding
@@ -38,6 +39,8 @@ class FavoritesScreen : Fragment() {
         ViewModelProvider(requireActivity(), factory)[FavoriteViewModel::class.java]
     }
 
+    private var currentNavHostController: NavController? = null
+
     override fun onAttach(context: Context) {
         component.inject(this)
         super.onAttach(context)
@@ -57,9 +60,20 @@ class FavoritesScreen : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupListenersOnSearch()
         setupStateObserver()
-        if(savedInstanceState == null){
-            launchListScreen()
+
+        var navHostFragment = childFragmentManager.findFragmentByTag(NAV_HOST_LIST_SCREEN)
+        if (navHostFragment == null){
+            navHostFragment = NavHostFragment.create(R.navigation.favorite_list_screen_navigation)
+            childFragmentManager.beginTransaction()
+                .add(R.id.container_list, navHostFragment, DiscoverScreen.NAV_HOST_LIST_SCREEN)
+                .commitNow()
+        } else {
+            navHostFragment as NavHostFragment
         }
+
+        currentNavHostController = navHostFragment.navController
+        currentNavHostController?.navigate(R.id.favoritesListFragment)
+
     }
 
     private fun setupStateObserver() {
@@ -73,7 +87,7 @@ class FavoritesScreen : Fragment() {
                     requireContext().hideKeyboard(binding.search)
                     deactivateSearch()
                     if (isListScreenNotInContainer) {
-                        launchListScreen()
+                        currentNavHostController?.navigate(R.id.favoritesListFragment)
                     }
                 }
                 is State.ActivateSearch -> {
@@ -82,7 +96,7 @@ class FavoritesScreen : Fragment() {
                     binding.tvSearchResult.visibility = View.GONE
                     binding.ivCloseSearch.setImageResource(R.drawable.icon_cancel_24px)
                     if (isListScreenNotInContainer) {
-                        launchListScreen()
+                        currentNavHostController?.navigate(R.id.favoritesListFragment)
                     }
                 }
 
@@ -92,7 +106,7 @@ class FavoritesScreen : Fragment() {
                     requireContext().hideKeyboard(binding.search)
                     deactivateSearch()
                     if (isListScreenNotInContainer) {
-                        launchListScreen()
+                        currentNavHostController?.navigate(R.id.favoritesListFragment)
                     }
                 }
                 is State.NothingFound -> {
@@ -147,30 +161,18 @@ class FavoritesScreen : Fragment() {
         }
     }
 
-    private fun launchListScreen() {
-        childFragmentManager.beginTransaction()
-            .replace(R.id.container_list, FavoritesListFragment.getInstance(), LIST_SCREEN_FRAGMENT)
-            .commit()
-    }
-
     private fun launchNothingFoundMessage() {
-        childFragmentManager.beginTransaction()
-            .replace(
-                R.id.container_list, MessageScreen.getInstance(
-                    getString(R.string.cant_find_player)
-                )
-            )
-            .commit()
+        val args = Bundle().apply {
+            putString(MessageScreen.KEY_MESSAGE, getString(R.string.cant_find_player))
+        }
+        currentNavHostController?.navigate(R.id.messageScreen,args)
     }
 
     private fun launchNoFavoritePlayersMessage() {
-        childFragmentManager.beginTransaction()
-            .replace(
-                R.id.container_list, MessageScreen.getInstance(
-                    getString(R.string.no_favorite_player)
-                )
-            )
-            .commit()
+        val args = Bundle().apply {
+            putString(MessageScreen.KEY_MESSAGE, getString(R.string.no_favorite_player))
+        }
+        currentNavHostController?.navigate(R.id.messageScreen,args)
     }
 
     override fun onDestroyView() {
@@ -180,6 +182,7 @@ class FavoritesScreen : Fragment() {
 
     companion object{
         fun getInstance() = FavoritesScreen()
+        const val NAV_HOST_LIST_SCREEN = "Nav Host List Screen"
         const val LIST_SCREEN_FRAGMENT = "List Screen Fragment"
     }
 

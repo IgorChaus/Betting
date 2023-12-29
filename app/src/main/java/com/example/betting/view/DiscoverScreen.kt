@@ -7,11 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import com.example.betting.BettingApp
 import com.example.betting.R
 import com.example.betting.databinding.DiscoverScreenBinding
@@ -38,6 +39,8 @@ class DiscoverScreen : Fragment() {
         ViewModelProvider(requireActivity(), factory)[DiscoverViewModel::class.java]
     }
 
+    private var currentNavHostController: NavController? = null
+
     override fun onAttach(context: Context) {
         component.inject(this)
         super.onAttach(context)
@@ -60,9 +63,21 @@ class DiscoverScreen : Fragment() {
             binding.swipeRefreshLayout.isRefreshing = false
             viewModel.getPlayersFromAllLeagues()
         }
-        if(savedInstanceState == null){
-            launchListScreen()
+
+
+        var navHostFragment = childFragmentManager.findFragmentByTag(NAV_HOST_LIST_SCREEN)
+        if (navHostFragment == null){
+            navHostFragment = NavHostFragment.create(R.navigation.discover_list_screen_navigation)
+            childFragmentManager.beginTransaction()
+                .add(R.id.container_list, navHostFragment, NAV_HOST_LIST_SCREEN)
+                .commitNow()
+        } else {
+            navHostFragment as NavHostFragment
         }
+
+        currentNavHostController = navHostFragment.navController
+        currentNavHostController?.navigate(R.id.discoverListFragment)
+
     }
 
     private fun setupStateObserver() {
@@ -74,7 +89,7 @@ class DiscoverScreen : Fragment() {
                     binding.progressBarDiscover.progress = it.progress
                     binding.progressBarDiscover.visibility = it.progressVisible
                     if (isListScreenNotInContainer){
-                        launchListScreen()
+                        currentNavHostController?.navigate(R.id.discoverListFragment)
                     }
                 }
                 is State.ContentList -> {
@@ -83,7 +98,7 @@ class DiscoverScreen : Fragment() {
                     requireContext().hideKeyboard(binding.search)
                     deactivateSearch()
                     if (isListScreenNotInContainer) {
-                        launchListScreen()
+                        currentNavHostController?.navigate(R.id.discoverListFragment)
                     }
                 }
                 is State.ActivateSearch -> {
@@ -92,7 +107,7 @@ class DiscoverScreen : Fragment() {
                     binding.tvSearchResult.visibility = View.GONE
                     binding.ivCloseSearch.setImageResource(R.drawable.icon_cancel_24px)
                     if (isListScreenNotInContainer) {
-                        launchListScreen()
+                        currentNavHostController?.navigate(R.id.discoverListFragment)
                     }
                 }
                 is State.ResultSearch -> {
@@ -101,7 +116,7 @@ class DiscoverScreen : Fragment() {
                     requireContext().hideKeyboard(binding.search)
                     deactivateSearch()
                     if (isListScreenNotInContainer) {
-                        launchListScreen()
+                        currentNavHostController?.navigate(R.id.discoverListFragment)
                     }
                 }
                 is State.NothingFound -> {
@@ -152,30 +167,18 @@ class DiscoverScreen : Fragment() {
         }
     }
 
-    private fun launchListScreen() {
-        childFragmentManager.beginTransaction()
-            .replace(R.id.container_list, DiscoverListFragment.getInstance(), LIST_SCREEN_FRAGMENT)
-            .commit()
-    }
-
     private fun launchNothingFoundMessage() {
-        childFragmentManager.beginTransaction()
-            .replace(
-                R.id.container_list, MessageScreen.getInstance(
-                    getString(R.string.cant_find_player)
-                )
-            )
-            .commit()
+        val args = Bundle().apply {
+            putString(KEY_MESSAGE, getString(R.string.cant_find_player))
+        }
+        currentNavHostController?.navigate(R.id.messageScreen,args)
     }
 
     private fun launchNoInternetConnectionMessage() {
-        childFragmentManager.beginTransaction()
-            .replace(
-                R.id.container_list, MessageScreen.getInstance(
-                    getString(R.string.no_internet_connection)
-                )
-            )
-            .commit()
+        val args = Bundle().apply {
+            putString(KEY_MESSAGE, getString(R.string.no_internet_connection))
+        }
+        currentNavHostController?.navigate(R.id.messageScreen,args)
     }
 
     override fun onDestroyView() {
@@ -186,6 +189,8 @@ class DiscoverScreen : Fragment() {
     companion object{
         fun getInstance() = DiscoverScreen()
         const val LIST_SCREEN_FRAGMENT = "List Screen Fragment"
+        const val NAV_HOST_LIST_SCREEN = "Nav Host List Screen"
+        private const val KEY_MESSAGE = "item"
     }
 
 }
