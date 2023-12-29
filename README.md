@@ -9,6 +9,7 @@
 - ViewBinding
 - LiveData
 - Dagger
+- Jetpack Navigation
 
 ## Application screens
 <p>
