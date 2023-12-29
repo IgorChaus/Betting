@@ -53,8 +53,6 @@ class MainScreen : Fragment() {
     }
 
     companion object {
-        fun getInstance() = MainScreen()
-        const val MAIN_SCREEN = "MainScreen"
         const val NAV_HOST_MAIN_SCREEN = "Nav Host Main Screen"
     }
 }

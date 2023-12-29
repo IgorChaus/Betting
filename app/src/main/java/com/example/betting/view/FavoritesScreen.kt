@@ -181,9 +181,7 @@ class FavoritesScreen : Fragment() {
     }
 
     companion object{
-        fun getInstance() = FavoritesScreen()
         const val NAV_HOST_LIST_SCREEN = "Nav Host List Screen"
-        const val LIST_SCREEN_FRAGMENT = "List Screen Fragment"
     }
 
 }

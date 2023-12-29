@@ -187,7 +187,6 @@ class DiscoverScreen : Fragment() {
     }
 
     companion object{
-        fun getInstance() = DiscoverScreen()
         const val LIST_SCREEN_FRAGMENT = "List Screen Fragment"
         const val NAV_HOST_LIST_SCREEN = "Nav Host List Screen"
         private const val KEY_MESSAGE = "item"

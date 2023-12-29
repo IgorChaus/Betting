@@ -28,8 +28,4 @@ class SettingsScreen : Fragment() {
         _binding = null
     }
 
-    companion object{
-        fun getInstance() = SettingsScreen()
-    }
-
 }

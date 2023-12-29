@@ -8,7 +8,8 @@
     <fragment
         android:id="@+id/favoritesListFragment"
         android:name="com.example.betting.view.FavoritesListFragment"
-        android:label="FavoritesListFragment" />
+        android:label="FavoritesListFragment"
+        tools:layout="@layout/list_screen"/>
     <fragment
         android:id="@id/messageScreen"
         android:name="com.example.betting.view.MessageScreen"

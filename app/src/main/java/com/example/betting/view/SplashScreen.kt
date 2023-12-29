@@ -66,7 +66,6 @@ class SplashScreen : Fragment() {
 
 
     companion object {
-        fun getInstance() = SplashScreen()
         private const val FIRST_LAUNCH = "first_launch"
     }
 

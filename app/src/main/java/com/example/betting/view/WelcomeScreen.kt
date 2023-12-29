@@ -37,8 +37,4 @@ class WelcomeScreen : Fragment() {
         _binding = null
     }
 
-    companion object{
-        fun getInstance() = WelcomeScreen()
-    }
-
 }
