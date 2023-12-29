@@ -14,9 +14,6 @@
         android:id="@+id/messageScreen"
         android:name="com.example.betting.view.MessageScreen"
         android:label="message_screen"
-        tools:layout="@layout/message_screen" >
-        <argument
-            android:name="message"
-            app:argType="string" />
-    </fragment>
+        tools:layout="@layout/message_screen" />
+
 </navigation>
