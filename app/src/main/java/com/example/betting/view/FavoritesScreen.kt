@@ -17,7 +17,7 @@ import com.example.betting.BettingApp
 import com.example.betting.R
 import com.example.betting.databinding.FavoritesScreenBinding
 import com.example.betting.viewmodel.FavoriteViewModel
-import com.example.betting.viewmodel.FavoriteViewModelFactory
+import com.example.betting.viewmodel.ViewModelFactory
 import com.example.betting.wrappers.State
 import com.example.betting.wrappers.hideKeyboard
 import javax.inject.Inject
@@ -33,7 +33,7 @@ class FavoritesScreen : Fragment() {
     }
 
     @Inject
-    lateinit var factory: FavoriteViewModelFactory
+    lateinit var factory: ViewModelFactory
 
     private val viewModel by lazy {
         ViewModelProvider(requireActivity(), factory)[FavoriteViewModel::class.java]

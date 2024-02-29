@@ -17,7 +17,7 @@ import com.example.betting.BettingApp
 import com.example.betting.R
 import com.example.betting.databinding.DiscoverScreenBinding
 import com.example.betting.viewmodel.DiscoverViewModel
-import com.example.betting.viewmodel.DiscoverViewModelFactory
+import com.example.betting.viewmodel.ViewModelFactory
 import com.example.betting.wrappers.State
 import com.example.betting.wrappers.hideKeyboard
 import javax.inject.Inject
@@ -33,7 +33,7 @@ class DiscoverScreen : Fragment() {
     }
 
     @Inject
-    lateinit var factory: DiscoverViewModelFactory
+    lateinit var factory: ViewModelFactory
 
     private val viewModel by lazy {
         ViewModelProvider(requireActivity(), factory)[DiscoverViewModel::class.java]
