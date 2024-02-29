@@ -8,6 +8,7 @@ import com.example.betting.view.PlayerScreen
 import dagger.BindsInstance
 import dagger.Component
 
+@ApplicationScope
 @Component(modules = [DataModule::class])
 interface ApplicationComponent {
 

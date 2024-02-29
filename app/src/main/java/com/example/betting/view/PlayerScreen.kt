@@ -17,7 +17,7 @@ import com.example.betting.BettingApp
 import com.example.betting.R
 import com.example.betting.databinding.PlayerScreenBinding
 import com.example.betting.viewmodel.PlayerViewModel
-import com.example.betting.viewmodel.PlayerViewModelFactory
+import com.example.betting.viewmodel.ViewModelFactory
 import com.example.betting.wrappers.PlayerAdapterItem
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.MaterialShapeDrawable
@@ -38,7 +38,7 @@ class PlayerScreen : Fragment() {
     }
 
     @Inject
-    lateinit var factory: PlayerViewModelFactory
+    lateinit var factory: ViewModelFactory
 
     private val viewModel by lazy {
         ViewModelProvider(this, factory)[PlayerViewModel::class.java]
