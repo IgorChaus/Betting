@@ -1,12 +1,12 @@
 package com.example.betting.di
 
-import android.app.Application
-import com.example.betting.database.AppDataBase
-import com.example.betting.database.FavoritePlayersDao
-import com.example.betting.network.RetrofitApi
-import com.example.betting.network.RetrofitInstance
-import dagger.BindsInstance
-import dagger.Component
+import android.content.Context
+import com.example.betting.data.local.AppDao
+import com.example.betting.data.local.AppDataBase
+import com.example.betting.data.remote.RetrofitApi
+import com.example.betting.data.remote.RetrofitInstance
+import com.example.betting.data.repositories.AppRepositoryImpl
+import com.example.betting.domain.repositories.AppRepository
 import dagger.Module
 import dagger.Provides
 
@@ -14,18 +14,21 @@ import dagger.Provides
 class DataModule {
 
     @Provides
-    fun providePersonApi(): RetrofitApi {
+    fun provideRetrofitApi(): RetrofitApi {
         return RetrofitInstance.service
     }
 
-    companion object {
+    @Provides
+    @ApplicationScope
+    fun provideAppDao(
+        context: Context
+    ): AppDao {
+        return AppDataBase.getInstance(context).appDao()
+    }
 
-        @Provides
-        fun provideCoinInfoDao(
-            application: Application
-        ): FavoritePlayersDao {
-            return AppDataBase.getInstance(application).favoritePlayersDao()
-        }
+    @Provides
+    fun provideAppRepository(service: RetrofitApi, appDao: AppDao): AppRepository{
+        return AppRepositoryImpl(service, appDao)
     }
 
 }
