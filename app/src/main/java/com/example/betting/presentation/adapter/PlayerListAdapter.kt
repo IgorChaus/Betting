@@ -8,17 +8,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.betting.databinding.ItemLeagueBinding
 import com.example.betting.databinding.ItemPlayerBinding
-import com.example.betting.domain.models.LeagueAdapterItem
-import com.example.betting.domain.models.PlayerAdapterItem
+import com.example.betting.domain.models.League
+import com.example.betting.domain.models.Player
 
 class PlayerListAdapter: ListAdapter<PlayerListAdapter.AdapterItems, RecyclerView.ViewHolder>(ItemDiffCallBack) {
 
-    var itemClickListener: ((PlayerAdapterItem) -> Unit)? = null
+    var itemClickListener: ((Player) -> Unit)? = null
 
     override fun getItemViewType(position: Int): Int =
         when (getItem(position)) {
-            is PlayerAdapterItem -> PLAYER_ITEM
-            is LeagueAdapterItem -> LEAGUE_ITEM
+            is Player -> PLAYER_ITEM
+            is League -> LEAGUE_ITEM
             else -> throw RuntimeException("Illegal item type")
         }
 
@@ -42,13 +42,13 @@ class PlayerListAdapter: ListAdapter<PlayerListAdapter.AdapterItems, RecyclerVie
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
         when (holder.itemViewType) {
-            PLAYER_ITEM -> bindPlayerItem(holder, getItem(position) as PlayerAdapterItem)
-            LEAGUE_ITEM -> bindLeagueItem(holder, getItem(position) as LeagueAdapterItem)
+            PLAYER_ITEM -> bindPlayerItem(holder, getItem(position) as Player)
+            LEAGUE_ITEM -> bindLeagueItem(holder, getItem(position) as League)
             else -> throw RuntimeException("Illegal item type")
         }
 
     @SuppressLint("SetTextI18n")
-    private fun bindPlayerItem(holder: RecyclerView.ViewHolder, item: PlayerAdapterItem) {
+    private fun bindPlayerItem(holder: RecyclerView.ViewHolder, item: Player) {
         val itemViewHolder = holder as PlayerViewHolder
         with(itemViewHolder.binding) {
             tvName.text = item.firstName + " " + item.lastName
@@ -64,7 +64,7 @@ class PlayerListAdapter: ListAdapter<PlayerListAdapter.AdapterItems, RecyclerVie
         }
     }
 
-    private fun bindLeagueItem(holder: RecyclerView.ViewHolder, item: LeagueAdapterItem) {
+    private fun bindLeagueItem(holder: RecyclerView.ViewHolder, item: League) {
         val itemViewHolder = holder as LeagueViewHolder
         with(itemViewHolder.binding) {
             tvLeague.text = item.name

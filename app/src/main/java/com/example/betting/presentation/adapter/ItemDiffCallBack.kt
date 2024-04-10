@@ -1,30 +1,38 @@
 package com.example.betting.presentation.adapter
 
+import android.annotation.SuppressLint
 import androidx.recyclerview.widget.DiffUtil
-import com.example.betting.domain.models.AdapterItems
-import com.example.betting.domain.models.LeagueAdapterItem
-import com.example.betting.domain.models.PlayerAdapterItem
+import com.example.betting.domain.models.League
+import com.example.betting.domain.models.Player
 
-object ItemDiffCallBack : DiffUtil.ItemCallback<AdapterItems>() {
-    override fun areItemsTheSame(oldItem: AdapterItems, newItem: AdapterItems): Boolean {
+object ItemDiffCallBack : DiffUtil.ItemCallback<PlayerListAdapter.AdapterItems>() {
+
+    override fun areItemsTheSame(
+        oldItem: PlayerListAdapter.AdapterItems,
+        newItem: PlayerListAdapter.AdapterItems
+    ): Boolean {
         return when{
-            oldItem is PlayerAdapterItem && newItem is PlayerAdapterItem -> {
+            oldItem is Player && newItem is Player -> {
                 oldItem.id == newItem.id
             }
-            oldItem is LeagueAdapterItem && newItem is LeagueAdapterItem -> {
+            oldItem is League && newItem is League -> {
                 oldItem == newItem
             }
             else -> false
         }
     }
 
-    override fun areContentsTheSame(oldItem: AdapterItems, newItem: AdapterItems): Boolean {
+    @SuppressLint("DiffUtilEquals")
+    override fun areContentsTheSame(
+        oldItem: PlayerListAdapter.AdapterItems,
+        newItem: PlayerListAdapter.AdapterItems
+    ): Boolean {
         return when{
-            oldItem is PlayerAdapterItem && newItem is PlayerAdapterItem -> {
-                oldItem.equals(newItem)
+            oldItem is Player && newItem is Player -> {
+                oldItem == newItem
             }
-            oldItem is LeagueAdapterItem && newItem is LeagueAdapterItem -> {
-                oldItem.equals(newItem)
+            oldItem is League && newItem is League -> {
+                oldItem == newItem
             }
             else -> false
         }

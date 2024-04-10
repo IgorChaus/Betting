@@ -7,9 +7,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.betting.data.models.LeaguesResponse
 import com.example.betting.domain.repositories.AppRepository
-import com.example.betting.domain.models.AdapterItems
-import com.example.betting.domain.models.LeagueAdapterItem
-import com.example.betting.domain.models.PlayerAdapterItem
+import com.example.betting.domain.models.League
+import com.example.betting.domain.models.Player
+import com.example.betting.presentation.adapter.PlayerListAdapter
 import com.example.betting.wrappers.Response
 import com.example.betting.wrappers.State
 import kotlinx.coroutines.launch
@@ -28,7 +28,7 @@ class DiscoverViewModel @Inject constructor(
         get() = _state
 
     private var leagueList: List<LeaguesResponse.LeagueItem>? = null
-    private val playerList = arrayListOf<AdapterItems>()
+    private val playerList = arrayListOf<PlayerListAdapter.AdapterItems>()
     private var strSearch: String = EMPTY
 
     init {
@@ -74,7 +74,7 @@ class DiscoverViewModel @Inject constructor(
         }
     }
 
-    private fun searchPlayer(strSearch: String) = playerList.filterIsInstance<PlayerAdapterItem>()
+    private fun searchPlayer(strSearch: String) = playerList.filterIsInstance<Player>()
         .filter {
             it.firstName?.contains(strSearch, ignoreCase = true) ?: false ||
                     it.lastName?.contains(strSearch, ignoreCase = true) ?: false
@@ -129,7 +129,7 @@ class DiscoverViewModel @Inject constructor(
         when (response) {
             is Response.Success -> {
                 playerList.add(
-                    LeagueAdapterItem(
+                    League(
                         name = leagueItem.league.name,
                         logo = leagueItem.league.logo
                     )
@@ -139,7 +139,7 @@ class DiscoverViewModel @Inject constructor(
                 val limit = minOf(players.size, LIMIT_LIST)
                 for (item in players.take(limit)) {
                     playerList.add(
-                        PlayerAdapterItem(
+                        Player(
                             id = item.player.id,
                             firstName = item.player.firstname,
                             lastName = item.player.lastname,

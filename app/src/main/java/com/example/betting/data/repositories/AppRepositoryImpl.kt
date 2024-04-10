@@ -8,7 +8,7 @@ import com.example.betting.data.models.PlayersResponse
 import com.example.betting.data.remote.RetrofitApi
 import com.example.betting.domain.repositories.AppRepository
 import com.example.betting.mapper.PlayerMapper
-import com.example.betting.domain.models.PlayerAdapterItem
+import com.example.betting.domain.models.Player
 import com.example.betting.wrappers.Response
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -38,7 +38,7 @@ class AppRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getFavoritePlayerList(): LiveData<List<PlayerAdapterItem>> {
+    override fun getFavoritePlayerList(): LiveData<List<Player>> {
         return appDao.getPlayersList().map {
             mapper.mapListDbModelToListAdapterItem(it)
         }
@@ -49,7 +49,7 @@ class AppRepositoryImpl @Inject constructor(
         return favorite != null
     }
 
-    override suspend fun addFavoritePlayer(playerAdapterItem: PlayerAdapterItem) {
+    override suspend fun addFavoritePlayer(playerAdapterItem: Player) {
         val playerItemDbModel = mapper.mapAdapterItemToDbModel(playerAdapterItem)
         appDao.addPlayer(playerItemDbModel)
     }

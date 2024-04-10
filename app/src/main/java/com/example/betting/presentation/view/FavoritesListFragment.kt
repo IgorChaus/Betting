@@ -14,7 +14,7 @@ import com.example.betting.presentation.adapter.PlayerListAdapter
 import com.example.betting.appComponent
 import com.example.betting.databinding.ListScreenBinding
 import com.example.betting.presentation.viewmodels.FavoriteViewModel
-import com.example.betting.domain.models.PlayerAdapterItem
+import com.example.betting.domain.models.Player
 import com.example.betting.wrappers.State
 import javax.inject.Inject
 
@@ -60,7 +60,7 @@ class FavoritesListFragment : BaseFragment<ListScreenBinding>() {
         }
     }
 
-    private fun showItem(item: PlayerAdapterItem){
+    private fun showItem(item: Player){
         val args = Bundle().apply {
             putParcelable(PlayerScreen.KEY_ITEM, item)
         }

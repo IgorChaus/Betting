@@ -18,7 +18,7 @@ import com.example.betting.R
 import com.example.betting.appComponent
 import com.example.betting.databinding.PlayerScreenBinding
 import com.example.betting.presentation.viewmodels.PlayerViewModel
-import com.example.betting.domain.models.PlayerAdapterItem
+import com.example.betting.domain.models.Player
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
@@ -27,7 +27,7 @@ import javax.inject.Inject
 
 class PlayerScreen : BaseFragment<PlayerScreenBinding>() {
 
-    private lateinit var item: PlayerAdapterItem
+    private lateinit var item: Player
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -53,12 +53,12 @@ class PlayerScreen : BaseFragment<PlayerScreenBinding>() {
 
     private fun parsArgs() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            requireArguments().getParcelable(KEY_ITEM, PlayerAdapterItem::class.java)?.let {
+            requireArguments().getParcelable(KEY_ITEM, Player::class.java)?.let {
                 item = it
             }
         } else {
             @Suppress("DEPRECATION")
-            requireArguments().getParcelable<PlayerAdapterItem>(KEY_ITEM)?.let {
+            requireArguments().getParcelable<Player>(KEY_ITEM)?.let {
                 item = it
             }
         }

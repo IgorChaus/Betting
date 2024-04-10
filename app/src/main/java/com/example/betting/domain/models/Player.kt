@@ -5,7 +5,7 @@ import com.example.betting.presentation.adapter.PlayerListAdapter
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class PlayerAdapterItem(
+data class Player(
     val id: Int,
     val firstName: String?,
     val lastName: String?,

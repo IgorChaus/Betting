@@ -1,12 +1,12 @@
 package com.example.betting.mapper
 
 import com.example.betting.data.models.PlayerItemDbModel
-import com.example.betting.domain.models.PlayerAdapterItem
+import com.example.betting.domain.models.Player
 import javax.inject.Inject
 
 class PlayerMapper @Inject constructor(){
 
-    fun mapDbModelToAdapterItem(dbModel: PlayerItemDbModel) = PlayerAdapterItem(
+    fun mapDbModelToAdapterItem(dbModel: PlayerItemDbModel) = Player(
         id = dbModel.id,
         firstName = dbModel.firstName,
         lastName = dbModel.lastName,
@@ -23,7 +23,7 @@ class PlayerMapper @Inject constructor(){
         leagueLogo = dbModel.leagueLogo
     )
 
-    fun mapAdapterItemToDbModel(adapterItem: PlayerAdapterItem) = PlayerItemDbModel(
+    fun mapAdapterItemToDbModel(adapterItem: Player) = PlayerItemDbModel(
         id = adapterItem.id,
         firstName = adapterItem.firstName,
         lastName = adapterItem.lastName,
