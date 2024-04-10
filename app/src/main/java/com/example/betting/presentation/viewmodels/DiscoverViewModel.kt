@@ -5,12 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.betting.data.models.LeaguesDTO
-import com.example.betting.domain.repositories.AppRepository
+import com.example.betting.Utils.Response
 import com.example.betting.domain.models.League
 import com.example.betting.domain.models.Player
+import com.example.betting.domain.repositories.AppRepository
 import com.example.betting.presentation.adapter.PlayerListAdapter
-import com.example.betting.Utils.Response
 import com.example.betting.presentation.states.State
 import kotlinx.coroutines.launch
 import java.lang.Integer.min
@@ -27,7 +26,7 @@ class DiscoverViewModel @Inject constructor(
     val state: LiveData<State>
         get() = _state
 
-    private var leagueList: List<LeaguesDTO.LeagueItem>? = null
+    private var leagueList: List<League>? = null
     private val playerList = arrayListOf<PlayerListAdapter.AdapterItems>()
     private var strSearch: String = EMPTY
 
@@ -115,7 +114,7 @@ class DiscoverViewModel @Inject constructor(
         val response = repository.getLeagues(LEAGUE_NAME, currentYear)
         when (response) {
             is Response.Success -> {
-                leagueList = response.data.response
+                leagueList = response.data
             }
             is Response.Error -> {
                 _state.value = State.Error
@@ -123,15 +122,16 @@ class DiscoverViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getPlayers(leagueItem: LeaguesDTO.LeagueItem) {
-        val leagueId = leagueItem.league.id.toString()
+    private suspend fun getPlayers(leagueItem: League) {
+        val leagueId = leagueItem.id.toString()
         val response = repository.getPlayers(leagueId, currentYear, "1")
         when (response) {
             is Response.Success -> {
                 playerList.add(
                     League(
-                        name = leagueItem.league.name,
-                        logo = leagueItem.league.logo
+                        id = leagueItem.id,
+                        name = leagueItem.name,
+                        logo = leagueItem.logo
                     )
                 )
 
@@ -152,8 +152,8 @@ class DiscoverViewModel @Inject constructor(
                             weight = item.player.weight,
                             photo = item.player.photo,
                             team = item.statistics[0].team.name,
-                            leagueName = leagueItem.league.name,
-                            leagueLogo = leagueItem.league.logo
+                            leagueName = leagueItem.name,
+                            leagueLogo = leagueItem.logo
                         )
                     )
                 }
