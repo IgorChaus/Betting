@@ -10,9 +10,9 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.example.betting.BaseFragment
 import com.example.betting.BettingApp
 import com.example.betting.R
 import com.example.betting.databinding.PlayerScreenBinding
@@ -25,13 +25,9 @@ import com.google.android.material.shape.ShapeAppearanceModel
 import javax.inject.Inject
 
 
-class PlayerScreen : Fragment() {
+class PlayerScreen : BaseFragment<PlayerScreenBinding>() {
 
     private lateinit var item: PlayerAdapterItem
-
-    private var _binding: PlayerScreenBinding? = null
-    private val binding: PlayerScreenBinding
-        get() = _binding ?: throw RuntimeException("PlayerScreenBinding == null")
 
     val component by lazy{
         (requireActivity().application as BettingApp).component
@@ -54,6 +50,14 @@ class PlayerScreen : Fragment() {
         parsArgs()
     }
 
+    override fun inflateBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        attachToRoot: Boolean
+    ): PlayerScreenBinding {
+        return PlayerScreenBinding.inflate(inflater, container, attachToRoot)
+    }
+
     private fun parsArgs() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requireArguments().getParcelable(KEY_ITEM,PlayerAdapterItem::class.java)?.let {
@@ -65,16 +69,6 @@ class PlayerScreen : Fragment() {
                 item = it
             }
         }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-
-        _binding = PlayerScreenBinding.inflate(inflater, container, false)
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -174,11 +168,6 @@ class PlayerScreen : Fragment() {
                 viewModel.pressButton(item)
             }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     companion object{

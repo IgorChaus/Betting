@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
+import com.example.betting.BaseFragment
 import com.example.betting.R
 import com.example.betting.adapter.PlayerListAdapter
 import com.example.betting.databinding.ListScreenBinding
@@ -14,11 +14,7 @@ import com.example.betting.viewmodel.DiscoverViewModel
 import com.example.betting.wrappers.PlayerAdapterItem
 import com.example.betting.wrappers.State
 
-class DiscoverListFragment : Fragment() {
-
-    private var _binding: ListScreenBinding? = null
-    private val binding: ListScreenBinding
-        get() = _binding ?: throw RuntimeException("ListScreenBinding == null")
+class DiscoverListFragment : BaseFragment<ListScreenBinding>() {
 
     private val viewModel by lazy {
         ViewModelProvider(requireActivity())[DiscoverViewModel::class.java]
@@ -34,13 +30,12 @@ class DiscoverListFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(
+    override fun inflateBinding(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = ListScreenBinding.inflate(inflater, container, false)
-        return binding.root
+        attachToRoot: Boolean
+    ): ListScreenBinding {
+        return ListScreenBinding.inflate(inflater, container, attachToRoot)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -66,11 +61,6 @@ class DiscoverListFragment : Fragment() {
             .findFragmentById(R.id.container_activity) as NavHostFragment
         val navController = navHostFragment.navController
         navController.navigate(R.id.playerScreen, args)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
 }

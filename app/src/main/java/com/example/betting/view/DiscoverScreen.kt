@@ -9,10 +9,10 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import com.example.betting.BaseFragment
 import com.example.betting.BettingApp
 import com.example.betting.R
 import com.example.betting.databinding.DiscoverScreenBinding
@@ -22,11 +22,7 @@ import com.example.betting.wrappers.State
 import com.example.betting.wrappers.hideKeyboard
 import javax.inject.Inject
 
-class DiscoverScreen : Fragment() {
-
-    private var _binding: DiscoverScreenBinding? = null
-    private val binding: DiscoverScreenBinding
-        get() = _binding ?: throw RuntimeException("DiscoverScreenBinding == null")
+class DiscoverScreen : BaseFragment<DiscoverScreenBinding>() {
 
     val component by lazy{
         (requireActivity().application as BettingApp).component
@@ -46,13 +42,12 @@ class DiscoverScreen : Fragment() {
         super.onAttach(context)
     }
 
-    override fun onCreateView(
+    override fun inflateBinding(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = DiscoverScreenBinding.inflate(inflater, container, false)
-        return binding.root
+        attachToRoot: Boolean
+    ): DiscoverScreenBinding {
+        return DiscoverScreenBinding.inflate(inflater, container, attachToRoot)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -179,11 +174,6 @@ class DiscoverScreen : Fragment() {
             putString(KEY_MESSAGE, getString(R.string.no_internet_connection))
         }
         currentNavHostController?.navigate(R.id.messageScreen,args)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     companion object{

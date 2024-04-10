@@ -164,7 +164,7 @@ class DiscoverViewModel @Inject constructor(
         const val LEAGUE_NAME = "premier league"
         const val LIMIT_LIST = 10
         const val EMPTY = ""
-        const val NUMBER_LEAGUES = 5
+        const val NUMBER_LEAGUES = 2
     }
 
 }

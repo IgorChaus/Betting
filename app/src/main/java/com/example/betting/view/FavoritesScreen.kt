@@ -9,10 +9,10 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import com.example.betting.BaseFragment
 import com.example.betting.BettingApp
 import com.example.betting.R
 import com.example.betting.databinding.FavoritesScreenBinding
@@ -22,11 +22,7 @@ import com.example.betting.wrappers.State
 import com.example.betting.wrappers.hideKeyboard
 import javax.inject.Inject
 
-class FavoritesScreen : Fragment() {
-
-    private var _binding: FavoritesScreenBinding? = null
-    private val binding: FavoritesScreenBinding
-        get() = _binding ?: throw RuntimeException("FavoritesScreenBinding == null")
+class FavoritesScreen : BaseFragment<FavoritesScreenBinding>() {
 
     val component by lazy{
         (requireActivity().application as BettingApp).component
@@ -46,14 +42,12 @@ class FavoritesScreen : Fragment() {
         super.onAttach(context)
     }
 
-    override fun onCreateView(
+    override fun inflateBinding(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-
-        _binding = FavoritesScreenBinding.inflate(inflater, container, false)
-        return binding.root
+        attachToRoot: Boolean
+    ): FavoritesScreenBinding {
+        return FavoritesScreenBinding.inflate(inflater, container, attachToRoot)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -173,11 +167,6 @@ class FavoritesScreen : Fragment() {
             putString(MessageScreen.KEY_MESSAGE, getString(R.string.no_favorite_player))
         }
         currentNavHostController?.navigate(R.id.messageScreen,args)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     companion object{

@@ -4,25 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.betting.BaseFragment
 import com.example.betting.R
 import com.example.betting.databinding.WelcomeScreenBinding
 
-class WelcomeScreen : Fragment() {
+class WelcomeScreen : BaseFragment<WelcomeScreenBinding>() {
 
-    private var _binding: WelcomeScreenBinding? = null
-    private val binding: WelcomeScreenBinding
-        get() = _binding ?: throw RuntimeException("WelcomeScreenBinding == null")
-
-    override fun onCreateView(
+    override fun inflateBinding(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-
-        _binding = WelcomeScreenBinding.inflate(inflater, container, false)
-        return binding.root
+        attachToRoot: Boolean
+    ): WelcomeScreenBinding {
+        return WelcomeScreenBinding.inflate(inflater, container, attachToRoot)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -30,11 +24,6 @@ class WelcomeScreen : Fragment() {
         binding.btStart.setOnClickListener {
             findNavController().navigate(R.id.mainScreen)
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
 }

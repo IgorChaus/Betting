@@ -6,28 +6,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.betting.BaseFragment
 import com.example.betting.R
 import com.example.betting.databinding.SplashScreenBinding
-import kotlinx.coroutines.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @SuppressLint("CustomSplashScreen")
-class SplashScreen : Fragment() {
+class SplashScreen : BaseFragment<SplashScreenBinding>() {
 
-    private var _binding: SplashScreenBinding? = null
-    private val binding: SplashScreenBinding
-        get() = _binding ?: throw RuntimeException("SplashScreenBinding == null")
-
-    private val coroutineScope = CoroutineScope(Dispatchers.Main)
-
-    override fun onCreateView(
+    override fun inflateBinding(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = SplashScreenBinding.inflate(inflater, container, false)
-        return binding.root
+        attachToRoot: Boolean
+    ): SplashScreenBinding {
+        return SplashScreenBinding.inflate(inflater, container, attachToRoot)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,7 +36,7 @@ class SplashScreen : Fragment() {
             prefs.edit().putBoolean(FIRST_LAUNCH, false).apply()
             binding.imageView.visibility = View.VISIBLE
             binding.progressBarSplash.visibility = View.VISIBLE
-            coroutineScope.launch {
+            lifecycleScope.launch {
                 for (i in 0 .. 90 step 30){
                     binding.progressBarSplash.progress = i
                     delay(1000)
@@ -53,17 +48,6 @@ class SplashScreen : Fragment() {
         }
 
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        coroutineScope.cancel()
-    }
-
 
     companion object {
         private const val FIRST_LAUNCH = "first_launch"

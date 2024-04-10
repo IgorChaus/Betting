@@ -4,27 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.example.betting.BaseFragment
 import com.example.betting.R
 import com.example.betting.databinding.MainScreenBinding
 
 
-class MainScreen : Fragment() {
+class MainScreen : BaseFragment<MainScreenBinding>() {
 
-    private var _binding: MainScreenBinding? = null
-    private val binding: MainScreenBinding
-        get() = _binding ?: throw RuntimeException("MainScreenBinding == null")
-
-    override fun onCreateView(
+    override fun inflateBinding(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-
-        _binding = MainScreenBinding.inflate(inflater, container, false)
-        return binding.root
+        attachToRoot: Boolean
+    ): MainScreenBinding {
+        return MainScreenBinding.inflate(inflater, container, attachToRoot)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -45,11 +39,6 @@ class MainScreen : Fragment() {
         val currentNavController = navHostFragment.navController
         binding.bottomNav.setupWithNavController(currentNavController)
 
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     companion object {
