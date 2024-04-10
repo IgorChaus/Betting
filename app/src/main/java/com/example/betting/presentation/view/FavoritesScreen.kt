@@ -13,13 +13,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import com.example.betting.BaseFragment
+import com.example.betting.Utils.BaseFragment
 import com.example.betting.R
 import com.example.betting.appComponent
 import com.example.betting.databinding.FavoritesScreenBinding
 import com.example.betting.presentation.viewmodels.FavoriteViewModel
-import com.example.betting.wrappers.State
-import com.example.betting.wrappers.hideKeyboard
+import com.example.betting.presentation.states.State
+import com.example.betting.Utils.hideKeyboard
 import javax.inject.Inject
 
 class FavoritesScreen : BaseFragment<FavoritesScreenBinding>() {

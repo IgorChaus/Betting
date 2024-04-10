@@ -1,16 +1,16 @@
 package com.example.betting.domain.repositories
 
 import androidx.lifecycle.LiveData
-import com.example.betting.data.models.LeaguesResponse
-import com.example.betting.data.models.PlayersResponse
+import com.example.betting.data.models.LeaguesDTO
+import com.example.betting.data.models.PlayersDTO
 import com.example.betting.domain.models.Player
-import com.example.betting.wrappers.Response
+import com.example.betting.Utils.Response
 
 interface AppRepository {
 
-    suspend fun getLeagues(leagueName: String, season: String): Response<LeaguesResponse>
+    suspend fun getLeagues(leagueName: String, season: String): Response<LeaguesDTO>
 
-    suspend fun getPlayers(leagueId: String, season: String, page: String): Response<PlayersResponse>
+    suspend fun getPlayers(leagueId: String, season: String, page: String): Response<PlayersDTO>
 
     fun getFavoritePlayerList(): LiveData<List<Player>>
 

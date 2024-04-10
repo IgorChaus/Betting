@@ -6,7 +6,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.example.betting.domain.repositories.AppRepository
 import com.example.betting.domain.models.Player
-import com.example.betting.wrappers.State
+import com.example.betting.presentation.states.State
 import javax.inject.Inject
 
 class FavoriteViewModel @Inject constructor(

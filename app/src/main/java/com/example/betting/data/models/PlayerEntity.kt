@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "favoritePlayers")
-data class PlayerItemDbModel(
+data class PlayerEntity(
     @PrimaryKey
     val id: Int,
     val firstName: String?,

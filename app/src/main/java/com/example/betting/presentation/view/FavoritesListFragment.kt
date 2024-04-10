@@ -8,14 +8,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
-import com.example.betting.BaseFragment
+import com.example.betting.Utils.BaseFragment
 import com.example.betting.R
 import com.example.betting.presentation.adapter.PlayerListAdapter
 import com.example.betting.appComponent
 import com.example.betting.databinding.ListScreenBinding
 import com.example.betting.presentation.viewmodels.FavoriteViewModel
 import com.example.betting.domain.models.Player
-import com.example.betting.wrappers.State
+import com.example.betting.presentation.states.State
 import javax.inject.Inject
 
 class FavoritesListFragment : BaseFragment<ListScreenBinding>() {

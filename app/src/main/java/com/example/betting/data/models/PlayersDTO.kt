@@ -1,6 +1,6 @@
 package com.example.betting.data.models
 
-data class PlayersResponse(
+data class PlayersDTO(
     val request: String,
     val parameters: Parameters,
     val errors: List<String>,

@@ -1,4 +1,4 @@
-package com.example.betting.wrappers
+package com.example.betting.presentation.states
 
 import com.example.betting.presentation.adapter.PlayerListAdapter
 

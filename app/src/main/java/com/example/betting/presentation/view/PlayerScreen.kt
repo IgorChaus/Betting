@@ -13,7 +13,7 @@ import androidx.core.view.ViewCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
-import com.example.betting.BaseFragment
+import com.example.betting.Utils.BaseFragment
 import com.example.betting.R
 import com.example.betting.appComponent
 import com.example.betting.databinding.PlayerScreenBinding

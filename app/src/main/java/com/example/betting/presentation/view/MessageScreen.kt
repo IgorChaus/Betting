@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.betting.BaseFragment
+import com.example.betting.Utils.BaseFragment
 import com.example.betting.databinding.MessageScreenBinding
 
 class MessageScreen: BaseFragment<MessageScreenBinding>() {

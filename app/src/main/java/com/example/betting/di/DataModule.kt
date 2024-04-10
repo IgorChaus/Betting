@@ -7,7 +7,6 @@ import com.example.betting.data.remote.RetrofitApi
 import com.example.betting.data.remote.RetrofitInstance
 import com.example.betting.data.repositories.AppRepositoryImpl
 import com.example.betting.domain.repositories.AppRepository
-import com.example.betting.mapper.PlayerMapper
 import dagger.Module
 import dagger.Provides
 
@@ -28,8 +27,8 @@ class DataModule {
     }
 
     @Provides
-    fun provideAppRepository(service: RetrofitApi, appDao: AppDao, mapper: PlayerMapper): AppRepository{
-        return AppRepositoryImpl(service, appDao, mapper)
+    fun provideAppRepository(service: RetrofitApi, appDao: AppDao): AppRepository{
+        return AppRepositoryImpl(service, appDao)
     }
 
 }

@@ -2,7 +2,7 @@ package com.example.betting.data.models
 
 import com.google.gson.annotations.SerializedName
 
-data class LeaguesResponse (
+data class LeaguesDTO (
     val request: String,
     val parameters: Parameters,
     val errors: List<String>,

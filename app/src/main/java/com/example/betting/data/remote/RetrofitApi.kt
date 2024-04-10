@@ -1,7 +1,7 @@
 package com.example.betting.data.remote
 
-import com.example.betting.data.models.LeaguesResponse
-import com.example.betting.data.models.PlayersResponse
+import com.example.betting.data.models.LeaguesDTO
+import com.example.betting.data.models.PlayersDTO
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -16,7 +16,7 @@ interface RetrofitApi {
     suspend fun getLeagues(
         @Query("name") name: String,
         @Query("season") season: String
-    ) : Response<LeaguesResponse>
+    ) : Response<LeaguesDTO>
 
     @Headers(
         "x-rapidapi-key: f16208e0c2af6076fac34572f3125944",
@@ -27,5 +27,5 @@ interface RetrofitApi {
         @Query("league") league: String,
         @Query("season") season: String,
         @Query("page") page: String
-    ) : Response<PlayersResponse>
+    ) : Response<PlayersDTO>
 }

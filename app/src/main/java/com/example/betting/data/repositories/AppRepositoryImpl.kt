@@ -3,13 +3,14 @@ package com.example.betting.data.repositories
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.example.betting.data.local.AppDao
-import com.example.betting.data.models.LeaguesResponse
-import com.example.betting.data.models.PlayersResponse
+import com.example.betting.data.models.LeaguesDTO
+import com.example.betting.data.models.PlayersDTO
 import com.example.betting.data.remote.RetrofitApi
 import com.example.betting.domain.repositories.AppRepository
-import com.example.betting.mapper.PlayerMapper
 import com.example.betting.domain.models.Player
-import com.example.betting.wrappers.Response
+import com.example.betting.Utils.Response
+import com.example.betting.Utils.toEntity
+import com.example.betting.Utils.toModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
@@ -18,11 +19,10 @@ import javax.inject.Inject
 
 class AppRepositoryImpl @Inject constructor(
     private val service: RetrofitApi,
-    private val appDao: AppDao,
-    private val mapper: PlayerMapper
+    private val appDao: AppDao
 ): AppRepository {
 
-    override suspend fun getLeagues(leagueName: String, season: String): Response<LeaguesResponse> {
+    override suspend fun getLeagues(leagueName: String, season: String): Response<LeaguesDTO> {
         return withContext(Dispatchers.IO) {
             handleApiCall {
                 service.getLeagues(leagueName, season)
@@ -30,7 +30,7 @@ class AppRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getPlayers(leagueId: String, season: String, page: String): Response<PlayersResponse> {
+    override suspend fun getPlayers(leagueId: String, season: String, page: String): Response<PlayersDTO> {
         return withContext(Dispatchers.IO) {
             handleApiCall {
                 service.getPlayers(leagueId, season, page)
@@ -39,9 +39,7 @@ class AppRepositoryImpl @Inject constructor(
     }
 
     override fun getFavoritePlayerList(): LiveData<List<Player>> {
-        return appDao.getPlayersList().map {
-            mapper.mapListDbModelToListAdapterItem(it)
-        }
+        return appDao.getPlayersList().map { it.toModel() }
     }
 
     override suspend fun isPlayerFavorite(id: Int): Boolean {
@@ -50,8 +48,7 @@ class AppRepositoryImpl @Inject constructor(
     }
 
     override suspend fun addFavoritePlayer(playerAdapterItem: Player) {
-        val playerItemDbModel = mapper.mapAdapterItemToDbModel(playerAdapterItem)
-        appDao.addPlayer(playerItemDbModel)
+        appDao.addPlayer(playerAdapterItem.toEntity())
     }
 
     override suspend fun deleteFavoritePlayer(id: Int) {

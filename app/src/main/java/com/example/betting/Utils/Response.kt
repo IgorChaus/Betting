@@ -1,4 +1,4 @@
-package com.example.betting.wrappers
+package com.example.betting.Utils
 
 sealed class Response<out T> {
     data class Success<T>(val data: T) : Response<T>()
