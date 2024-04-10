@@ -1,5 +1,7 @@
 package com.example.betting.wrappers
 
+import com.example.betting.domain.models.AdapterItems
+
 sealed class State {
     class Loading(
         val data: List<AdapterItems>,

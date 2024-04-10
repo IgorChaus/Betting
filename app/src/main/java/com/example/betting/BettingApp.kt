@@ -8,7 +8,7 @@ import com.example.betting.di.DaggerAppComponent
 class BettingApp: Application() {
     lateinit var appComponent: AppComponent
     override fun onCreate() {
-        appComponent = DaggerAppComponent.factory().create(this)
+        appComponent = DaggerAppComponent.factory().create(applicationContext)
         appComponent.inject(this)
 
         super.onCreate()

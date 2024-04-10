@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/favoritesListFragment"
-        android:name="com.example.betting.view.FavoritesListFragment"
+        android:name="com.example.betting.presentation.view.FavoritesListFragment"
         android:label="FavoritesListFragment"
         tools:layout="@layout/list_screen"/>
     <fragment
         android:id="@id/messageScreen"
-        android:name="com.example.betting.view.MessageScreen"
+        android:name="com.example.betting.presentation.view.MessageScreen"
         android:label="message_screen"
         tools:layout="@layout/message_screen" />
 </navigation>

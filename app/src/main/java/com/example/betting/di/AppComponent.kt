@@ -1,13 +1,13 @@
 package com.example.betting.di
 
 
-import android.app.Application
+import android.content.Context
 import com.example.betting.BettingApp
-import com.example.betting.view.DiscoverListFragment
-import com.example.betting.view.DiscoverScreen
-import com.example.betting.view.FavoritesListFragment
-import com.example.betting.view.FavoritesScreen
-import com.example.betting.view.PlayerScreen
+import com.example.betting.presentation.view.DiscoverListFragment
+import com.example.betting.presentation.view.DiscoverScreen
+import com.example.betting.presentation.view.FavoritesListFragment
+import com.example.betting.presentation.view.FavoritesScreen
+import com.example.betting.presentation.view.PlayerScreen
 import dagger.BindsInstance
 import dagger.Component
 
@@ -25,7 +25,7 @@ interface AppComponent {
     @Component.Factory
     interface Factory {
         fun create(
-            @BindsInstance application: Application,
+            @BindsInstance context: Context,
         ): AppComponent
     }
 

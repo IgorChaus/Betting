@@ -1,7 +1,7 @@
 package com.example.betting.mapper
 
-import com.example.betting.model.PlayerItemDbModel
-import com.example.betting.wrappers.PlayerAdapterItem
+import com.example.betting.data.models.PlayerItemDbModel
+import com.example.betting.domain.models.PlayerAdapterItem
 import javax.inject.Inject
 
 class PlayerMapper @Inject constructor(){
