@@ -9,37 +9,30 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.betting.BaseFragment
-import com.example.betting.BettingApp
 import com.example.betting.R
+import com.example.betting.appComponent
 import com.example.betting.databinding.FavoritesScreenBinding
 import com.example.betting.viewmodel.FavoriteViewModel
-import com.example.betting.viewmodel.ViewModelFactory
 import com.example.betting.wrappers.State
 import com.example.betting.wrappers.hideKeyboard
 import javax.inject.Inject
 
 class FavoritesScreen : BaseFragment<FavoritesScreenBinding>() {
 
-    val component by lazy{
-        (requireActivity().application as BettingApp).component
-    }
-
     @Inject
-    lateinit var factory: ViewModelFactory
-
-    private val viewModel by lazy {
-        ViewModelProvider(requireActivity(), factory)[FavoriteViewModel::class.java]
-    }
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val viewModel: FavoriteViewModel by viewModels { viewModelFactory }
 
     private var currentNavHostController: NavController? = null
 
     override fun onAttach(context: Context) {
-        component.inject(this)
         super.onAttach(context)
+        context.appComponent.inject(this)
     }
 
     override fun inflateBinding(

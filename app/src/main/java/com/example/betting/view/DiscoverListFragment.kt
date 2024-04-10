@@ -1,23 +1,32 @@
 package com.example.betting.view
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import com.example.betting.BaseFragment
 import com.example.betting.R
 import com.example.betting.adapter.PlayerListAdapter
+import com.example.betting.appComponent
 import com.example.betting.databinding.ListScreenBinding
 import com.example.betting.viewmodel.DiscoverViewModel
 import com.example.betting.wrappers.PlayerAdapterItem
 import com.example.betting.wrappers.State
+import javax.inject.Inject
 
 class DiscoverListFragment : BaseFragment<ListScreenBinding>() {
 
-    private val viewModel by lazy {
-        ViewModelProvider(requireActivity())[DiscoverViewModel::class.java]
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val viewModel: DiscoverViewModel by viewModels { viewModelFactory }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        context.appComponent.inject(this)
     }
 
     private lateinit var adapter: PlayerListAdapter

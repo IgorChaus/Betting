@@ -1,5 +1,6 @@
 package com.example.betting.viewmodel
 
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -164,7 +165,7 @@ class DiscoverViewModel @Inject constructor(
         const val LEAGUE_NAME = "premier league"
         const val LIMIT_LIST = 10
         const val EMPTY = ""
-        const val NUMBER_LEAGUES = 2
+        const val NUMBER_LEAGUES = 3
     }
 
 }
