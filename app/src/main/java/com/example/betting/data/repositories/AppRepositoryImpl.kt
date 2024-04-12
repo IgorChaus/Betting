@@ -2,20 +2,17 @@ package com.example.betting.data.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
-import com.example.betting.data.local.AppDao
-import com.example.betting.data.models.LeaguesDTO
-import com.example.betting.data.models.PlayersDTO
-import com.example.betting.data.remote.RetrofitApi
-import com.example.betting.domain.repositories.AppRepository
-import com.example.betting.domain.models.Player
 import com.example.betting.Utils.Response
 import com.example.betting.Utils.toEntity
 import com.example.betting.Utils.toModel
+import com.example.betting.data.local.AppDao
+import com.example.betting.data.models.PlayersDTO
+import com.example.betting.data.remote.RetrofitApi
 import com.example.betting.domain.models.League
+import com.example.betting.domain.models.Player
+import com.example.betting.domain.repositories.AppRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import retrofit2.HttpException
-import java.io.IOException
 import javax.inject.Inject
 
 class AppRepositoryImpl @Inject constructor(

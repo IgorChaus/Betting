@@ -3,9 +3,7 @@ package com.example.betting.di
 
 import android.content.Context
 import com.example.betting.BettingApp
-import com.example.betting.presentation.view.DiscoverListFragment
 import com.example.betting.presentation.view.DiscoverScreen
-import com.example.betting.presentation.view.FavoritesListFragment
 import com.example.betting.presentation.view.FavoritesScreen
 import com.example.betting.presentation.view.PlayerScreen
 import dagger.BindsInstance
@@ -34,7 +32,4 @@ interface AppComponent {
     fun inject(fragment: DiscoverScreen)
     fun inject(fragment: FavoritesScreen)
     fun inject(fragment: PlayerScreen)
-    fun inject(fragment: DiscoverListFragment)
-    fun inject(fragment: FavoritesListFragment)
-
 }

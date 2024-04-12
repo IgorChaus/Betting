@@ -12,6 +12,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.betting.Utils.BaseFragment
 import com.example.betting.R
@@ -154,7 +155,7 @@ class PlayerScreen : BaseFragment<PlayerScreenBinding>() {
                 tvCountry.text = item.nationality
 
             tvBack.setOnClickListener {
-                requireActivity().supportFragmentManager.popBackStack()
+                findNavController().popBackStack()
             }
 
             iconFavorites.setOnClickListener {

@@ -1,5 +1,6 @@
 package com.example.betting.presentation.viewmodels
 
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -30,7 +31,7 @@ class DiscoverViewModel @Inject constructor(
     private val playerList = arrayListOf<PlayerListAdapter.AdapterItems>()
     private var strSearch: String = EMPTY
 
-    init {
+    init{
         getPlayersFromAllLeagues()
     }
 

@@ -20,6 +20,8 @@ import com.example.betting.databinding.FavoritesScreenBinding
 import com.example.betting.presentation.viewmodels.FavoriteViewModel
 import com.example.betting.presentation.states.State
 import com.example.betting.Utils.hideKeyboard
+import com.example.betting.domain.models.Player
+import com.example.betting.presentation.adapter.PlayerListAdapter
 import javax.inject.Inject
 
 class FavoritesScreen : BaseFragment<FavoritesScreenBinding>() {
@@ -29,6 +31,8 @@ class FavoritesScreen : BaseFragment<FavoritesScreenBinding>() {
     private val viewModel: FavoriteViewModel by viewModels { viewModelFactory }
 
     private var currentNavHostController: NavController? = null
+
+    private val adapter by lazy { PlayerListAdapter() }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -48,19 +52,10 @@ class FavoritesScreen : BaseFragment<FavoritesScreenBinding>() {
         setupListenersOnSearch()
         setupStateObserver()
 
-        var navHostFragment = childFragmentManager.findFragmentByTag(NAV_HOST_LIST_SCREEN)
-        if (navHostFragment == null){
-            navHostFragment = NavHostFragment.create(R.navigation.favorite_list_screen_navigation)
-            childFragmentManager.beginTransaction()
-                .add(R.id.container_list, navHostFragment, DiscoverScreen.NAV_HOST_LIST_SCREEN)
-                .commitNow()
-        } else {
-            navHostFragment as NavHostFragment
+        adapter.itemClickListener = {
+            showItem(it)
         }
-
-        currentNavHostController = navHostFragment.navController
-        currentNavHostController?.navigate(R.id.favoritesListFragment)
-
+        binding.rv.adapter = adapter
     }
 
     private fun setupStateObserver() {
@@ -73,9 +68,7 @@ class FavoritesScreen : BaseFragment<FavoritesScreenBinding>() {
                     binding.ivCloseSearch.setImageResource(R.drawable.icon_search_24px)
                     requireContext().hideKeyboard(binding.search)
                     deactivateSearch()
-                    if (isListScreenNotInContainer) {
-                        currentNavHostController?.navigate(R.id.favoritesListFragment)
-                    }
+                    adapter.submitList(it.data)
                 }
                 is State.ActivateSearch -> {
                     binding.layoutSearch.background = ResourcesCompat
@@ -86,29 +79,33 @@ class FavoritesScreen : BaseFragment<FavoritesScreenBinding>() {
                         currentNavHostController?.navigate(R.id.favoritesListFragment)
                     }
                 }
-
                 is State.ResultSearch -> {
                     binding.tvSearchResult.visibility = View.VISIBLE
                     binding.ivCloseSearch.setImageResource(R.drawable.icon_cancel_24px)
                     requireContext().hideKeyboard(binding.search)
                     deactivateSearch()
-                    if (isListScreenNotInContainer) {
-                        currentNavHostController?.navigate(R.id.favoritesListFragment)
-                    }
+                    adapter.submitList(it.data)
+                }
+                is State.FilteredList -> {
+                    adapter.submitList(it.data)
                 }
                 is State.NothingFound -> {
                     binding.tvSearchResult.visibility = View.VISIBLE
                     binding.ivCloseSearch.setImageResource(R.drawable.icon_cancel_24px)
                     requireContext().hideKeyboard(binding.search)
                     deactivateSearch()
-                    launchNothingFoundMessage()
+                    binding.rv.visibility = View.GONE
+                    binding.tvMessage.visibility = View.VISIBLE
+                    binding.tvMessage.text = getString(R.string.cant_find_player)
                 }
                 is State.NoFavoritePlayers -> {
                     binding.tvSearchResult.visibility = View.GONE
                     binding.ivCloseSearch.setImageResource(R.drawable.icon_search_24px)
                     requireContext().hideKeyboard(binding.search)
                     deactivateSearch()
-                    launchNoFavoritePlayersMessage()
+                    binding.rv.visibility = View.GONE
+                    binding.tvMessage.visibility = View.VISIBLE
+                    binding.tvMessage.text = getString(R.string.no_favorite_player)
                 }
                 else -> Unit
             }
@@ -148,22 +145,15 @@ class FavoritesScreen : BaseFragment<FavoritesScreenBinding>() {
         }
     }
 
-    private fun launchNothingFoundMessage() {
-        val args = Bundle().apply {
-            putString(MessageScreen.KEY_MESSAGE, getString(R.string.cant_find_player))
-        }
-        currentNavHostController?.navigate(R.id.messageScreen,args)
-    }
+    private fun showItem(item: Player){
 
-    private fun launchNoFavoritePlayersMessage() {
         val args = Bundle().apply {
-            putString(MessageScreen.KEY_MESSAGE, getString(R.string.no_favorite_player))
+            putParcelable(PlayerScreen.KEY_ITEM, item)
         }
-        currentNavHostController?.navigate(R.id.messageScreen,args)
-    }
-
-    companion object{
-        const val NAV_HOST_LIST_SCREEN = "Nav Host List Screen"
+        val navHostFragment = requireActivity().supportFragmentManager
+            .findFragmentById(R.id.container_activity) as NavHostFragment
+        val navController = navHostFragment.navController
+        navController.navigate(R.id.playerScreen, args)
     }
 
 }
