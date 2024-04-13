@@ -14,7 +14,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.example.betting.Utils.BaseFragment
+import com.example.betting.utils.BaseFragment
 import com.example.betting.R
 import com.example.betting.appComponent
 import com.example.betting.databinding.PlayerScreenBinding

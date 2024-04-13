@@ -1,4 +1,4 @@
-package com.example.betting.Utils
+package com.example.betting.utils
 
 import android.content.Context
 import android.view.inputmethod.InputMethodManager

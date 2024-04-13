@@ -13,8 +13,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import com.example.betting.R
-import com.example.betting.Utils.BaseFragment
-import com.example.betting.Utils.hideKeyboard
+import com.example.betting.utils.BaseFragment
+import com.example.betting.utils.hideKeyboard
 import com.example.betting.appComponent
 import com.example.betting.databinding.FavoritesScreenBinding
 import com.example.betting.domain.models.Player

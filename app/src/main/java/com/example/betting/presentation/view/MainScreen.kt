@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.example.betting.Utils.BaseFragment
+import com.example.betting.utils.BaseFragment
 import com.example.betting.R
 import com.example.betting.databinding.MainScreenBinding
 

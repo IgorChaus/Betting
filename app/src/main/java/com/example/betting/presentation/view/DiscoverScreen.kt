@@ -13,13 +13,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import com.example.betting.Utils.BaseFragment
+import com.example.betting.utils.BaseFragment
 import com.example.betting.R
 import com.example.betting.appComponent
 import com.example.betting.databinding.DiscoverScreenBinding
 import com.example.betting.presentation.viewmodels.DiscoverViewModel
 import com.example.betting.presentation.states.State
-import com.example.betting.Utils.hideKeyboard
+import com.example.betting.utils.hideKeyboard
 import com.example.betting.domain.models.Player
 import com.example.betting.presentation.adapter.PlayerListAdapter
 import javax.inject.Inject
@@ -50,7 +50,7 @@ class DiscoverScreen : BaseFragment<DiscoverScreenBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupListenersOnSearch()
-        subscrubeInViewModel()
+        subscrubeOnViewModel()
         binding.swipeRefreshLayout.setOnRefreshListener {
             binding.swipeRefreshLayout.isRefreshing = false
             viewModel.getPlayersFromAllLeagues()
@@ -63,7 +63,7 @@ class DiscoverScreen : BaseFragment<DiscoverScreenBinding>() {
 
     }
 
-    private fun subscrubeInViewModel() {
+    private fun subscrubeOnViewModel() {
         viewModel.state.observe(viewLifecycleOwner) {
             when (it) {
                 is State.Loading -> {
@@ -159,12 +159,6 @@ class DiscoverScreen : BaseFragment<DiscoverScreenBinding>() {
             .findFragmentById(R.id.container_activity) as NavHostFragment
         val navController = navHostFragment.navController
         navController.navigate(R.id.playerScreen, args)
-    }
-
-    companion object{
-        const val LIST_SCREEN_FRAGMENT = "List Screen Fragment"
-        const val NAV_HOST_LIST_SCREEN = "Nav Host List Screen"
-        private const val KEY_MESSAGE = "item"
     }
 
 }

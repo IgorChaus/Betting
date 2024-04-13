@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.betting.Utils.Response
+import com.example.betting.utils.Response
 import com.example.betting.domain.models.League
 import com.example.betting.domain.models.Player
 import com.example.betting.domain.repositories.AppRepository

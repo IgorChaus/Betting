@@ -1,10 +1,8 @@
 package com.example.betting.data.repositories
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.map
-import com.example.betting.Utils.Response
-import com.example.betting.Utils.toEntity
-import com.example.betting.Utils.toModel
+import com.example.betting.utils.Response
+import com.example.betting.utils.toEntity
+import com.example.betting.utils.toModel
 import com.example.betting.data.local.AppDao
 import com.example.betting.data.models.PlayersDTO
 import com.example.betting.data.remote.RetrofitApi
