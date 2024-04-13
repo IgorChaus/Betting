@@ -85,18 +85,31 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:visibility="gone"
-        tools:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_search" />
+        app:layout_constraintTop_toBottomOf="@+id/layout_search"
+        tools:visibility="visible" />
 
-    <FrameLayout
-        android:id="@+id/container_list"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@+id/tv_searchResult"
+        tools:listitem="@layout/item_player" />
+
+    <TextView
+        android:id="@+id/tv_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto"
+        android:gravity="center_horizontal"
+        android:textColor="@color/blue_500"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_searchResult" />
+        app:layout_constraintTop_toBottomOf="@+id/layout_search"
+        tools:layout_editor_absoluteX="32dp"
+        tools:text="You don’t have favorite players yet. You Discover section to find players you like."
+        tools:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

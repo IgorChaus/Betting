@@ -3,7 +3,9 @@ package com.example.betting.Utils
 import android.content.Context
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import com.example.betting.data.models.LeaguesDTO
 import com.example.betting.data.models.PlayerEntity
+import com.example.betting.domain.models.League
 import com.example.betting.domain.models.Player
 
 fun Context.hideKeyboard(editText: EditText){
@@ -47,3 +49,11 @@ fun Player.toEntity() = PlayerEntity(
 )
 
 fun List<PlayerEntity>.toModel() = this.map{ it.toModel() }
+
+fun LeaguesDTO.toModel() = this.response.map {
+    League(
+        id = it.league.id,
+        name = it.league.name,
+        logo = it.league.logo
+    )
+}

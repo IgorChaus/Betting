@@ -9,7 +9,7 @@ import com.example.betting.data.models.PlayerEntity
 interface AppDao {
 
     @Query("SELECT * FROM favoritePlayers")
-    fun getPlayersList(): LiveData<List<PlayerEntity>>
+    fun getPlayersList(): List<PlayerEntity>
 
     @Query("SELECT * FROM favoritePlayers WHERE id = :id")
     suspend fun getPlayer(id: Int): PlayerEntity

@@ -20,6 +20,8 @@ import com.example.betting.databinding.DiscoverScreenBinding
 import com.example.betting.presentation.viewmodels.DiscoverViewModel
 import com.example.betting.presentation.states.State
 import com.example.betting.Utils.hideKeyboard
+import com.example.betting.domain.models.Player
+import com.example.betting.presentation.adapter.PlayerListAdapter
 import javax.inject.Inject
 
 class DiscoverScreen : BaseFragment<DiscoverScreenBinding>() {
@@ -29,6 +31,8 @@ class DiscoverScreen : BaseFragment<DiscoverScreenBinding>() {
     private val viewModel: DiscoverViewModel by viewModels { viewModelFactory }
 
     private var currentNavHostController: NavController? = null
+
+    private val adapter by lazy { PlayerListAdapter() }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -46,76 +50,67 @@ class DiscoverScreen : BaseFragment<DiscoverScreenBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupListenersOnSearch()
-        setupStateObserver()
+        subscrubeInViewModel()
         binding.swipeRefreshLayout.setOnRefreshListener {
             binding.swipeRefreshLayout.isRefreshing = false
             viewModel.getPlayersFromAllLeagues()
         }
 
-
-        var navHostFragment = childFragmentManager.findFragmentByTag(NAV_HOST_LIST_SCREEN)
-        if (navHostFragment == null){
-            navHostFragment = NavHostFragment.create(R.navigation.discover_list_screen_navigation)
-            childFragmentManager.beginTransaction()
-                .add(R.id.container_list, navHostFragment, NAV_HOST_LIST_SCREEN)
-                .commitNow()
-        } else {
-            navHostFragment as NavHostFragment
+        adapter.itemClickListener = {
+            showItem(it)
         }
-
-        currentNavHostController = navHostFragment.navController
-        currentNavHostController?.navigate(R.id.discoverListFragment)
+        binding.rv.adapter = adapter
 
     }
 
-    private fun setupStateObserver() {
+    private fun subscrubeInViewModel() {
         viewModel.state.observe(viewLifecycleOwner) {
-            val isListScreenNotInContainer = childFragmentManager
-                .findFragmentByTag(LIST_SCREEN_FRAGMENT) == null
             when (it) {
                 is State.Loading -> {
                     binding.progressBarDiscover.progress = it.progress
                     binding.progressBarDiscover.visibility = it.progressVisible
-                    if (isListScreenNotInContainer){
-                        currentNavHostController?.navigate(R.id.discoverListFragment)
-                    }
+                    binding.tvMessage.visibility = View.GONE
                 }
                 is State.ContentList -> {
                     binding.tvSearchResult.visibility = View.GONE
                     binding.ivCloseSearch.setImageResource(R.drawable.icon_search_24px)
                     requireContext().hideKeyboard(binding.search)
                     deactivateSearch()
-                    if (isListScreenNotInContainer) {
-                        currentNavHostController?.navigate(R.id.discoverListFragment)
-                    }
+                    binding.rv.visibility = View.VISIBLE
+                    binding.tvMessage.visibility = View.GONE
+                    adapter.submitList(it.data)
                 }
                 is State.ActivateSearch -> {
                     binding.layoutSearch.background = ResourcesCompat
                         .getDrawable(resources, R.drawable.round_corners_border, null)
                     binding.tvSearchResult.visibility = View.GONE
                     binding.ivCloseSearch.setImageResource(R.drawable.icon_cancel_24px)
-                    if (isListScreenNotInContainer) {
-                        currentNavHostController?.navigate(R.id.discoverListFragment)
-                    }
+                    binding.rv.visibility = View.VISIBLE
                 }
                 is State.ResultSearch -> {
                     binding.tvSearchResult.visibility = View.VISIBLE
                     binding.ivCloseSearch.setImageResource(R.drawable.icon_cancel_24px)
                     requireContext().hideKeyboard(binding.search)
+                    binding.rv.visibility = View.VISIBLE
                     deactivateSearch()
-                    if (isListScreenNotInContainer) {
-                        currentNavHostController?.navigate(R.id.discoverListFragment)
-                    }
+                    adapter.submitList(it.data)
+                }
+                is State.FilteredList -> {
+                    adapter.submitList(it.data)
                 }
                 is State.NothingFound -> {
                     binding.tvSearchResult.visibility = View.VISIBLE
                     binding.ivCloseSearch.setImageResource(R.drawable.icon_cancel_24px)
                     requireContext().hideKeyboard(binding.search)
                     deactivateSearch()
-                    launchNothingFoundMessage()
+                    binding.rv.visibility = View.GONE
+                    binding.tvMessage.visibility = View.VISIBLE
+                    binding.tvMessage.text = getString(R.string.cant_find_player)
                 }
                 is State.Error -> {
-                    launchNoInternetConnectionMessage()
+                    binding.rv.visibility = View.GONE
+                    binding.tvMessage.visibility = View.VISIBLE
+                    binding.tvMessage.text = getString(R.string.no_internet_connection)
                 }
                 else -> Unit
             }
@@ -155,18 +150,15 @@ class DiscoverScreen : BaseFragment<DiscoverScreenBinding>() {
         }
     }
 
-    private fun launchNothingFoundMessage() {
-        val args = Bundle().apply {
-            putString(KEY_MESSAGE, getString(R.string.cant_find_player))
-        }
-        currentNavHostController?.navigate(R.id.messageScreen,args)
-    }
+    private fun showItem(item: Player){
 
-    private fun launchNoInternetConnectionMessage() {
         val args = Bundle().apply {
-            putString(KEY_MESSAGE, getString(R.string.no_internet_connection))
+            putParcelable(PlayerScreen.KEY_ITEM, item)
         }
-        currentNavHostController?.navigate(R.id.messageScreen,args)
+        val navHostFragment = requireActivity().supportFragmentManager
+            .findFragmentById(R.id.container_activity) as NavHostFragment
+        val navController = navHostFragment.navController
+        navController.navigate(R.id.playerScreen, args)
     }
 
     companion object{

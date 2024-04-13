@@ -2,11 +2,12 @@ package com.example.betting.presentation.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
-import com.example.betting.domain.repositories.AppRepository
+import androidx.lifecycle.viewModelScope
 import com.example.betting.domain.models.Player
+import com.example.betting.domain.repositories.AppRepository
 import com.example.betting.presentation.states.State
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class FavoriteViewModel @Inject constructor(
@@ -19,29 +20,17 @@ class FavoriteViewModel @Inject constructor(
 
     private var playerList = listOf<Player>()
     private var strSearch: String = EMPTY
-    private val playersObserver: Observer<List<Player>> = Observer {
-        playerList = it
-        when( state.value){
-            is State.ContentList -> setContentListState()
-            is State.FilteredList -> setFilteredListState(strSearch)
-            is State.ResultSearch -> setSearchResultState(strSearch)
-            is State.NothingFound -> setSearchResultState(strSearch)
-            is State.NoFavoritePlayers -> setContentListState()
-           else -> Unit
-        }
-    }
 
-    init{
-        repository.getFavoritePlayerList().observeForever(playersObserver)
-        setContentListState()
-    }
-
-    fun setContentListState() {
-        if (playerList.isNotEmpty()) {
-            _state.value = State.ContentList(playerList)
-        } else {
-            _state.value = State.NoFavoritePlayers
+    fun getFavoritePlayers(){
+        viewModelScope.launch {
+            playerList = repository.getFavoritePlayerList()
+            if (playerList.isNotEmpty()) {
+                _state.value = State.ContentList(playerList)
+            } else {
+                _state.value = State.NoFavoritePlayers
+            }
         }
+
     }
 
     fun setActivateSearch() {
@@ -86,11 +75,6 @@ class FavoriteViewModel @Inject constructor(
                     it.lastName?.contains(strSearch, ignoreCase = true) ?: false
         }
         return filteredList
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        repository.getFavoritePlayerList().removeObserver(playersObserver)
     }
 
     companion object{
