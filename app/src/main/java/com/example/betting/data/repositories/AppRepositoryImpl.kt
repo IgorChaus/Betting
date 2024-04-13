@@ -42,8 +42,10 @@ class AppRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getFavoritePlayerList(): LiveData<List<Player>> {
-        return appDao.getPlayersList().map { it.toModel() }
+    override suspend fun getFavoritePlayerList(): List<Player> {
+        return withContext(Dispatchers.IO) {
+            appDao.getPlayersList().map { it.toModel() }
+        }
     }
 
     override suspend fun isPlayerFavorite(id: Int): Boolean {

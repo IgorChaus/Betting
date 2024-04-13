@@ -65,8 +65,6 @@ class DiscoverScreen : BaseFragment<DiscoverScreenBinding>() {
 
     private fun subscrubeInViewModel() {
         viewModel.state.observe(viewLifecycleOwner) {
-            val isListScreenNotInContainer = childFragmentManager
-                .findFragmentByTag(LIST_SCREEN_FRAGMENT) == null
             when (it) {
                 is State.Loading -> {
                     binding.progressBarDiscover.progress = it.progress

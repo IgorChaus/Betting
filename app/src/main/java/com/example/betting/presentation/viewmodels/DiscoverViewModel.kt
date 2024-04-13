@@ -1,6 +1,5 @@
 package com.example.betting.presentation.viewmodels
 
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

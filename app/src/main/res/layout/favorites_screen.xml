@@ -85,9 +85,9 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:visibility="gone"
-        tools:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_search" />
+        app:layout_constraintTop_toBottomOf="@+id/layout_search"
+        tools:visibility="visible" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv"

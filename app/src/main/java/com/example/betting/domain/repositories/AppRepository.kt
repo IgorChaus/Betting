@@ -13,7 +13,7 @@ interface AppRepository {
 
     suspend fun getPlayers(leagueId: String, season: String, page: String): Response<PlayersDTO>
 
-    fun getFavoritePlayerList(): LiveData<List<Player>>
+    suspend fun getFavoritePlayerList(): List<Player>
 
     suspend fun isPlayerFavorite(id: Int): Boolean
 

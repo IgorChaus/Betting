@@ -11,17 +11,16 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import com.example.betting.Utils.BaseFragment
 import com.example.betting.R
+import com.example.betting.Utils.BaseFragment
+import com.example.betting.Utils.hideKeyboard
 import com.example.betting.appComponent
 import com.example.betting.databinding.FavoritesScreenBinding
-import com.example.betting.presentation.viewmodels.FavoriteViewModel
-import com.example.betting.presentation.states.State
-import com.example.betting.Utils.hideKeyboard
 import com.example.betting.domain.models.Player
 import com.example.betting.presentation.adapter.PlayerListAdapter
+import com.example.betting.presentation.states.State
+import com.example.betting.presentation.viewmodels.FavoriteViewModel
 import javax.inject.Inject
 
 class FavoritesScreen : BaseFragment<FavoritesScreenBinding>() {
@@ -29,8 +28,6 @@ class FavoritesScreen : BaseFragment<FavoritesScreenBinding>() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: FavoriteViewModel by viewModels { viewModelFactory }
-
-    private var currentNavHostController: NavController? = null
 
     private val adapter by lazy { PlayerListAdapter() }
 
@@ -56,12 +53,12 @@ class FavoritesScreen : BaseFragment<FavoritesScreenBinding>() {
             showItem(it)
         }
         binding.rv.adapter = adapter
+
+        viewModel.getFavoritePlayers()
     }
 
     private fun setupStateObserver() {
         viewModel.state.observe(viewLifecycleOwner) {
-            val isListScreenNotInContainer = childFragmentManager
-                .findFragmentByTag(DiscoverScreen.LIST_SCREEN_FRAGMENT) == null
             when (it) {
                 is State.ContentList -> {
                     binding.tvSearchResult.visibility = View.GONE
@@ -73,11 +70,7 @@ class FavoritesScreen : BaseFragment<FavoritesScreenBinding>() {
                 is State.ActivateSearch -> {
                     binding.layoutSearch.background = ResourcesCompat
                         .getDrawable(resources, R.drawable.round_corners_border, null)
-                    binding.tvSearchResult.visibility = View.GONE
                     binding.ivCloseSearch.setImageResource(R.drawable.icon_cancel_24px)
-                    if (isListScreenNotInContainer) {
-                        currentNavHostController?.navigate(R.id.favoritesListFragment)
-                    }
                 }
                 is State.ResultSearch -> {
                     binding.tvSearchResult.visibility = View.VISIBLE
@@ -141,7 +134,7 @@ class FavoritesScreen : BaseFragment<FavoritesScreenBinding>() {
         binding.ivCloseSearch.setOnClickListener {
             val editableText = Editable.Factory.getInstance().newEditable("")
             binding.search.text = editableText
-            viewModel.setContentListState()
+            viewModel.getFavoritePlayers()
         }
     }
 
