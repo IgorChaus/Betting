@@ -1,10 +1,9 @@
 package com.example.betting.data.repositories
 
-import com.example.betting.utils.Response
-import com.example.betting.utils.toEntity
-import com.example.betting.utils.toModel
+import com.example.betting.domain.models.Response
+import com.example.betting.common.toEntity
+import com.example.betting.common.toModel
 import com.example.betting.data.local.AppDao
-import com.example.betting.data.models.PlayersDTO
 import com.example.betting.data.remote.RetrofitApi
 import com.example.betting.domain.models.League
 import com.example.betting.domain.models.Player
@@ -29,10 +28,10 @@ class AppRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getPlayers(leagueId: String, season: String, page: String): Response<PlayersDTO> {
+    override suspend fun getPlayers(leagueId: String, season: String, page: String): Response<List<Player>> {
         return withContext(Dispatchers.IO) {
             try {
-                val response = service.getPlayers(leagueId, season, page)
+                val response = service.getPlayers(leagueId, season, page).toModel()
                 Response.Success(response)
             } catch (e: Exception) {
                 Response.Error(e)

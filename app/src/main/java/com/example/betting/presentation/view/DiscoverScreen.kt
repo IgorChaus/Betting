@@ -19,9 +19,9 @@ import com.example.betting.domain.models.Player
 import com.example.betting.presentation.adapter.PlayerListAdapter
 import com.example.betting.presentation.states.State
 import com.example.betting.presentation.viewmodels.DiscoverViewModel
-import com.example.betting.utils.BaseFragment
-import com.example.betting.utils.hideKeyboard
-import com.example.betting.utils.repeatOnCreated
+import com.example.betting.common.BaseFragment
+import com.example.betting.common.hideKeyboard
+import com.example.betting.common.repeatOnCreated
 import javax.inject.Inject
 
 class DiscoverScreen : BaseFragment<DiscoverScreenBinding>() {

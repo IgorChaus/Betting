@@ -1,4 +1,4 @@
-package com.example.betting.utils
+package com.example.betting.common
 
 import android.os.Bundle
 import android.view.LayoutInflater

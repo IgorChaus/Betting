@@ -27,13 +27,8 @@
         android:id="@+id/mainScreen"
         android:name="com.example.betting.presentation.view.MainScreen"
         android:label="main_screen"
-        tools:layout="@layout/main_screen">
-        <action
-            android:id="@+id/action_mainScreen_to_bottom_navigation"
-            app:destination="@id/bottom_navigation" />
-    </fragment>
+        tools:layout="@layout/main_screen"/>
 
-    <include app:graph="@navigation/bottom_navigation"/>
     <fragment
         android:id="@+id/playerScreen"
         android:name="com.example.betting.presentation.view.PlayerScreen"

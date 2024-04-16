@@ -2,7 +2,7 @@ package com.example.betting.presentation.view
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.example.betting.utils.BaseFragment
+import com.example.betting.common.BaseFragment
 import com.example.betting.databinding.SettingsScreenBinding
 
 class SettingsScreen : BaseFragment<SettingsScreenBinding>() {

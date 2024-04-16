@@ -1,4 +1,4 @@
-package com.example.betting.utils
+package com.example.betting.domain.models
 
 import java.lang.Exception
 

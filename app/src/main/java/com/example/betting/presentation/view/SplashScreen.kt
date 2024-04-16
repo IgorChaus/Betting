@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.betting.utils.BaseFragment
+import com.example.betting.common.BaseFragment
 import com.example.betting.R
 import com.example.betting.databinding.SplashScreenBinding
 import kotlinx.coroutines.delay
@@ -32,6 +32,8 @@ class SplashScreen : BaseFragment<SplashScreenBinding>() {
             "com.example.betting",
             AppCompatActivity.MODE_PRIVATE
         )
+
+        val action = SplashScreenDirections.actionSplashScreenToWelcomeScreen()
         if (prefs.getBoolean(FIRST_LAUNCH, true)) {
             prefs.edit().putBoolean(FIRST_LAUNCH, false).apply()
             binding.imageView.visibility = View.VISIBLE
@@ -41,10 +43,10 @@ class SplashScreen : BaseFragment<SplashScreenBinding>() {
                     binding.progressBarSplash.progress = i
                     delay(1000)
                 }
-                findNavController().navigate(R.id.action_splashScreen_to_welcomeScreen)
+                findNavController().navigate(action)
             }
         } else {
-                findNavController().navigate(R.id.action_splashScreen_to_welcomeScreen)
+                findNavController().navigate(action)
         }
 
     }
