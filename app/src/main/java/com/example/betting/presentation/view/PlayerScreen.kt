@@ -14,13 +14,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.example.betting.utils.BaseFragment
+import com.example.betting.common.BaseFragment
 import com.example.betting.R
 import com.example.betting.appComponent
 import com.example.betting.databinding.PlayerScreenBinding
 import com.example.betting.presentation.viewmodels.PlayerViewModel
 import com.example.betting.domain.models.Player
-import com.example.betting.utils.repeatOnCreated
+import com.example.betting.common.repeatOnCreated
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel

@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.betting.utils.BaseFragment
+import com.example.betting.common.BaseFragment
 import com.example.betting.R
 import com.example.betting.databinding.SplashScreenBinding
 import kotlinx.coroutines.delay
