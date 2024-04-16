@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.betting.data.models.LeaguesDTO
 import com.example.betting.data.models.PlayerEntity
+import com.example.betting.data.models.PlayersDTO
 import com.example.betting.domain.models.League
 import com.example.betting.domain.models.Player
 import kotlinx.coroutines.flow.Flow
@@ -56,7 +57,26 @@ fun Player.toEntity() = PlayerEntity(
     leagueLogo = this.leagueLogo
 )
 
-fun List<PlayerEntity>.toModel() = this.map{ it.toModel() }
+fun PlayersDTO.toModel(): List<Player>{
+    return this.response.map {
+        Player(
+            id = it.player.id,
+            firstName = it.player.firstname,
+            lastName = it.player.lastname,
+            age = it.player.age,
+            birthPlace = it.player.birth.place,
+            birthCountry = it.player.birth.country,
+            birthDate = it.player.birth.date,
+            nationality = it.player.nationality,
+            height = it.player.height,
+            weight = it.player.weight,
+            photo = it.player.photo,
+            team = it.statistics[0].team.name,
+            leagueName = "",
+            leagueLogo = ""
+        )
+    }
+}
 
 fun LeaguesDTO.toModel() = this.response.map {
     League(

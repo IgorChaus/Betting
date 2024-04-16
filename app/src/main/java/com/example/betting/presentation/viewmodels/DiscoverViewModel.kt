@@ -8,7 +8,7 @@ import com.example.betting.domain.models.Player
 import com.example.betting.domain.repositories.AppRepository
 import com.example.betting.presentation.adapter.PlayerListAdapter
 import com.example.betting.presentation.states.State
-import com.example.betting.utils.Response
+import com.example.betting.domain.models.Response
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -140,23 +140,11 @@ class DiscoverViewModel @Inject constructor(
                     )
                 )
 
-                val players = response.data.response
+                val players = response.data
                 val limit = minOf(players.size, LIMIT_LIST)
                 for (item in players.take(limit)) {
                     playerList.add(
-                        Player(
-                            id = item.player.id,
-                            firstName = item.player.firstname,
-                            lastName = item.player.lastname,
-                            age = item.player.age,
-                            birthPlace = item.player.birth.place,
-                            birthCountry = item.player.birth.country,
-                            birthDate = item.player.birth.date,
-                            nationality = item.player.nationality,
-                            height = item.player.height,
-                            weight = item.player.weight,
-                            photo = item.player.photo,
-                            team = item.statistics[0].team.name,
+                        item.copy(
                             leagueName = leagueItem.name,
                             leagueLogo = leagueItem.logo
                         )
