@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.betting.domain.models.Player
 import com.example.betting.domain.repositories.AppRepository
 import com.example.betting.presentation.states.State
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -22,7 +23,7 @@ class FavoriteViewModel @Inject constructor(
     private var strSearch: String = EMPTY
 
     fun getFavoritePlayers(){
-        viewModelScope.launch {
+        viewModelScope.launch(coroutineExceptionHandler) {
             playerList = repository.getFavoritePlayerList()
             if (playerList.isNotEmpty()) {
                 _state.value = State.ContentList(playerList)
@@ -75,6 +76,14 @@ class FavoriteViewModel @Inject constructor(
                     it.lastName?.contains(strSearch, ignoreCase = true) ?: false
         }
         return filteredList
+    }
+
+    private val coroutineExceptionHandler = CoroutineExceptionHandler { _, exception ->
+        handleException(exception)
+    }
+
+    private fun handleException(throwable: Throwable?) {
+        Log.i("MyTag", "Exception $throwable")
     }
 
     companion object{
