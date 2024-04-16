@@ -1,12 +1,13 @@
 package com.example.betting.presentation.viewmodels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.betting.domain.models.Player
 import com.example.betting.domain.repositories.AppRepository
 import com.example.betting.presentation.states.State
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -14,9 +15,8 @@ class FavoriteViewModel @Inject constructor(
     private val repository: AppRepository
 ) : ViewModel() {
 
-    private val _state: MutableLiveData<State> = MutableLiveData()
-    val state: LiveData<State>
-        get() = _state
+    private val _state = MutableStateFlow<State>(State.ContentList(data = listOf()))
+    val state = _state.asStateFlow()
 
     private var playerList = listOf<Player>()
     private var strSearch: String = EMPTY

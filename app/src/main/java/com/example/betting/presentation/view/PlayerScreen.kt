@@ -14,12 +14,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.example.betting.Utils.BaseFragment
+import com.example.betting.utils.BaseFragment
 import com.example.betting.R
 import com.example.betting.appComponent
 import com.example.betting.databinding.PlayerScreenBinding
 import com.example.betting.presentation.viewmodels.PlayerViewModel
 import com.example.betting.domain.models.Player
+import com.example.betting.utils.repeatOnCreated
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
@@ -70,7 +71,7 @@ class PlayerScreen : BaseFragment<PlayerScreenBinding>() {
         roundCorners(view)
         bindViews()
         viewModel.checkPlayer(item)
-        viewModel.isPlayerFavorite.observe(viewLifecycleOwner){
+        viewModel.isPlayerFavorite.repeatOnCreated(this){
             if(it){
                 binding.iconFavorites.setImageResource(R.drawable.icon_favorite_selected)
             } else
@@ -102,7 +103,7 @@ class PlayerScreen : BaseFragment<PlayerScreenBinding>() {
         ViewCompat.setBackground(cardContainer, shapeDrawable)
     }
 
-    fun bindViews(){
+    private fun bindViews(){
         Glide.with(this).load(item.photo).into(binding.playerImage)
         with(binding){
             tvTeamInCard.text = item.team

@@ -1,11 +1,11 @@
 package com.example.betting.presentation.viewmodels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.betting.domain.repositories.AppRepository
 import com.example.betting.domain.models.Player
+import com.example.betting.domain.repositories.AppRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -13,10 +13,8 @@ class PlayerViewModel @Inject constructor(
     private val repository: AppRepository
 ): ViewModel() {
 
-    private val _isPlayerFavorite: MutableLiveData<Boolean> = MutableLiveData()
-    val isPlayerFavorite: LiveData<Boolean>
-        get() = _isPlayerFavorite
-
+    private val _isPlayerFavorite = MutableStateFlow(false)
+    val isPlayerFavorite = _isPlayerFavorite.asStateFlow()
 
     fun checkPlayer(playerAdapterItem: Player) {
         viewModelScope.launch {
@@ -25,7 +23,7 @@ class PlayerViewModel @Inject constructor(
     }
 
     fun pressButton(playerAdapterItem: Player){
-        val isFavorite: Boolean = isPlayerFavorite.value ?: false
+        val isFavorite = _isPlayerFavorite.value
         if(isFavorite){
             deletePlayer(playerAdapterItem)
         }else{
@@ -46,6 +44,5 @@ class PlayerViewModel @Inject constructor(
             _isPlayerFavorite.value = false
         }
     }
-
 
 }

@@ -3,6 +3,7 @@ package com.example.betting.presentation.view
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,14 +14,15 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import com.example.betting.R
-import com.example.betting.Utils.BaseFragment
-import com.example.betting.Utils.hideKeyboard
+import com.example.betting.utils.BaseFragment
+import com.example.betting.utils.hideKeyboard
 import com.example.betting.appComponent
 import com.example.betting.databinding.FavoritesScreenBinding
 import com.example.betting.domain.models.Player
 import com.example.betting.presentation.adapter.PlayerListAdapter
 import com.example.betting.presentation.states.State
 import com.example.betting.presentation.viewmodels.FavoriteViewModel
+import com.example.betting.utils.repeatOnCreated
 import javax.inject.Inject
 
 class FavoritesScreen : BaseFragment<FavoritesScreenBinding>() {
@@ -58,7 +60,7 @@ class FavoritesScreen : BaseFragment<FavoritesScreenBinding>() {
     }
 
     private fun setupStateObserver() {
-        viewModel.state.observe(viewLifecycleOwner) {
+        viewModel.state.repeatOnCreated(this) {
             when (it) {
                 is State.ContentList -> {
                     binding.tvSearchResult.visibility = View.GONE

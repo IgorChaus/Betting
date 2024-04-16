@@ -1,16 +1,16 @@
 package com.example.betting.presentation.viewmodels
 
 import android.view.View
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.betting.Utils.Response
 import com.example.betting.domain.models.League
 import com.example.betting.domain.models.Player
 import com.example.betting.domain.repositories.AppRepository
 import com.example.betting.presentation.adapter.PlayerListAdapter
 import com.example.betting.presentation.states.State
+import com.example.betting.utils.Response
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.lang.Integer.min
 import java.util.Calendar
@@ -22,9 +22,14 @@ class DiscoverViewModel @Inject constructor(
 
     private val currentYear = Calendar.getInstance().get(Calendar.YEAR).toString()
 
-    private val _state: MutableLiveData<State> = MutableLiveData()
-    val state: LiveData<State>
-        get() = _state
+    private val _state = MutableStateFlow<State>(
+        State.Loading(
+            data = listOf(),
+            progress = 0,
+            progressVisible = View.VISIBLE
+        )
+    )
+    val state = _state.asStateFlow()
 
     private var leagueList: List<League>? = null
     private val playerList = arrayListOf<PlayerListAdapter.AdapterItems>()
