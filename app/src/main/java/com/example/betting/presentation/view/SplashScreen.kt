@@ -32,6 +32,7 @@ class SplashScreen : BaseFragment<SplashScreenBinding>() {
             "com.example.betting",
             AppCompatActivity.MODE_PRIVATE
         )
+
         if (prefs.getBoolean(FIRST_LAUNCH, true)) {
             prefs.edit().putBoolean(FIRST_LAUNCH, false).apply()
             binding.imageView.visibility = View.VISIBLE
