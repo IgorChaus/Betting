@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_navigation"
+    android:id="@+id/nav_graph_main"
     app:startDestination="@id/splashScreen">
 
     <fragment
@@ -27,12 +27,10 @@
         android:id="@+id/mainScreen"
         android:name="com.example.betting.presentation.view.MainScreen"
         android:label="main_screen"
-        tools:layout="@layout/main_screen"/>
-
+        tools:layout="@layout/main_screen" />
     <fragment
         android:id="@+id/playerScreen"
         android:name="com.example.betting.presentation.view.PlayerScreen"
         android:label="player_screen"
         tools:layout="@layout/player_screen" />
-
 </navigation>
