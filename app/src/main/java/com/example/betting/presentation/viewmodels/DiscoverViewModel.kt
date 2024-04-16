@@ -1,5 +1,6 @@
 package com.example.betting.presentation.viewmodels
 
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,6 +10,7 @@ import com.example.betting.domain.repositories.AppRepository
 import com.example.betting.presentation.adapter.PlayerListAdapter
 import com.example.betting.presentation.states.State
 import com.example.betting.domain.models.Response
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -34,6 +36,10 @@ class DiscoverViewModel @Inject constructor(
     private var leagueList: List<League>? = null
     private val playerList = arrayListOf<PlayerListAdapter.AdapterItems>()
     private var strSearch: String = EMPTY
+
+    private val coroutineExceptionHandler = CoroutineExceptionHandler { _, exception ->
+        handleException(exception)
+    }
 
     init{
         getPlayersFromAllLeagues()
@@ -85,7 +91,7 @@ class DiscoverViewModel @Inject constructor(
         }
 
     fun getPlayersFromAllLeagues() {
-        viewModelScope.launch {
+        viewModelScope.launch(coroutineExceptionHandler) {
             getLeagues()
             if (leagueList != null) {
                 playerList.clear()
@@ -122,7 +128,7 @@ class DiscoverViewModel @Inject constructor(
                 leagueList = response.data
             }
             is Response.Error -> {
-                _state.value = State.Error
+                handleException(response.exception)
             }
         }
     }
@@ -152,9 +158,14 @@ class DiscoverViewModel @Inject constructor(
                 }
             }
             is Response.Error -> {
-                _state.value = State.Error
+                handleException(response.exception)
             }
         }
+    }
+
+    private fun handleException(throwable: Throwable?) {
+        Log.i("MyTag", "Exception $throwable")
+        _state.value = State.Error
     }
 
     companion object {

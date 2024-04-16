@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.betting.common.BaseFragment
-import com.example.betting.R
 import com.example.betting.databinding.WelcomeScreenBinding
 
 class WelcomeScreen : BaseFragment<WelcomeScreenBinding>() {

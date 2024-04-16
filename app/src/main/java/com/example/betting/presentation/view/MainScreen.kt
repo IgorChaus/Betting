@@ -27,7 +27,7 @@ class MainScreen : BaseFragment<MainScreenBinding>() {
 
         var navHostFragment = childFragmentManager.findFragmentByTag(NAV_HOST_MAIN_SCREEN)
         if (navHostFragment == null){
-            navHostFragment = NavHostFragment.create(R.navigation.bottom_navigation)
+            navHostFragment = NavHostFragment.create(R.navigation.nav_graph_bottom_menu)
             childFragmentManager.beginTransaction()
                 .add(R.id.container_screen, navHostFragment, NAV_HOST_MAIN_SCREEN)
                 .setPrimaryNavigationFragment(navHostFragment)

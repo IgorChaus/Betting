@@ -1,9 +1,11 @@
 package com.example.betting.presentation.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.betting.domain.models.Player
 import com.example.betting.domain.repositories.AppRepository
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -17,7 +19,7 @@ class PlayerViewModel @Inject constructor(
     val isPlayerFavorite = _isPlayerFavorite.asStateFlow()
 
     fun checkPlayer(playerAdapterItem: Player) {
-        viewModelScope.launch {
+        viewModelScope.launch(coroutineExceptionHandler) {
             _isPlayerFavorite.value = repository.isPlayerFavorite(playerAdapterItem.id)
         }
     }
@@ -43,6 +45,14 @@ class PlayerViewModel @Inject constructor(
             repository.deleteFavoritePlayer(playerAdapterItem.id)
             _isPlayerFavorite.value = false
         }
+    }
+
+    private val coroutineExceptionHandler = CoroutineExceptionHandler { _, exception ->
+        handleException(exception)
+    }
+
+    private fun handleException(throwable: Throwable?) {
+        Log.i("MyTag", "Exception $throwable")
     }
 
 }

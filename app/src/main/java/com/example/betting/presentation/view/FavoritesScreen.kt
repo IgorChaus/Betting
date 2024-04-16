@@ -3,6 +3,7 @@ package com.example.betting.presentation.view
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -66,6 +67,8 @@ class FavoritesScreen : BaseFragment<FavoritesScreenBinding>() {
                     binding.ivCloseSearch.setImageResource(R.drawable.icon_search_24px)
                     requireContext().hideKeyboard(binding.search)
                     deactivateSearch()
+                    binding.rv.visibility = View.VISIBLE
+                    binding.tvMessage.visibility = View.GONE
                     adapter.submitList(it.data)
                 }
                 is State.ActivateSearch -> {

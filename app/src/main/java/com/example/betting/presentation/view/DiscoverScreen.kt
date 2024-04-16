@@ -3,6 +3,7 @@ package com.example.betting.presentation.view
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,7 +49,7 @@ class DiscoverScreen : BaseFragment<DiscoverScreenBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupListenersOnSearch()
-        subscrubeOnViewModel()
+        subscribeOnViewModel()
         binding.swipeRefreshLayout.setOnRefreshListener {
             binding.swipeRefreshLayout.isRefreshing = false
             viewModel.getPlayersFromAllLeagues()
@@ -61,7 +62,7 @@ class DiscoverScreen : BaseFragment<DiscoverScreenBinding>() {
 
     }
 
-    private fun subscrubeOnViewModel() {
+    private fun subscribeOnViewModel() {
         viewModel.state.repeatOnCreated(this) {
             when (it) {
                 is State.Loading -> {
