@@ -22,7 +22,8 @@ class WelcomeScreen : BaseFragment<WelcomeScreenBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.btStart.setOnClickListener {
-            findNavController().navigate(R.id.mainScreen)
+            val action = WelcomeScreenDirections.actionWelcomeScreenToMainScreen()
+            findNavController().navigate(action)
         }
     }
 
