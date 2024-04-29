@@ -12,6 +12,8 @@ import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.query.RealmResults
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -42,11 +44,13 @@ class AppRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getFavoritePlayerList(): List<Player> {
-        return withContext(Dispatchers.IO) {
-            val players = realmInstance.query<PlayerEntity>().find() as List<PlayerEntity>
-            players.toModel()
-        }
+    override suspend fun getFavoritePlayerList(): Flow<List<Player>> {
+        return realmInstance.query<PlayerEntity>()
+            .find()
+            .asFlow()
+            .map { change  ->
+                change.list.toList().toModel()
+            }
     }
 
     override suspend fun isPlayerFavorite(id: Int): Boolean {
