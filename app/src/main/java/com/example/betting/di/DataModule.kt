@@ -1,8 +1,5 @@
 package com.example.betting.di
 
-import android.content.Context
-import com.example.betting.data.local.AppDao
-import com.example.betting.data.local.AppDataBase
 import com.example.betting.data.remote.RetrofitApi
 import com.example.betting.data.remote.RetrofitInstance
 import com.example.betting.data.repositories.AppRepositoryImpl
@@ -18,17 +15,17 @@ class DataModule {
         return RetrofitInstance.service
     }
 
-    @Provides
-    @ApplicationScope
-    fun provideAppDao(
-        context: Context
-    ): AppDao {
-        return AppDataBase.getInstance(context).appDao()
-    }
+//    @Provides
+//    @ApplicationScope
+//    fun provideAppDao(
+//        context: Context
+//    ): AppDao {
+//        return AppDataBase.getInstance(context).appDao()
+//    }
 
     @Provides
-    fun provideAppRepository(service: RetrofitApi, appDao: AppDao): AppRepository{
-        return AppRepositoryImpl(service, appDao)
+    fun provideAppRepository(service: RetrofitApi): AppRepository{
+        return AppRepositoryImpl(service)
     }
 
 }

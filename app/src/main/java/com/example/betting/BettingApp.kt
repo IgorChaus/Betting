@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import com.example.betting.di.AppComponent
 import com.example.betting.di.DaggerAppComponent
+import io.realm.kotlin.Realm
 
 class BettingApp: Application() {
     lateinit var appComponent: AppComponent

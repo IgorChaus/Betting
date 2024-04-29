@@ -40,22 +40,28 @@ fun PlayerEntity.toModel() = Player(
     leagueLogo = this.leagueLogo
 )
 
-fun Player.toEntity() = PlayerEntity(
-    id = this.id,
-    firstName = this.firstName,
-    lastName = this.lastName,
-    age = this.age,
-    birthPlace = this.birthPlace,
-    birthCountry = this.birthCountry,
-    birthDate = this.birthDate,
-    nationality = this.nationality,
-    height = this.height,
-    weight = this.weight,
-    photo = this.photo,
-    team = this.team,
-    leagueName = this.leagueName,
-    leagueLogo = this.leagueLogo
-)
+fun List<PlayerEntity>.toModel(): List<Player>{
+    return this.map{
+        it.toModel()
+    }
+}
+
+fun Player.toEntity() = PlayerEntity().apply {
+    this.id = this@toEntity.id
+    this.firstName = this@toEntity.firstName
+    this.lastName = this@toEntity.lastName
+    this.age = this@toEntity.age
+    this.birthPlace = this@toEntity.birthPlace
+    this.birthCountry = this@toEntity.birthCountry
+    this.birthDate = this@toEntity.birthDate
+    this.nationality = this@toEntity.nationality
+    this.height = this@toEntity.height
+    this.weight = this@toEntity.weight
+    this.photo = this@toEntity.photo
+    this.team = this@toEntity.team
+    this.leagueName = this@toEntity.leagueName
+    this.leagueLogo = this@toEntity.leagueLogo
+}
 
 fun PlayersDTO.toModel(): List<Player>{
     return this.response.map {

@@ -1,23 +1,22 @@
 package com.example.betting.data.models
 
-import androidx.room.Entity
 import androidx.room.PrimaryKey
+import io.realm.kotlin.types.RealmObject
 
-@Entity(tableName = "favoritePlayers")
-data class PlayerEntity(
+class PlayerEntity : RealmObject{
     @PrimaryKey
-    val id: Int,
-    val firstName: String?,
-    val lastName: String?,
-    val age: Int?,
-    val birthPlace: String?,
-    val birthCountry: String?,
-    val birthDate: String?,
-    val nationality: String?,
-    val height: String?,
-    val weight: String?,
-    val photo: String?,
-    val team: String?,
-    val leagueName: String?,
-    val leagueLogo: String?
-)
+    var id: Int = 0
+    var firstName: String? = null
+    var lastName: String? = null
+    var age: Int? = null
+    var birthPlace: String? = null
+    var birthCountry: String? = null
+    var birthDate: String? = null
+    var nationality: String? = null
+    var height: String? = null
+    var weight: String? = null
+    var photo: String? = null
+    var team: String? = null
+    var leagueName: String? = null
+    var leagueLogo: String? = null
+}

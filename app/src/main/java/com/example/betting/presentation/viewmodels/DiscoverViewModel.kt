@@ -122,7 +122,8 @@ class DiscoverViewModel @Inject constructor(
     }
 
     private suspend fun getLeagues() {
-        val response = repository.getLeagues(LEAGUE_NAME, currentYear)
+//        val response = repository.getLeagues(LEAGUE_NAME, currentYear)
+        val response = repository.getLeagues(LEAGUE_NAME, "2023")
         when (response) {
             is Response.Success -> {
                 leagueList = response.data
@@ -135,7 +136,8 @@ class DiscoverViewModel @Inject constructor(
 
     private suspend fun getPlayers(leagueItem: League) {
         val leagueId = leagueItem.id.toString()
-        val response = repository.getPlayers(leagueId, currentYear, "1")
+ //       val response = repository.getPlayers(leagueId, currentYear, "1")
+        val response = repository.getPlayers(leagueId, "2023", "1")
         when (response) {
             is Response.Success -> {
                 playerList.add(
@@ -170,9 +172,10 @@ class DiscoverViewModel @Inject constructor(
 
     companion object {
         const val LEAGUE_NAME = "premier league"
+//        const val LEAGUE_NAME = "Euro Championship"
         const val LIMIT_LIST = 10
         const val EMPTY = ""
-        const val NUMBER_LEAGUES = 3
+        const val NUMBER_LEAGUES = 1
     }
 
 }

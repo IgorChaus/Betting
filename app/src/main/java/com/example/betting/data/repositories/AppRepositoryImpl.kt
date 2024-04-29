@@ -1,20 +1,22 @@
 package com.example.betting.data.repositories
 
-import com.example.betting.domain.models.Response
 import com.example.betting.common.toEntity
 import com.example.betting.common.toModel
-import com.example.betting.data.local.AppDao
+import com.example.betting.data.local.DataBase
+import com.example.betting.data.models.PlayerEntity
 import com.example.betting.data.remote.RetrofitApi
 import com.example.betting.domain.models.League
 import com.example.betting.domain.models.Player
+import com.example.betting.domain.models.Response
 import com.example.betting.domain.repositories.AppRepository
+import io.realm.kotlin.ext.query
+import io.realm.kotlin.query.RealmResults
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class AppRepositoryImpl @Inject constructor(
-    private val service: RetrofitApi,
-    private val appDao: AppDao
+    private val service: RetrofitApi
 ): AppRepository {
 
     override suspend fun getLeagues(leagueName: String, season: String): Response<List<League>> {
@@ -41,21 +43,34 @@ class AppRepositoryImpl @Inject constructor(
 
     override suspend fun getFavoritePlayerList(): List<Player> {
         return withContext(Dispatchers.IO) {
-            appDao.getPlayersList().map { it.toModel() }
+            val realmInstance = DataBase.realmInstance
+            val players = realmInstance.query<PlayerEntity>().find() as List<PlayerEntity>
+            players.toModel()
         }
     }
 
     override suspend fun isPlayerFavorite(id: Int): Boolean {
-        val favorite = appDao.getPlayer(id)
-        return favorite != null
+        return withContext(Dispatchers.IO) {
+            val realmInstance = DataBase.realmInstance
+            val favorite = realmInstance.query<PlayerEntity>("id = $0", id).first().find()
+            favorite != null
+        }
     }
 
     override suspend fun addFavoritePlayer(playerAdapterItem: Player) {
-        appDao.addPlayer(playerAdapterItem.toEntity())
+        val realmInstance = DataBase.realmInstance
+        val player = playerAdapterItem.toEntity()
+        realmInstance.write {
+            copyToRealm(player)
+        }
     }
 
     override suspend fun deleteFavoritePlayer(id: Int) {
-        appDao.deletePlayer(id)
+        val realmInstance = DataBase.realmInstance
+        realmInstance.write {
+            val query: RealmResults<PlayerEntity> = this.query<PlayerEntity>("id = $0", id).find()
+            delete(query)
+        }
     }
 
 }

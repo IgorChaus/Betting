@@ -80,5 +80,6 @@ dependencies {
 
     //RealM
     implementation libs.library.base
+    implementation 'io.realm.kotlin:library-sync:1.11.0'
 
 }
