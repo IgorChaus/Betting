@@ -3,13 +3,14 @@ package com.example.betting.domain.repositories
 import com.example.betting.domain.models.League
 import com.example.betting.domain.models.Player
 import com.example.betting.domain.models.Response
+import io.reactivex.rxjava3.core.Single
 import kotlinx.coroutines.flow.Flow
 
 interface AppRepository {
 
-    suspend fun getLeagues(leagueName: String, season: String): Response<List<League>>
+    fun getLeagues(leagueName: String, season: String): Single<List<League>>
 
-    suspend fun getPlayers(leagueId: String, season: String, page: String): Response<List<Player>>
+    fun getPlayers(leagueId: String, season: String, page: String): Single<List<Player>>
 
     suspend fun getFavoritePlayerList(): Flow<List<Player>>
 

@@ -3,7 +3,6 @@ package com.example.betting.presentation.view
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,14 +14,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import com.example.betting.R
 import com.example.betting.appComponent
+import com.example.betting.common.BaseFragment
+import com.example.betting.common.hideKeyboard
 import com.example.betting.databinding.DiscoverScreenBinding
 import com.example.betting.domain.models.Player
 import com.example.betting.presentation.adapter.PlayerListAdapter
 import com.example.betting.presentation.states.State
 import com.example.betting.presentation.viewmodels.DiscoverViewModel
-import com.example.betting.common.BaseFragment
-import com.example.betting.common.hideKeyboard
-import com.example.betting.common.repeatOnCreated
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import javax.inject.Inject
 
 class DiscoverScreen : BaseFragment<DiscoverScreenBinding>() {
@@ -32,6 +31,8 @@ class DiscoverScreen : BaseFragment<DiscoverScreenBinding>() {
     private val viewModel: DiscoverViewModel by viewModels { viewModelFactory }
 
     private val adapter by lazy { PlayerListAdapter() }
+
+    private val disposables = CompositeDisposable()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -63,13 +64,14 @@ class DiscoverScreen : BaseFragment<DiscoverScreenBinding>() {
     }
 
     private fun subscribeOnViewModel() {
-        viewModel.state.repeatOnCreated(this) {
+        disposables.add(viewModel.state.subscribe {
             when (it) {
                 is State.Loading -> {
                     binding.progressBarDiscover.progress = it.progress
                     binding.progressBarDiscover.visibility = it.progressVisible
                     binding.tvMessage.visibility = View.GONE
                 }
+
                 is State.ContentList -> {
                     binding.tvSearchResult.visibility = View.GONE
                     binding.ivCloseSearch.setImageResource(R.drawable.icon_search_24px)
@@ -79,6 +81,7 @@ class DiscoverScreen : BaseFragment<DiscoverScreenBinding>() {
                     binding.tvMessage.visibility = View.GONE
                     adapter.submitList(it.data)
                 }
+
                 is State.ActivateSearch -> {
                     binding.layoutSearch.background = ResourcesCompat
                         .getDrawable(resources, R.drawable.round_corners_border, null)
@@ -86,6 +89,7 @@ class DiscoverScreen : BaseFragment<DiscoverScreenBinding>() {
                     binding.ivCloseSearch.setImageResource(R.drawable.icon_cancel_24px)
                     binding.rv.visibility = View.VISIBLE
                 }
+
                 is State.ResultSearch -> {
                     binding.tvSearchResult.visibility = View.VISIBLE
                     binding.ivCloseSearch.setImageResource(R.drawable.icon_cancel_24px)
@@ -94,9 +98,11 @@ class DiscoverScreen : BaseFragment<DiscoverScreenBinding>() {
                     deactivateSearch()
                     adapter.submitList(it.data)
                 }
+
                 is State.FilteredList -> {
                     adapter.submitList(it.data)
                 }
+
                 is State.NothingFound -> {
                     binding.tvSearchResult.visibility = View.VISIBLE
                     binding.ivCloseSearch.setImageResource(R.drawable.icon_cancel_24px)
@@ -106,14 +112,16 @@ class DiscoverScreen : BaseFragment<DiscoverScreenBinding>() {
                     binding.tvMessage.visibility = View.VISIBLE
                     binding.tvMessage.text = getString(R.string.cant_find_player)
                 }
+
                 is State.Error -> {
                     binding.rv.visibility = View.GONE
                     binding.tvMessage.visibility = View.VISIBLE
                     binding.tvMessage.text = getString(R.string.no_internet_connection)
                 }
+
                 else -> Unit
             }
-        }
+        })
     }
 
     private fun deactivateSearch() {
@@ -158,6 +166,12 @@ class DiscoverScreen : BaseFragment<DiscoverScreenBinding>() {
             .findFragmentById(R.id.container_activity) as NavHostFragment
         val navController = navHostFragment.navController
         navController.navigate(R.id.playerScreen, args)
+    }
+
+    override fun onDestroy() {
+        disposables.dispose()
+        viewModel.clearDisposables()
+        super.onDestroy()
     }
 
 }

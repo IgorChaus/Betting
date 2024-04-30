@@ -6,15 +6,15 @@ import com.example.betting.data.models.PlayerEntity
 import com.example.betting.data.remote.RetrofitApi
 import com.example.betting.domain.models.League
 import com.example.betting.domain.models.Player
-import com.example.betting.domain.models.Response
 import com.example.betting.domain.repositories.AppRepository
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.schedulers.Schedulers
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.query.RealmResults
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class AppRepositoryImpl @Inject constructor(
@@ -22,26 +22,36 @@ class AppRepositoryImpl @Inject constructor(
     private val realmInstance: Realm
 ): AppRepository {
 
-    override suspend fun getLeagues(leagueName: String, season: String): Response<List<League>> {
-        return withContext(Dispatchers.IO) {
-            try {
-                val response = service.getLeagues(leagueName, season).toModel()
-                Response.Success(response)
-            } catch (e: Exception) {
-                Response.Error(e)
+    override fun getLeagues(leagueName: String, season: String): Single<List<League>> {
+        return service.getLeagues(leagueName, season)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map { leaguesDTO ->
+                if (leaguesDTO != null) {
+                    leaguesDTO.toModel()
+                } else {
+                    throw Exception("No data available")
+                }
             }
-        }
+            .onErrorResumeNext { throwable: Throwable ->
+                Single.error(Exception("Failed to retrieve data", throwable))
+            }
     }
 
-    override suspend fun getPlayers(leagueId: String, season: String, page: String): Response<List<Player>> {
-        return withContext(Dispatchers.IO) {
-            try {
-                val response = service.getPlayers(leagueId, season, page).toModel()
-                Response.Success(response)
-            } catch (e: Exception) {
-                Response.Error(e)
+    override fun getPlayers(leagueId: String, season: String, page: String): Single<List<Player>> {
+        return service.getPlayers(leagueId, season, page)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map { playersDTO ->
+                if (playersDTO != null) {
+                    playersDTO.toModel()
+                } else {
+                    throw Exception("No data available")
+                }
             }
-        }
+            .onErrorResumeNext { throwable: Throwable ->
+                Single.error(Exception("Failed to retrieve data", throwable))
+            }
     }
 
     override suspend fun getFavoritePlayerList(): Flow<List<Player>> {

@@ -10,6 +10,12 @@ import com.example.betting.domain.repositories.AppRepository
 import com.example.betting.presentation.adapter.PlayerListAdapter
 import com.example.betting.presentation.states.State
 import com.example.betting.domain.models.Response
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.schedulers.Schedulers
+import io.reactivex.rxjava3.subjects.BehaviorSubject
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,35 +28,26 @@ class DiscoverViewModel @Inject constructor(
     private val repository: AppRepository
 ) : ViewModel() {
 
-    private val currentYear = Calendar.getInstance().get(Calendar.YEAR).toString()
+    private val disposables = CompositeDisposable()
 
-    private val _state = MutableStateFlow<State>(
-        State.Loading(
-            data = listOf(),
-            progress = 0,
-            progressVisible = View.VISIBLE
-        )
-    )
-    val state = _state.asStateFlow()
+    private val _state = BehaviorSubject.create<State>()
+    val state: Observable<State>
+        get() = _state.hide()
 
     private var leagueList: List<League>? = null
     private val playerList = arrayListOf<PlayerListAdapter.AdapterItems>()
     private var strSearch: String = EMPTY
-
-    private val coroutineExceptionHandler = CoroutineExceptionHandler { _, exception ->
-        handleException(exception)
-    }
 
     init{
         getPlayersFromAllLeagues()
     }
 
     fun setContentListState() {
-        _state.value = State.ContentList(playerList)
+        _state.onNext(State.ContentList(playerList))
     }
 
     fun setActivateSearch() {
-        _state.value = State.ActivateSearch
+        _state.onNext(State.ActivateSearch)
         if (this.strSearch.isNotEmpty()){
             val strSearch = this.strSearch
             this.strSearch = EMPTY
@@ -68,18 +65,18 @@ class DiscoverViewModel @Inject constructor(
         } else {
             playerList
         }
-        _state.value = State.FilteredList(filteredList)
+        _state.onNext(State.FilteredList(filteredList))
     }
 
     fun setSearchResultState(strSearch: String) {
         if (strSearch.isEmpty()) {
-            _state.value = State.ContentList(playerList)
+            _state.onNext(State.ContentList(playerList))
         } else {
             val searchList = searchPlayer(strSearch)
             if (searchList.isNotEmpty()) {
-                _state.value = State.ResultSearch(searchList)
+                _state.onNext(State.ResultSearch(searchList))
             } else {
-                _state.value = State.NothingFound
+                _state.onNext(State.NothingFound)
             }
         }
     }
@@ -90,56 +87,25 @@ class DiscoverViewModel @Inject constructor(
                     it.lastName?.contains(strSearch, ignoreCase = true) ?: false
         }
 
-    fun getPlayersFromAllLeagues() {
-        viewModelScope.launch(coroutineExceptionHandler) {
-            getLeagues()
-            if (leagueList != null) {
-                playerList.clear()
-                _state.value = State.Loading(
-                    data = playerList,
-                    progress = 0,
-                    progressVisible = View.VISIBLE
-                )
-                val leagueListSize = leagueList?.size ?:0
-                for (item in 0..min(NUMBER_LEAGUES, leagueListSize)) {
-                    getPlayers(leagueList!![item])
-                    if (playerList.isNotEmpty()) {
-                        _state.value = State.Loading(
-                            data = playerList,
-                            progress = 100 / min(NUMBER_LEAGUES, leagueListSize) * (item + 1),
-                            progressVisible = View.VISIBLE
-                        )
-                    }
-                }
-                _state.value = State.Loading(
-                    data = playerList,
-                    progress = 0,
-                    progressVisible = View.GONE
-                )
-                _state.value = State.ContentList(playerList)
+    private fun getLeagues(): Single<List<League>> {
+        return repository.getLeagues(LEAGUE_NAME, "2023")
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSuccess { leagues ->
+                leagueList = leagues
             }
-        }
+            .doOnError { error ->
+                handleException(error)
+            }
     }
 
-    private suspend fun getLeagues() {
-//        val response = repository.getLeagues(LEAGUE_NAME, currentYear)
-        val response = repository.getLeagues(LEAGUE_NAME, "2023")
-        when (response) {
-            is Response.Success -> {
-                leagueList = response.data
-            }
-            is Response.Error -> {
-                handleException(response.exception)
-            }
-        }
-    }
-
-    private suspend fun getPlayers(leagueItem: League) {
+    private fun getPlayers(leagueItem: League): Single<List<Player>> {
         val leagueId = leagueItem.id.toString()
- //       val response = repository.getPlayers(leagueId, currentYear, "1")
-        val response = repository.getPlayers(leagueId, "2023", "1")
-        when (response) {
-            is Response.Success -> {
+        return repository.getPlayers(leagueId, "2023", "1")
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map { response ->
+
                 playerList.add(
                     League(
                         id = leagueItem.id,
@@ -148,31 +114,51 @@ class DiscoverViewModel @Inject constructor(
                     )
                 )
 
-                val players = response.data
-                val limit = minOf(players.size, LIMIT_LIST)
-                for (item in players.take(limit)) {
-                    playerList.add(
-                        item.copy(
-                            leagueName = leagueItem.name,
-                            leagueLogo = leagueItem.logo
-                        )
-                    )
+                val updatedPlayers = response.map { player ->
+                    player.copy(leagueName = leagueItem.name, leagueLogo = leagueItem.logo)
                 }
+                playerList.addAll(updatedPlayers.take(LIMIT_LIST))
+                updatedPlayers
             }
-            is Response.Error -> {
-                handleException(response.exception)
+            .doOnError { error ->
+                handleException(error)
             }
-        }
+    }
+
+    fun getPlayersFromAllLeagues() {
+        _state.onNext(State.Loading(data = playerList, progress = 0, progressVisible = View.VISIBLE))
+        disposables.add(
+            getLeagues()
+                .flatMapObservable { leagues ->
+                    Observable.fromIterable(leagues)
+                }
+                .concatMapEager { league ->
+                    getPlayers(league).toObservable()
+                }
+                .toList()
+                .subscribe(
+                    { _ ->
+                        _state.onNext(State.Loading(data = playerList, progress = 100, progressVisible = View.GONE))
+                        _state.onNext(State.ContentList(playerList))
+                    },
+                    { error ->
+                        handleException(error)
+                    }
+                )
+        )
     }
 
     private fun handleException(throwable: Throwable?) {
         Log.i("MyTag", "Exception $throwable")
-        _state.value = State.Error
+        _state.onNext(State.Error)
+    }
+
+    fun clearDisposables() {
+        disposables.clear()
     }
 
     companion object {
         const val LEAGUE_NAME = "premier league"
-//        const val LEAGUE_NAME = "Euro Championship"
         const val LIMIT_LIST = 10
         const val EMPTY = ""
         const val NUMBER_LEAGUES = 1
