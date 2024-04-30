@@ -20,7 +20,9 @@ class PlayerViewModel @Inject constructor(
 
     fun checkPlayer(playerAdapterItem: Player) {
         viewModelScope.launch(coroutineExceptionHandler) {
-            _isPlayerFavorite.value = repository.isPlayerFavorite(playerAdapterItem.id)
+            repository.isPlayerFavorite(playerAdapterItem.id).collect{
+                _isPlayerFavorite.value = it
+            }
         }
     }
 

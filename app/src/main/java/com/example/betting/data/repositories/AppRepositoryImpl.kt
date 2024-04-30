@@ -53,11 +53,11 @@ class AppRepositoryImpl @Inject constructor(
             }
     }
 
-    override suspend fun isPlayerFavorite(id: Int): Boolean {
-        return withContext(Dispatchers.IO) {
-            val favorite = realmInstance.query<PlayerEntity>("id = $0", id).first().find()
-            favorite != null
-        }
+    override suspend fun isPlayerFavorite(id: Int): Flow<Boolean> {
+        return realmInstance.query<PlayerEntity>("id = $0", id)
+            .first()
+            .asFlow()
+            .map { it.obj != null }
     }
 
     override suspend fun addFavoritePlayer(playerAdapterItem: Player) {

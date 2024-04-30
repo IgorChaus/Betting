@@ -13,7 +13,7 @@ interface AppRepository {
 
     suspend fun getFavoritePlayerList(): Flow<List<Player>>
 
-    suspend fun isPlayerFavorite(id: Int): Boolean
+    suspend fun isPlayerFavorite(id: Int): Flow<Boolean>
 
     suspend fun addFavoritePlayer(playerAdapterItem: Player)
 
