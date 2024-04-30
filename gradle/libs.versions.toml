@@ -20,6 +20,8 @@ retrofit = "2.9.0"
 room-ktx = "2.6.1"
 room-runtime = "2.6.1"
 swiperefresh = "1.1.0"
+rxandroid = "3.0.2"
+rxjava = "3.1.5"
 
 [libraries]
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
@@ -53,5 +55,9 @@ androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "
 swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "swiperefresh"}
 
 library-base = { module = "io.realm.kotlin:library-base", version.ref = "library-base" }
+
+rxandroid = { module = "io.reactivex.rxjava3:rxandroid", version.ref = "rxandroid" }
+rxjava = { module = "io.reactivex.rxjava3:rxjava", version.ref = "rxjava" }
+rxretrofit = { module = "com.squareup.retrofit2:adapter-rxjava3" , version.ref = "retrofit" }
 
 
