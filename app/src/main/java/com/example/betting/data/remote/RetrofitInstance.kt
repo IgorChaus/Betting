@@ -11,18 +11,18 @@ object RetrofitInstance {
 
     private const val BASE_URL = "https://v3.football.api-sports.io/"
 
-    val interceptor : HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
+    private val interceptor : HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
     }
 
-    val client : OkHttpClient = OkHttpClient.Builder()
+    private val client : OkHttpClient = OkHttpClient.Builder()
         .connectTimeout(2, TimeUnit.SECONDS)
         .readTimeout(2, TimeUnit.SECONDS)
         .writeTimeout(2, TimeUnit.SECONDS)
         .addInterceptor(interceptor)
         .build()
 
-    val builder = Retrofit.Builder()
+    private val builder = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)

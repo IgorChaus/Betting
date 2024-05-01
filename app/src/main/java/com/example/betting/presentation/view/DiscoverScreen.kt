@@ -3,7 +3,6 @@ package com.example.betting.presentation.view
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,14 +14,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import com.example.betting.R
 import com.example.betting.appComponent
+import com.example.betting.common.BaseFragment
+import com.example.betting.common.hideKeyboard
+import com.example.betting.common.repeatOnCreated
 import com.example.betting.databinding.DiscoverScreenBinding
 import com.example.betting.domain.models.Player
 import com.example.betting.presentation.adapter.PlayerListAdapter
 import com.example.betting.presentation.states.State
 import com.example.betting.presentation.viewmodels.DiscoverViewModel
-import com.example.betting.common.BaseFragment
-import com.example.betting.common.hideKeyboard
-import com.example.betting.common.repeatOnCreated
 import javax.inject.Inject
 
 class DiscoverScreen : BaseFragment<DiscoverScreenBinding>() {

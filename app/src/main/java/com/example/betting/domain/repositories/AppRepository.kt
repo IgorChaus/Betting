@@ -1,9 +1,8 @@
 package com.example.betting.domain.repositories
 
-import com.example.betting.data.models.PlayersDTO
+import com.example.betting.domain.models.League
 import com.example.betting.domain.models.Player
 import com.example.betting.domain.models.Response
-import com.example.betting.domain.models.League
 import kotlinx.coroutines.flow.Flow
 
 interface AppRepository {
