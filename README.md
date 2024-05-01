@@ -7,7 +7,7 @@
 - Coroutines
 - ViewModel
 - ViewBinding
-- LiveData
+- Flow
 - Dagger
 - Jetpack Navigation
 
