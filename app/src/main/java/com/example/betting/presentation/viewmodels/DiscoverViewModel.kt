@@ -3,25 +3,18 @@ package com.example.betting.presentation.viewmodels
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.betting.domain.models.League
 import com.example.betting.domain.models.Player
 import com.example.betting.domain.repositories.AppRepository
 import com.example.betting.presentation.adapter.PlayerListAdapter
 import com.example.betting.presentation.states.State
-import com.example.betting.domain.models.Response
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 import java.lang.Integer.min
-import java.util.Calendar
 import javax.inject.Inject
 
 class DiscoverViewModel @Inject constructor(

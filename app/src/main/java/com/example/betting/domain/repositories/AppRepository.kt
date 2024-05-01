@@ -2,7 +2,6 @@ package com.example.betting.domain.repositories
 
 import com.example.betting.domain.models.League
 import com.example.betting.domain.models.Player
-import com.example.betting.domain.models.Response
 import io.reactivex.rxjava3.core.Single
 import kotlinx.coroutines.flow.Flow
 
