@@ -130,9 +130,14 @@ class DiscoverViewModel @Inject constructor(
         disposables.add(
             getLeagues()
                 .flatMapObservable { leagues ->
-                    Observable.fromIterable(leagues)
+                    Observable.fromIterable(leagues.indices.zip(leagues).take(min(NUMBER_LEAGUES, leagues.size)))
                 }
-                .concatMapEager { league ->
+                .concatMapEager { indexedLeague ->
+                    val index = indexedLeague.first
+                    val league = indexedLeague.second
+                    val totalLeagues = min(NUMBER_LEAGUES, leagueList?.size ?:1)
+                    val progress = (index + 1) * 100 / totalLeagues
+                    _state.onNext(State.Loading(data = playerList, progress = progress, progressVisible = View.VISIBLE))
                     getPlayers(league).toObservable()
                 }
                 .toList()
@@ -161,7 +166,7 @@ class DiscoverViewModel @Inject constructor(
         const val LEAGUE_NAME = "premier league"
         const val LIMIT_LIST = 10
         const val EMPTY = ""
-        const val NUMBER_LEAGUES = 1
+        const val NUMBER_LEAGUES = 3
     }
 
 }
