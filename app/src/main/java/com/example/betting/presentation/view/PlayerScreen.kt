@@ -71,7 +71,7 @@ class PlayerScreen : BaseFragment<PlayerScreenBinding>() {
         roundCorners(view)
         bindViews()
         viewModel.checkPlayer(item)
-        viewModel.isPlayerFavorite.repeatOnCreated(this){
+        viewModel.isPlayerFavorite.repeatOnCreated(viewLifecycleOwner){
             if(it){
                 binding.iconFavorites.setImageResource(R.drawable.icon_favorite_selected)
             } else

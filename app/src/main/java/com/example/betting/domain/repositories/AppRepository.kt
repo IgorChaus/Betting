@@ -4,6 +4,7 @@ import com.example.betting.data.models.PlayersDTO
 import com.example.betting.domain.models.Player
 import com.example.betting.domain.models.Response
 import com.example.betting.domain.models.League
+import kotlinx.coroutines.flow.Flow
 
 interface AppRepository {
 
@@ -11,7 +12,7 @@ interface AppRepository {
 
     suspend fun getPlayers(leagueId: String, season: String, page: String): Response<List<Player>>
 
-    suspend fun getFavoritePlayerList(): List<Player>
+    suspend fun getFavoritePlayerList(): Flow<List<Player>>
 
     suspend fun isPlayerFavorite(id: Int): Boolean
 

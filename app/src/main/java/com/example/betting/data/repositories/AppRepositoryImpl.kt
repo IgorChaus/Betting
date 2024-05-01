@@ -9,6 +9,8 @@ import com.example.betting.domain.models.League
 import com.example.betting.domain.models.Player
 import com.example.betting.domain.repositories.AppRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -39,10 +41,8 @@ class AppRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getFavoritePlayerList(): List<Player> {
-        return withContext(Dispatchers.IO) {
-            appDao.getPlayersList().map { it.toModel() }
-        }
+    override suspend fun getFavoritePlayerList(): Flow<List<Player>>{
+        return appDao.getPlayersList().map { it.toModel() }
     }
 
     override suspend fun isPlayerFavorite(id: Int): Boolean {

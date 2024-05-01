@@ -60,7 +60,7 @@ class FavoritesScreen : BaseFragment<FavoritesScreenBinding>() {
     }
 
     private fun setupStateObserver() {
-        viewModel.state.repeatOnCreated(this) {
+        viewModel.state.repeatOnCreated(viewLifecycleOwner) {
             when (it) {
                 is State.ContentList -> {
                     binding.tvSearchResult.visibility = View.GONE

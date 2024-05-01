@@ -24,14 +24,14 @@ class FavoriteViewModel @Inject constructor(
 
     fun getFavoritePlayers(){
         viewModelScope.launch(coroutineExceptionHandler) {
-            playerList = repository.getFavoritePlayerList()
-            if (playerList.isNotEmpty()) {
-                _state.value = State.ContentList(playerList)
-            } else {
-                _state.value = State.NoFavoritePlayers
+            repository.getFavoritePlayerList().collect{
+                if (it.isNotEmpty()) {
+                    _state.value = State.ContentList(it)
+                } else {
+                    _state.value = State.NoFavoritePlayers
+                }
             }
         }
-
     }
 
     fun setActivateSearch() {

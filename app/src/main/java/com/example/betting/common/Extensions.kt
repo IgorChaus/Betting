@@ -40,6 +40,9 @@ fun PlayerEntity.toModel() = Player(
     leagueLogo = this.leagueLogo
 )
 
+fun List<PlayerEntity>.toModel() =
+    this.map { it.toModel() }
+
 fun Player.toEntity() = PlayerEntity(
     id = this.id,
     firstName = this.firstName,
